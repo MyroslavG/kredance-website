@@ -7,14 +7,14 @@ import { ArrowRight } from "lucide-react";
 export function Hero() {
   return (
     <section className="bg-white">
-      {/* Video - first thing visitors see, cropped from bottom */}
-      <div className="w-full aspect-[16/8] overflow-hidden">
+      {/* Video - first thing visitors see */}
+      <div className="pt-16 w-full aspect-[9/14] sm:aspect-[16/8] overflow-hidden">
         <video
           autoPlay
           loop
           muted
           playsInline
-          className="w-full object-cover object-top"
+          className="w-full h-full object-cover object-center sm:object-top"
         >
           <source src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/hero_video.mp4`} type="video/mp4" />
         </video>
