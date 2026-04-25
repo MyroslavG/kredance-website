@@ -24,6 +24,9 @@ export const metadata: Metadata = {
   icons: {
     icon: `${basePath}/black_no_bg.png`,
   },
+  other: {
+    "theme-color": "#ffffff",
+  },
 };
 
 export default function RootLayout({

@@ -10,21 +10,21 @@ import { motion, AnimatePresence } from "framer-motion";
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 const services = [
-  { name: "Advertisement Creation", href: "/services" },
-  { name: "AI Automation", href: "/services" },
-  { name: "AI Integration", href: "/services" },
-  { name: "Cybersecurity Services", href: "/services" },
-  { name: "Data Migration", href: "/services" },
-  { name: "Data Mining & Scraping", href: "/services" },
-  { name: "Design", href: "/services" },
-  { name: "Ecommerce Shop Development", href: "/services" },
-  { name: "Google Ads Specialist", href: "/services" },
-  { name: "Mobile App Development", href: "/services" },
-  { name: "News", href: "/services" },
-  { name: "Small Business IT Package", href: "/services" },
-  { name: "Universal Plugin Solutions", href: "/services" },
-  { name: "Website Development", href: "/services" },
-  { name: "Website SEO", href: "/services" },
+  { name: "Advertisement Creation", href: "/services/advertisement-creation" },
+  { name: "AI Automation", href: "/services/ai-automation" },
+  { name: "AI Integration", href: "/services/ai-integration" },
+  { name: "Cybersecurity Services", href: "/services/cybersecurity" },
+  { name: "Data Migration", href: "/services/data-migration" },
+  { name: "Data Mining & Scraping", href: "/services/data-mining" },
+  { name: "Design", href: "/services/design" },
+  { name: "Ecommerce Shop Development", href: "/services/ecommerce" },
+  { name: "Google Ads Specialist", href: "/services/google-ads" },
+  { name: "Mobile App Development", href: "/services/mobile-app-development" },
+  { name: "News", href: "/services/news" },
+  { name: "Small Business IT Package", href: "/services/small-business-it" },
+  { name: "Universal Plugin Solutions", href: "/services/universal-plugin-solutions" },
+  { name: "Website Development", href: "/services/website-development" },
+  { name: "Website SEO", href: "/services/website-seo" },
 ];
 
 const navLinks = [
@@ -44,7 +44,9 @@ export function Navbar() {
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const pathname = usePathname();
 
-  const isDarkPage = darkPages.includes(pathname);
+  const isDarkPage =
+    darkPages.includes(pathname) ||
+    (pathname.startsWith("/services/") && pathname !== "/services");
   const useLight = isDarkPage && !scrolled;
 
   const logoSrc = useLight

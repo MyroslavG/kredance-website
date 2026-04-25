@@ -1,11 +1,41 @@
 "use client";
 
+import { useState, useRef, type FormEvent } from "react";
+import emailjs from "@emailjs/browser";
 import { motion } from "framer-motion";
-import { Mail, MapPin, Phone, ArrowRight } from "lucide-react";
+import { Mail, MapPin, Phone, ArrowRight, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
+const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "";
+const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "";
+const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "";
+
+type Status = "idle" | "sending" | "sent" | "error";
+
 export function Contact() {
+  const formRef = useRef<HTMLFormElement>(null);
+  const [status, setStatus] = useState<Status>("idle");
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    if (!formRef.current) return;
+
+    setStatus("sending");
+    try {
+      await emailjs.sendForm(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        formRef.current,
+        EMAILJS_PUBLIC_KEY,
+      );
+      setStatus("sent");
+      formRef.current.reset();
+    } catch {
+      setStatus("error");
+    }
+  }
+
   return (
     <section className="pt-32 pb-24 bg-nebulosity relative overflow-hidden">
       <div className="absolute top-0 left-0 w-96 h-96 bg-neon-navy/20 rounded-full blur-3xl" />
@@ -71,11 +101,17 @@ export function Contact() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
-            <form className="space-y-5 p-8 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-sm">
+            <form
+              ref={formRef}
+              onSubmit={handleSubmit}
+              className="space-y-5 p-8 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-sm"
+            >
               <div className="grid sm:grid-cols-2 gap-5">
                 <div>
                   <label className="block text-sm text-sunset/60 mb-2">Name</label>
                   <Input
+                    name="from_name"
+                    required
                     placeholder="Your name"
                     className="bg-white/5 border-white/10 text-sunset placeholder:text-sunset/30 focus:border-sunset/30 rounded-xl h-11"
                   />
@@ -83,7 +119,9 @@ export function Contact() {
                 <div>
                   <label className="block text-sm text-sunset/60 mb-2">Email</label>
                   <Input
+                    name="from_email"
                     type="email"
+                    required
                     placeholder="you@company.com"
                     className="bg-white/5 border-white/10 text-sunset placeholder:text-sunset/30 focus:border-sunset/30 rounded-xl h-11"
                   />
@@ -92,6 +130,8 @@ export function Contact() {
               <div>
                 <label className="block text-sm text-sunset/60 mb-2">Subject</label>
                 <Input
+                  name="subject"
+                  required
                   placeholder="Project inquiry"
                   className="bg-white/5 border-white/10 text-sunset placeholder:text-sunset/30 focus:border-sunset/30 rounded-xl h-11"
                 />
@@ -99,18 +139,44 @@ export function Contact() {
               <div>
                 <label className="block text-sm text-sunset/60 mb-2">Message</label>
                 <Textarea
+                  name="message"
+                  required
                   placeholder="Tell us about your project..."
                   rows={5}
                   className="bg-white/5 border-white/10 text-sunset placeholder:text-sunset/30 focus:border-sunset/30 rounded-xl resize-none"
                 />
               </div>
+
               <button
                 type="submit"
-                className="group w-full inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-sunset text-neon-navy font-medium rounded-full hover:bg-white transition-all"
+                disabled={status === "sending"}
+                className="group w-full inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-sunset text-neon-navy font-medium rounded-full hover:bg-white transition-all disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                Send Message
-                <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                {status === "sending" ? (
+                  <>
+                    Sending...
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  </>
+                ) : (
+                  <>
+                    Send Message
+                    <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </>
+                )}
               </button>
+
+              {status === "sent" && (
+                <div className="flex items-center gap-2 text-sm text-green-400">
+                  <CheckCircle className="h-4 w-4" />
+                  Message sent! We&apos;ll get back to you soon.
+                </div>
+              )}
+              {status === "error" && (
+                <div className="flex items-center gap-2 text-sm text-red-400">
+                  <AlertCircle className="h-4 w-4" />
+                  Something went wrong. Please try again or email us directly.
+                </div>
+              )}
             </form>
           </motion.div>
         </div>

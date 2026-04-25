@@ -97,7 +97,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-white text-foreground;
   }
   html {
     @apply font-sans scroll-smooth;
@@ -109,11 +109,17 @@
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #E7E7E0;
+  background: #ffffff;
 }
 ::-webkit-scrollbar-thumb {
   background: #6E7C89;
   border-radius: 3px;
+}
+
+/* Prevent overscroll background bleed on mobile */
+html {
+  background-color: #ffffff;
+  overscroll-behavior: none;
 }
 
 /* Selection color */
