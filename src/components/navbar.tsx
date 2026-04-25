@@ -7,6 +7,8 @@ import { Menu, ChevronDown } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { motion, AnimatePresence } from "framer-motion";
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
 const services = [
   { name: "Advertisement Creation", href: "/services" },
   { name: "AI Automation", href: "/services" },
@@ -25,8 +27,6 @@ const services = [
   { name: "Website SEO", href: "/services" },
 ];
 
-const logoSrc = `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/kredance_logo_2026.png`;
-
 const navLinks = [
   { name: "About", href: "/about" },
   { name: "AI Automation", href: "/ai-automation" },
@@ -35,12 +35,21 @@ const navLinks = [
   { name: "Contact", href: "/contact" },
 ];
 
+const darkPages = ["/", "/contact", "/ai-automation"];
+
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const pathname = usePathname();
+
+  const isDarkPage = darkPages.includes(pathname);
+  const useLight = isDarkPage && !scrolled;
+
+  const logoSrc = useLight
+    ? `${basePath}/white_no_bg.png`
+    : `${basePath}/black_no_bg.png`;
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -53,10 +62,12 @@ export function Navbar() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className={`fixed top-0 left-0 right-0 z-50 border-b transition-[background-color,border-color,box-shadow,backdrop-filter] duration-300 bg-white ${
+      className={`fixed top-0 left-0 right-0 z-50 border-b transition-all duration-300 ${
         scrolled
-          ? "shadow-sm border-black/5"
-          : "border-transparent shadow-none"
+          ? "bg-white/80 backdrop-blur-xl shadow-sm border-black/5"
+          : useLight
+          ? "bg-black/20 backdrop-blur-md border-transparent"
+          : "bg-white/50 backdrop-blur-md border-transparent"
       }`}
     >
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -74,10 +85,10 @@ export function Navbar() {
 
           {/* Desktop Nav */}
           <div className="hidden lg:flex items-center gap-1">
-            <NavLink href="/about" active={pathname === "/about"}>
+            <NavLink href="/about" active={pathname === "/about"} light={useLight}>
               About
             </NavLink>
-            <NavLink href="/ai-automation" active={pathname === "/ai-automation"}>
+            <NavLink href="/ai-automation" active={pathname === "/ai-automation"} light={useLight}>
               AI Automation
             </NavLink>
 
@@ -92,6 +103,8 @@ export function Navbar() {
                 className={`flex items-center gap-1 px-4 py-2 text-sm font-medium transition-colors rounded-full ${
                   pathname === "/services"
                     ? "bg-neon-navy text-sunset"
+                    : useLight
+                    ? "text-white hover:bg-white/10"
                     : "text-nebulosity/70 hover:text-nebulosity hover:bg-nebulosity/5"
                 }`}
               >
@@ -127,13 +140,13 @@ export function Navbar() {
               </AnimatePresence>
             </div>
 
-            <NavLink href="/portfolio" active={pathname === "/portfolio"}>
+            <NavLink href="/portfolio" active={pathname === "/portfolio"} light={useLight}>
               Portfolio
             </NavLink>
-            <NavLink href="/testimonials" active={pathname === "/testimonials"}>
+            <NavLink href="/testimonials" active={pathname === "/testimonials"} light={useLight}>
               Testimonials
             </NavLink>
-            <NavLink href="/contact" active={pathname === "/contact"}>
+            <NavLink href="/contact" active={pathname === "/contact"} light={useLight}>
               Contact
             </NavLink>
           </div>
@@ -144,13 +157,13 @@ export function Navbar() {
               <SheetTrigger
                 render={<button className="p-2 rounded-full hover:bg-nebulosity/5 transition-colors" />}
               >
-                <Menu className="h-5 w-5 text-nebulosity" />
+                <Menu className={`h-5 w-5 ${useLight ? "text-white" : "text-nebulosity"}`} />
               </SheetTrigger>
               <SheetContent side="right" className="w-80 bg-white border-l border-black/5 p-0">
                 <div className="flex flex-col h-full">
                   <div className="p-6 border-b border-black/5">
                     <img
-                      src={logoSrc}
+                      src={`${basePath}/black_no_bg.png`}
                       alt="Kredance"
                       width={44}
                       height={44}
@@ -255,17 +268,23 @@ function NavLink({
   href,
   children,
   active,
+  light,
 }: {
   href: string;
   children: React.ReactNode;
   active: boolean;
+  light: boolean;
 }) {
   return (
     <Link
       href={href}
       className={`px-4 py-2 text-sm font-medium transition-colors rounded-full ${
         active
-          ? "bg-neon-navy text-sunset"
+          ? light
+            ? "bg-white/20 text-white"
+            : "bg-neon-navy text-sunset"
+          : light
+          ? "text-white hover:bg-white/10"
           : "text-nebulosity/70 hover:text-nebulosity hover:bg-nebulosity/5"
       }`}
     >

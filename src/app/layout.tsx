@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   description:
     "Kredance is a full-service digital agency specializing in AI automation, custom websites, SEO, eCommerce, and digital marketing solutions.",
   icons: {
-    icon: `${basePath}/kredance_logo_2026.png`,
+    icon: `${basePath}/black_no_bg.png`,
   },
 };
 
