@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, ChevronDown } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -40,10 +41,6 @@ export function Navbar() {
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const pathname = usePathname();
 
-  const darkPages = ["/contact", "/ai-automation"];
-  const isDarkPage = darkPages.includes(pathname);
-  const useLightText = isDarkPage && !scrolled;
-
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
@@ -55,34 +52,31 @@ export function Navbar() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className={`fixed top-0 left-0 right-0 z-50 border-b transition-[background-color,border-color,box-shadow,backdrop-filter] duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 border-b transition-[background-color,border-color,box-shadow,backdrop-filter] duration-300 bg-white ${
         scrolled
-          ? "bg-white/80 backdrop-blur-xl shadow-sm border-black/5"
-          : "bg-transparent border-transparent shadow-none backdrop-blur-0"
+          ? "shadow-sm border-black/5"
+          : "border-transparent shadow-none"
       }`}
     >
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="relative h-8 w-8 rounded-lg bg-neon-navy flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform">
-              <span className="text-sm font-bold text-sunset tracking-tight">K</span>
-            </div>
-            <span
-              className={`text-lg font-semibold tracking-tight transition-colors ${
-                useLightText ? "text-sunset" : "text-nebulosity"
-              }`}
-            >
-              Kredance
-            </span>
+          <Link href="/" className="group">
+            <Image
+              src="/kredance_logo_2026.png"
+              alt="Kredance"
+              width={44}
+              height={44}
+              className="group-hover:scale-105 transition-transform"
+            />
           </Link>
 
           {/* Desktop Nav */}
           <div className="hidden lg:flex items-center gap-1">
-            <NavLink href="/about" active={pathname === "/about"} light={useLightText}>
+            <NavLink href="/about" active={pathname === "/about"}>
               About
             </NavLink>
-            <NavLink href="/ai-automation" active={pathname === "/ai-automation"} light={useLightText}>
+            <NavLink href="/ai-automation" active={pathname === "/ai-automation"}>
               AI Automation
             </NavLink>
 
@@ -96,11 +90,7 @@ export function Navbar() {
                 href="/services"
                 className={`flex items-center gap-1 px-4 py-2 text-sm font-medium transition-colors rounded-full ${
                   pathname === "/services"
-                    ? useLightText
-                      ? "bg-sunset text-neon-navy"
-                      : "bg-neon-navy text-sunset"
-                    : useLightText
-                    ? "text-sunset/70 hover:text-sunset hover:bg-white/10"
+                    ? "bg-neon-navy text-sunset"
                     : "text-nebulosity/70 hover:text-nebulosity hover:bg-nebulosity/5"
                 }`}
               >
@@ -136,13 +126,13 @@ export function Navbar() {
               </AnimatePresence>
             </div>
 
-            <NavLink href="/portfolio" active={pathname === "/portfolio"} light={useLightText}>
+            <NavLink href="/portfolio" active={pathname === "/portfolio"}>
               Portfolio
             </NavLink>
-            <NavLink href="/testimonials" active={pathname === "/testimonials"} light={useLightText}>
+            <NavLink href="/testimonials" active={pathname === "/testimonials"}>
               Testimonials
             </NavLink>
-            <NavLink href="/contact" active={pathname === "/contact"} light={useLightText}>
+            <NavLink href="/contact" active={pathname === "/contact"}>
               Contact
             </NavLink>
           </div>
@@ -153,17 +143,17 @@ export function Navbar() {
               <SheetTrigger
                 render={<button className="p-2 rounded-full hover:bg-nebulosity/5 transition-colors" />}
               >
-                <Menu className={`h-5 w-5 ${useLightText ? "text-sunset" : "text-nebulosity"}`} />
+                <Menu className="h-5 w-5 text-nebulosity" />
               </SheetTrigger>
               <SheetContent side="right" className="w-80 bg-white border-l border-black/5 p-0">
                 <div className="flex flex-col h-full">
                   <div className="p-6 border-b border-black/5">
-                    <div className="flex items-center gap-2">
-                      <div className="h-8 w-8 rounded-lg bg-neon-navy flex items-center justify-center">
-                        <span className="text-sm font-bold text-sunset">K</span>
-                      </div>
-                      <span className="text-lg font-semibold text-nebulosity">Kredance</span>
-                    </div>
+                    <Image
+                      src="/kredance_logo_2026.png"
+                      alt="Kredance"
+                      width={44}
+                      height={44}
+                    />
                   </div>
                   <div className="flex-1 overflow-y-auto p-4">
                     <div className="flex flex-col gap-1">
@@ -264,23 +254,17 @@ function NavLink({
   href,
   children,
   active,
-  light,
 }: {
   href: string;
   children: React.ReactNode;
   active: boolean;
-  light: boolean;
 }) {
   return (
     <Link
       href={href}
       className={`px-4 py-2 text-sm font-medium transition-colors rounded-full ${
         active
-          ? light
-            ? "bg-sunset text-neon-navy"
-            : "bg-neon-navy text-sunset"
-          : light
-          ? "text-sunset/70 hover:text-sunset hover:bg-white/10"
+          ? "bg-neon-navy text-sunset"
           : "text-nebulosity/70 hover:text-nebulosity hover:bg-nebulosity/5"
       }`}
     >

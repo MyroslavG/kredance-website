@@ -6,5 +6,9 @@ export const metadata = {
 };
 
 export default function TestimonialsPage() {
-  return <Testimonials />;
+  return (
+    <div className="flex-1 bg-white">
+      <Testimonials />
+    </div>
+  );
 }

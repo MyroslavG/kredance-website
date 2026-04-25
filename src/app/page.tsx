@@ -1,5 +1,9 @@
 import { Hero } from "@/components/hero";
 
 export default function Home() {
-  return <Hero />;
+  return (
+    <div className="flex-1 bg-white">
+      <Hero />
+    </div>
+  );
 }

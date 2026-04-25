@@ -5,31 +5,80 @@ import { Star } from "lucide-react";
 
 const testimonials = [
   {
-    name: "Sarah Mitchell",
-    role: "CEO, TechVentures",
+    name: "Robert Ward",
+    role: "Sales Director, eBoss Recruitment Software Solutions",
     content:
-      "Kredance transformed our entire digital presence. Their AI automation solutions cut our operational costs by 60% and their website redesign increased conversions significantly.",
+      "Working with Myro was excellent from start to finish. He quickly understood our requirements, adapted to challenges, and delivered high-quality solutions. Clear communication, attention to detail, and a collaborative approach made the entire project seamless.",
     rating: 5,
   },
   {
-    name: "James Rodriguez",
-    role: "Founder, ShopNova",
+    name: "Oleksa Voznyak",
+    role: "Founder, CBTO Software Solutions",
     content:
-      "The ecommerce platform they built handles thousands of daily transactions seamlessly. Their attention to detail and understanding of UX is outstanding.",
+      "Kredance played a key role in developing our mobile platform. Their React Native expertise allowed us to create a dynamic, user-friendly app that was both robust and scalable.",
     rating: 5,
   },
   {
-    name: "Emily Chen",
-    role: "Marketing Director, Pulse Media",
+    name: "Emmanuel Akintayo",
+    role: "Founder, ByteRoll",
     content:
-      "Their SEO and Google Ads expertise doubled our organic traffic in just 4 months. The team is responsive, data-driven, and genuinely invested in our success.",
+      "Kredance is an exceptional AI integration expert. Their work on our AI-powered tools was revolutionary — combining AI knowledge with cloud integration (AWS and GCP) to give us a significant edge in the market.",
     rating: 5,
   },
   {
-    name: "David Okonkwo",
-    role: "CTO, FinEdge",
+    name: "Nazar Simkiv",
+    role: "Founder, SymfonyLab",
     content:
-      "The AI integration Kredance built into our platform was a game-changer. Their technical depth and ability to deliver on complex requirements is unmatched.",
+      "Working with Kredance has been transformative. From seamless full-stack development to efficiently managing cloud services, they handled every task with precision and elevated our application performance.",
+    rating: 5,
+  },
+  {
+    name: "Matthew Garwolinski",
+    role: "Founder, Dzikus Media",
+    content:
+      "Myroslav sat down with me for hours to understand my vision and brought it to life. He checked in throughout the process to ensure it matched my ideas. The result was better than I could ever imagine.",
+    rating: 5,
+  },
+  {
+    name: "Tamara Osadcha",
+    role: "Founder, Tamar Film",
+    content:
+      "Myroslav has been incredibly helpful — always performing his work quickly and attentively. He assisted me with tasks I had struggled with for a long time. Respectful, patient, and highly skilled.",
+    rating: 5,
+  },
+  {
+    name: "Danna Ramirez",
+    role: "Founder, Eleve Design",
+    content:
+      "Myroslav took the time to understand my vision, stayed in constant communication, and delivered a modern, high-quality website that exceeded my expectations. Outstanding customer service and technical expertise.",
+    rating: 5,
+  },
+  {
+    name: "Mykyta Zakharchenko",
+    role: "Co-Founder, The Wow Camp",
+    content:
+      "Myroslav didn't just build pages — he deeply understood the business behind the website. He translated complex ideas into a clean, intuitive, and high-converting user experience. The site looks beautiful and works brilliantly.",
+    rating: 5,
+  },
+  {
+    name: "Olena Gulyansky",
+    role: "Founder, Beauty Stories",
+    content:
+      "Kredance delivered a fast and well-structured Shopify setup. Clear communication made the whole process simple and stress-free.",
+    rating: 5,
+  },
+  {
+    name: "Ian Zhang",
+    role: "Co-Founder, AUX",
+    content:
+      "The Aux app came together faster than expected, and the whole process was super straightforward. Great experience from start to launch.",
+    rating: 5,
+  },
+  {
+    name: "Hezekiah Francois",
+    role: "Founder, Neon Vibez",
+    content:
+      "The new site gave our brand a real upgrade. It's visually strong, easy to navigate, and makes a great first impression.",
     rating: 5,
   },
 ];

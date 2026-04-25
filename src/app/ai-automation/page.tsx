@@ -6,5 +6,9 @@ export const metadata = {
 };
 
 export default function AIAutomationPage() {
-  return <AIAutomation />;
+  return (
+    <div className="flex-1 bg-nebulosity">
+      <AIAutomation />
+    </div>
+  );
 }

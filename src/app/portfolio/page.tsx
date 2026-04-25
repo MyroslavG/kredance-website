@@ -6,5 +6,9 @@ export const metadata = {
 };
 
 export default function PortfolioPage() {
-  return <Portfolio />;
+  return (
+    <div className="flex-1 bg-white">
+      <Portfolio />
+    </div>
+  );
 }
