@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, ChevronDown } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -25,6 +24,8 @@ const services = [
   { name: "Website Development", href: "/services" },
   { name: "Website SEO", href: "/services" },
 ];
+
+const logoSrc = `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/kredance_logo_2026.png`;
 
 const navLinks = [
   { name: "About", href: "/about" },
@@ -62,8 +63,8 @@ export function Navbar() {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="group">
-            <Image
-              src="/kredance_logo_2026.png"
+            <img
+              src={logoSrc}
               alt="Kredance"
               width={44}
               height={44}
@@ -148,8 +149,8 @@ export function Navbar() {
               <SheetContent side="right" className="w-80 bg-white border-l border-black/5 p-0">
                 <div className="flex flex-col h-full">
                   <div className="p-6 border-b border-black/5">
-                    <Image
-                      src="/kredance_logo_2026.png"
+                    <img
+                      src={logoSrc}
                       alt="Kredance"
                       width={44}
                       height={44}
