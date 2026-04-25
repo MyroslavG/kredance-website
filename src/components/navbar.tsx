@@ -46,7 +46,8 @@ export function Navbar() {
 
   const isDarkPage =
     darkPages.includes(pathname) ||
-    (pathname.startsWith("/services/") && pathname !== "/services");
+    (pathname.startsWith("/services/") && pathname !== "/services") ||
+    (pathname.startsWith("/portfolio/") && pathname !== "/portfolio");
   const useLight = isDarkPage && !scrolled;
 
   const logoSrc = useLight
