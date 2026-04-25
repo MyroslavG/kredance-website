@@ -16,7 +16,7 @@ export function Hero() {
           playsInline
           className="w-full object-cover object-top"
         >
-          <source src="/hero_video.mp4" type="video/mp4" />
+          <source src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/hero_video.mp4`} type="video/mp4" />
         </video>
       </div>
 
