@@ -38,6 +38,10 @@ export default function BrpTruckAdvertisingPage() {
           "Drives sales among outdoor enthusiasts",
           "Effective multi-product showcase",
         ]}
+        relatedServices={[
+          { title: "Design", href: "/services/design" },
+          { title: "Advertisement Creation", href: "/services/advertisement-creation" },
+        ]}
       />
     </div>
   );

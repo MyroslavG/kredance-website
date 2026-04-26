@@ -71,6 +71,12 @@ export default function GoogleAdsPage() {
               "Regular performance reviews and strategy sessions ensure your campaigns evolve with your business goals and market conditions.",
           },
         ]}
+        relatedProjects={[
+          { title: "Talent Connect", href: "/portfolio/talent-connect", image: "https://www.kredance.com/wp-content/uploads/2024/10/screencapture-talent-connect-pro-en-2024-10-08-15_14_17-e1728389780496-495x400.png" },
+          { title: "Green-Agro", href: "/portfolio/green-agro", image: "https://www.kredance.com/wp-content/uploads/2024/10/greenagr-e1729533961289-495x400.png" },
+          { title: "Fidan Construction", href: "/portfolio/fidan-construction", image: "https://www.kredance.com/wp-content/uploads/2025/03/fidan1-495x400.png" },
+          { title: "ConsoleGroup", href: "/portfolio/consolegroup", image: "https://www.kredance.com/wp-content/uploads/2024/10/ss-495x400.png" },
+        ]}
       />
     </div>
   );

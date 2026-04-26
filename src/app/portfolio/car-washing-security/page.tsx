@@ -42,6 +42,9 @@ export default function CarWashingSecurityPage() {
           "All critical data restored with robust backup protection",
           "Improved website speed and reliability",
         ]}
+        relatedServices={[
+          { title: "Cybersecurity Services", href: "/services/cybersecurity" },
+        ]}
       />
     </div>
   );

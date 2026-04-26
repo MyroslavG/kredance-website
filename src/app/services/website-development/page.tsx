@@ -71,6 +71,14 @@ export default function WebsiteDevelopmentPage() {
               "Zero-downtime deployment, analytics setup, and post-launch performance monitoring to ensure everything runs flawlessly from day one.",
           },
         ]}
+        relatedProjects={[
+          { title: "CFMoto Kyiv", href: "/portfolio/cfmoto-kyiv", image: "https://www.kredance.com/wp-content/uploads/2026/02/cfmoto-495x400.jpg" },
+          { title: "DzvinSki", href: "/portfolio/dzvinski", image: "https://www.kredance.com/wp-content/uploads/2026/01/bereg-495x400.png" },
+          { title: "Neon Vibez Website", href: "/portfolio/neon-vibez", image: "https://www.kredance.com/wp-content/uploads/2026/01/Neon-Vibez-Logo-411x400.png" },
+          { title: "Tamar Film Website", href: "/portfolio/tamar-film-website", image: "https://www.kredance.com/wp-content/uploads/2025/12/tamarfilm_logo-e1766688086840-495x400.jpg" },
+          { title: "Fidan Construction", href: "/portfolio/fidan-construction", image: "https://www.kredance.com/wp-content/uploads/2025/03/fidan1-495x400.png" },
+          { title: "ConsoleGroup", href: "/portfolio/consolegroup", image: "https://www.kredance.com/wp-content/uploads/2024/10/ss-495x400.png" },
+        ]}
       />
     </div>
   );

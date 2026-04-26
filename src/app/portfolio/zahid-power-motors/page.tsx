@@ -42,6 +42,10 @@ export default function ZahidPowerMotorsPage() {
           "Enhanced ranking for brand-specific dealer services",
           "Strengthened connection between physical showroom and digital presence",
         ]}
+        relatedServices={[
+          { title: "Ecommerce Shop Development", href: "/services/ecommerce" },
+          { title: "Website SEO", href: "/services/website-seo" },
+        ]}
       />
     </div>
   );

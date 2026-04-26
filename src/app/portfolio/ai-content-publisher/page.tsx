@@ -53,6 +53,10 @@ export default function AIContentPublisherPage() {
           "Optimized publishing schedules for engagement",
           "Scalable content distribution",
         ]}
+        relatedServices={[
+          { title: "AI Automation", href: "/services/ai-automation" },
+          { title: "Universal Plugin Solutions", href: "/services/universal-plugin-solutions" },
+        ]}
       />
     </div>
   );

@@ -38,6 +38,10 @@ export default function IamqrPage() {
           "User-controlled privacy for shared data",
           "Cross-platform compatibility",
         ]}
+        relatedServices={[
+          { title: "Mobile App Development", href: "/services/mobile-app-development" },
+          { title: "AI Integration", href: "/services/ai-integration" },
+        ]}
       />
     </div>
   );

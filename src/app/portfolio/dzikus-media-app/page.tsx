@@ -38,6 +38,10 @@ export default function DzikusMediaAppPage() {
           "Personalized content curation",
           "Intuitive search and categorization",
         ]}
+        liveUrl="https://apps.apple.com/ca/app/dzikus/id6736469358"
+        relatedServices={[
+          { title: "Mobile App Development", href: "/services/mobile-app-development" },
+        ]}
       />
     </div>
   );

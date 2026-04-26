@@ -43,6 +43,11 @@ export default function TalentConnectPage() {
           "Enhanced user engagement and job postings",
           "Cost savings reallocated toward marketing",
         ]}
+        relatedServices={[
+          { title: "Website Development", href: "/services/website-development" },
+          { title: "Website SEO", href: "/services/website-seo" },
+          { title: "Google Ads", href: "/services/google-ads" },
+        ]}
       />
     </div>
   );

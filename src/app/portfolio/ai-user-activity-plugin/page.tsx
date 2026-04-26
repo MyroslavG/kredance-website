@@ -38,6 +38,11 @@ export default function AIUserActivityPluginPage() {
           "Comprehensive activity trails and logging",
           "Enhanced administrator visibility into user behavior",
         ]}
+        relatedServices={[
+          { title: "Universal Plugin Solutions", href: "/services/universal-plugin-solutions" },
+          { title: "Cybersecurity Services", href: "/services/cybersecurity" },
+          { title: "AI Automation", href: "/services/ai-automation" },
+        ]}
       />
     </div>
   );

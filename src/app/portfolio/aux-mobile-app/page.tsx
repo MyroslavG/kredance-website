@@ -42,6 +42,10 @@ export default function AuxMobileAppPage() {
           "Seamless music sharing and messaging experience",
           "Clean, intuitive interface design",
         ]}
+        relatedServices={[
+          { title: "Mobile App Development", href: "/services/mobile-app-development" },
+          { title: "AI Integration", href: "/services/ai-integration" },
+        ]}
       />
     </div>
   );

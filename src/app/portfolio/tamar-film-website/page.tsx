@@ -38,6 +38,11 @@ export default function TamarFilmWebsitePage() {
           "Enhanced search visibility for video production terms",
           "Professional brand positioning established",
         ]}
+        liveUrl="http://tamarfilm.com/"
+        relatedServices={[
+          { title: "Website Development", href: "/services/website-development" },
+          { title: "Website SEO", href: "/services/website-seo" },
+        ]}
       />
     </div>
   );

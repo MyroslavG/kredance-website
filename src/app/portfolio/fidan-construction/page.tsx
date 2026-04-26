@@ -47,6 +47,12 @@ export default function FidanConstructionPage() {
           "Integrated digital marketing strategies",
           "Enhanced online presence and lead generation",
         ]}
+        liveUrl="https://fidanconstruction.com/"
+        relatedServices={[
+          { title: "Website Development", href: "/services/website-development" },
+          { title: "Website SEO", href: "/services/website-seo" },
+          { title: "Google Ads", href: "/services/google-ads" },
+        ]}
       />
     </div>
   );

@@ -249,8 +249,8 @@ export function Hero() {
             className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center"
           >
             {[
-              { value: "30+", label: "Projects Delivered" },
-              { value: "20+", label: "Happy Clients" },
+              { value: "50+", label: "Projects Delivered" },
+              { value: "40+", label: "Happy Clients" },
               { value: "15+", label: "Services Offered" },
               { value: "24/7", label: "Support Available" },
             ].map((stat) => (

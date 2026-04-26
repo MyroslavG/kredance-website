@@ -71,6 +71,13 @@ export default function EcommercePage() {
               "We handle the launch, monitor performance, and provide ongoing optimization to help your store scale with confidence.",
           },
         ]}
+        relatedProjects={[
+          { title: "Beauty Stories Shopify Store", href: "/portfolio/beauty-stories", image: "https://www.kredance.com/wp-content/uploads/2026/01/logo-e1768229610282-495x400.jpg" },
+          { title: "Zahid Power Motors", href: "/portfolio/zahid-power-motors", image: "https://www.kredance.com/wp-content/uploads/2026/01/zpm-495x400.png" },
+          { title: "Telegram × Shopify Integration", href: "/portfolio/telegram-shopify-integration", image: "https://www.kredance.com/wp-content/uploads/2024/10/pexels-asphotograpy-887751-495x400.jpg" },
+          { title: "ShopKlub Lead Generation", href: "/portfolio/shopklub", image: "https://www.kredance.com/wp-content/uploads/2014/12/logo-e1729615458837.png" },
+          { title: "Shopify Loyalty Program Plugin", href: "/portfolio/shopify-loyalty-plugin", image: "https://www.kredance.com/wp-content/uploads/2024/10/pexels-shoper-pl-550490863-17485352-495x400.jpg" },
+        ]}
       />
     </div>
   );

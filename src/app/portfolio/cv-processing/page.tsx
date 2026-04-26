@@ -38,6 +38,10 @@ export default function CvProcessingPage() {
           "Scalable processing for high-volume demands",
           "Accurate data extraction and classification",
         ]}
+        relatedServices={[
+          { title: "AI Automation", href: "/services/ai-automation" },
+          { title: "Data Mining & Scraping", href: "/services/data-mining" },
+        ]}
       />
     </div>
   );

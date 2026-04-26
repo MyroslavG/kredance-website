@@ -71,6 +71,12 @@ export default function MobileAppDevelopmentPage() {
               "We manage the app store submission process, monitor launch metrics, and iterate based on real user feedback and analytics data.",
           },
         ]}
+        relatedProjects={[
+          { title: "AUX Mobile App", href: "/portfolio/aux-mobile-app", image: "https://www.kredance.com/wp-content/uploads/2026/01/icon-495x400.png" },
+          { title: "eBoss Recruitment CRM", href: "/portfolio/eboss-recruitment-crm", image: "https://www.kredance.com/wp-content/uploads/2024/10/pexels-karolina-grabowska-4968535-495x400.jpg" },
+          { title: "Dzikus Media Mobile App", href: "/portfolio/dzikus-media-app", image: "https://www.kredance.com/wp-content/uploads/2024/10/logo_dzikus-495x400.png" },
+          { title: "IAMQR Mobile App", href: "/portfolio/iamqr", image: "https://www.kredance.com/wp-content/uploads/2024/10/DALL-E-2024-04-10-20.19.16-Create-a-logo-for-IAmQR-that-embodies-a-transition-from-a-QR-code-to-the-head-of-a-person-in-strict-black-and-white.-Begin-with-elements-of-a-QR-co-768x768-1-495x400.webp" },
+        ]}
       />
     </div>
   );

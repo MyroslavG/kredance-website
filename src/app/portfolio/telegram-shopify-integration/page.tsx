@@ -48,6 +48,10 @@ export default function TelegramShopifyIntegrationPage() {
           "Real-time order tracking via messaging",
           "Enhanced engagement through personalized alerts",
         ]}
+        relatedServices={[
+          { title: "Ecommerce Shop Development", href: "/services/ecommerce" },
+          { title: "AI Integration", href: "/services/ai-integration" },
+        ]}
       />
     </div>
   );

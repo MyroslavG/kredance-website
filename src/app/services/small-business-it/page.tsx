@@ -71,6 +71,11 @@ export default function SmallBusinessItPage() {
               "After launch, we provide continuous maintenance, monitoring, and support so your technology never holds you back.",
           },
         ]}
+        relatedProjects={[
+          { title: "ConsoleGroup Web & Marketing", href: "/portfolio/consolegroup", image: "https://www.kredance.com/wp-content/uploads/2024/10/ss-495x400.png" },
+          { title: "Fidan Construction", href: "/portfolio/fidan-construction", image: "https://www.kredance.com/wp-content/uploads/2025/03/fidan1-495x400.png" },
+          { title: "Eleve Design Website", href: "/portfolio/eleve-design-website", image: "https://www.kredance.com/wp-content/uploads/2025/12/elevedesign_logo-495x400.jpg" },
+        ]}
       />
     </div>
   );

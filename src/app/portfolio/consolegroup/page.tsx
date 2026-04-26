@@ -38,6 +38,11 @@ export default function ConsoleGroupPage() {
           "Expanded client base",
           "Generated new business leads",
         ]}
+        relatedServices={[
+          { title: "Website Development", href: "/services/website-development" },
+          { title: "Website SEO", href: "/services/website-seo" },
+          { title: "Google Ads", href: "/services/google-ads" },
+        ]}
       />
     </div>
   );

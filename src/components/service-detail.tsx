@@ -16,12 +16,19 @@ interface ProcessStep {
   description: string;
 }
 
+interface RelatedProject {
+  title: string;
+  href: string;
+  image: string;
+}
+
 interface ServiceDetailProps {
   title: string;
   subtitle: string;
   description: string;
   features: Feature[];
   process: ProcessStep[];
+  relatedProjects?: RelatedProject[];
 }
 
 export function ServiceDetail({
@@ -30,6 +37,7 @@ export function ServiceDetail({
   description,
   features,
   process,
+  relatedProjects,
 }: ServiceDetailProps) {
   return (
     <>
@@ -196,6 +204,59 @@ export function ServiceDetail({
           </div>
         </div>
       </section>
+
+      {/* Related Projects */}
+      {relatedProjects && relatedProjects.length > 0 && (
+        <section className="py-24 bg-white">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-12"
+            >
+              <p className="text-sm font-medium tracking-widest uppercase text-astro-grey mb-4">
+                Our Work
+              </p>
+              <h2 className="text-3xl sm:text-4xl font-bold text-neon-navy">
+                Related Projects
+              </h2>
+            </motion.div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {relatedProjects.map((project, i) => (
+                <motion.div
+                  key={project.href}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.4, delay: i * 0.08 }}
+                >
+                  <Link href={project.href} className="group block">
+                    <div className="relative h-48 rounded-2xl overflow-hidden bg-sunset/30">
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div className="h-12 w-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                          <ArrowRight className="h-5 w-5 text-white" />
+                        </div>
+                      </div>
+                    </div>
+                    <h3 className="mt-3 font-semibold text-nebulosity group-hover:text-neon-navy transition-colors">
+                      {project.title}
+                    </h3>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* CTA — bold design */}
       <section className="py-24 bg-white">

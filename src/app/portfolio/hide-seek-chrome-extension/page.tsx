@@ -37,6 +37,10 @@ export default function HideSeekChromeExtensionPage() {
           "More efficient workflow for HR teams",
           "Seamless candidate profile management across platforms",
         ]}
+        relatedServices={[
+          { title: "Universal Plugin Solutions", href: "/services/universal-plugin-solutions" },
+          { title: "AI Integration", href: "/services/ai-integration" },
+        ]}
       />
     </div>
   );

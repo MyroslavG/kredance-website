@@ -71,6 +71,13 @@ export default function AIAutomationPage() {
               "Automations are deployed into production with monitoring in place, and we continuously optimize based on real-world performance.",
           },
         ]}
+        relatedProjects={[
+          { title: "AI Content Publisher", href: "/portfolio/ai-content-publisher", image: "https://www.kredance.com/wp-content/uploads/2024/10/pexels-airamdphoto-16450745-495x400.jpg" },
+          { title: "AI Video Ad Generation", href: "/portfolio/ai-video-ad-generation", image: "https://www.kredance.com/wp-content/uploads/2024/10/pexels-asphotograpy-887751-495x400.jpg" },
+          { title: "Large-Scale CV Processing", href: "/portfolio/cv-processing", image: "https://www.kredance.com/wp-content/uploads/2024/10/pexels-cottonbro-7439127-495x400.jpg" },
+          { title: "AI User Activity Plugin", href: "/portfolio/ai-user-activity-plugin", image: "https://www.kredance.com/wp-content/uploads/2024/10/pexels-pixabay-265667-495x400.jpg" },
+          { title: "Shopify Loyalty Program Plugin", href: "/portfolio/shopify-loyalty-plugin", image: "https://www.kredance.com/wp-content/uploads/2024/10/pexels-shoper-pl-550490863-17485352-495x400.jpg" },
+        ]}
       />
     </div>
   );

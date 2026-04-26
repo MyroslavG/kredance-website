@@ -38,6 +38,11 @@ export default function ShopifyLoyaltyPluginPage() {
           "Stronger brand loyalty through incentives",
           "Real-time engagement measurement",
         ]}
+        relatedServices={[
+          { title: "Ecommerce Shop Development", href: "/services/ecommerce" },
+          { title: "Universal Plugin Solutions", href: "/services/universal-plugin-solutions" },
+          { title: "AI Automation", href: "/services/ai-automation" },
+        ]}
       />
     </div>
   );

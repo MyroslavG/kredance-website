@@ -71,6 +71,13 @@ export default function AIIntegrationPage() {
               "Thorough testing, performance benchmarking, and ongoing support to ensure your AI integrations remain reliable and effective.",
           },
         ]}
+        relatedProjects={[
+          { title: "AUX Mobile App", href: "/portfolio/aux-mobile-app", image: "https://www.kredance.com/wp-content/uploads/2026/01/icon-495x400.png" },
+          { title: "IAMQR Mobile App", href: "/portfolio/iamqr", image: "https://www.kredance.com/wp-content/uploads/2024/10/DALL-E-2024-04-10-20.19.16-Create-a-logo-for-IAmQR-that-embodies-a-transition-from-a-QR-code-to-the-head-of-a-person-in-strict-black-and-white.-Begin-with-elements-of-a-QR-co-768x768-1-495x400.webp" },
+          { title: "Telegram × Shopify Integration", href: "/portfolio/telegram-shopify-integration", image: "https://www.kredance.com/wp-content/uploads/2024/10/pexels-asphotograpy-887751-495x400.jpg" },
+          { title: "WhatsApp Chatbox Integration", href: "/portfolio/whatsapp-chatbox-integration", image: "https://www.kredance.com/wp-content/uploads/2024/10/pexels-anton-8100-46924-495x400.jpg" },
+          { title: "Hide & Seek Chrome Extension", href: "/portfolio/hide-seek-chrome-extension", image: "https://www.kredance.com/wp-content/uploads/2024/10/chrome-495x400.jpg" },
+        ]}
       />
     </div>
   );

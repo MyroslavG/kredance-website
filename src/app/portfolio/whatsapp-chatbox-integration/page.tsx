@@ -38,6 +38,9 @@ export default function WhatsAppChatboxIntegrationPage() {
           "Improved operational efficiency",
           "Increased customer satisfaction",
         ]}
+        relatedServices={[
+          { title: "AI Integration", href: "/services/ai-integration" },
+        ]}
       />
     </div>
   );

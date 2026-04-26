@@ -44,6 +44,11 @@ export default function GreenAgroPage() {
           "Successful lead generation expanding client network",
           "Strengthened market position in food ingredients",
         ]}
+        relatedServices={[
+          { title: "Website Development", href: "/services/website-development" },
+          { title: "Website SEO", href: "/services/website-seo" },
+          { title: "Advertisement Creation", href: "/services/advertisement-creation" },
+        ]}
       />
     </div>
   );

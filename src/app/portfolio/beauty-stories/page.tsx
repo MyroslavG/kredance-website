@@ -43,6 +43,11 @@ export default function BeautyStoriesPage() {
           "Improved search engine visibility",
           "Faster load times achieved",
         ]}
+        liveUrl="https://beautystories.ca/"
+        relatedServices={[
+          { title: "Ecommerce Shop Development", href: "/services/ecommerce" },
+          { title: "Website SEO", href: "/services/website-seo" },
+        ]}
       />
     </div>
   );

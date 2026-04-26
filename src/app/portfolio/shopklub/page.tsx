@@ -38,6 +38,10 @@ export default function ShopklubPage() {
           "Made luxury goods more accessible",
           "Drove traffic and conversions for partners",
         ]}
+        relatedServices={[
+          { title: "Ecommerce Shop Development", href: "/services/ecommerce" },
+          { title: "Advertisement Creation", href: "/services/advertisement-creation" },
+        ]}
       />
     </div>
   );

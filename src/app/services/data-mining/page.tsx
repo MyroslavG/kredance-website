@@ -71,6 +71,11 @@ export default function DataMiningPage() {
               "Clean datasets are delivered on your preferred schedule with ongoing monitoring, alerting, and maintenance included.",
           },
         ]}
+        relatedProjects={[
+          { title: "LinkedIn Data Scraping", href: "/portfolio/linkedin-data-scraping", image: "https://www.kredance.com/wp-content/uploads/2024/10/pexels-tobias-dziuba-319638-1083792-495x400.jpg" },
+          { title: "Australian Travel Data Mining", href: "/portfolio/australian-travel-data-mining", image: "https://www.kredance.com/wp-content/uploads/2024/10/aus-495x400.png" },
+          { title: "Large-Scale CV Processing", href: "/portfolio/cv-processing", image: "https://www.kredance.com/wp-content/uploads/2024/10/pexels-cottonbro-7439127-495x400.jpg" },
+        ]}
       />
     </div>
   );

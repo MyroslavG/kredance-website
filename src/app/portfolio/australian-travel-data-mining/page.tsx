@@ -43,6 +43,9 @@ export default function AustralianTravelDataMiningPage() {
           "Comprehensive coverage across airlines, hotels, and tourism",
           "Structured data optimized for search",
         ]}
+        relatedServices={[
+          { title: "Data Mining & Scraping", href: "/services/data-mining" },
+        ]}
       />
     </div>
   );

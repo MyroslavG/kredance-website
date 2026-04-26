@@ -71,6 +71,10 @@ export default function DataMigrationPage() {
               "Final reconciliation confirms data completeness and accuracy, followed by documentation and knowledge transfer to your team.",
           },
         ]}
+        relatedProjects={[
+          { title: "Australian Travel Data Mining", href: "/portfolio/australian-travel-data-mining", image: "https://www.kredance.com/wp-content/uploads/2024/10/aus-495x400.png" },
+          { title: "Large-Scale CV Processing", href: "/portfolio/cv-processing", image: "https://www.kredance.com/wp-content/uploads/2024/10/pexels-cottonbro-7439127-495x400.jpg" },
+        ]}
       />
     </div>
   );

@@ -2,7 +2,12 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, ArrowLeft } from "lucide-react";
+import { ArrowRight, ArrowLeft, ExternalLink } from "lucide-react";
+
+interface RelatedService {
+  title: string;
+  href: string;
+}
 
 interface PortfolioDetailProps {
   title: string;
@@ -15,6 +20,8 @@ interface PortfolioDetailProps {
   }[];
   technologies?: string[];
   results?: string[];
+  relatedServices?: RelatedService[];
+  liveUrl?: string;
 }
 
 export function PortfolioDetail({
@@ -25,6 +32,8 @@ export function PortfolioDetail({
   sections,
   technologies,
   results,
+  relatedServices,
+  liveUrl,
 }: PortfolioDetailProps) {
   return (
     <>
@@ -72,6 +81,24 @@ export function PortfolioDetail({
             >
               {description}
             </motion.p>
+            {liveUrl && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.35 }}
+                className="mt-8"
+              >
+                <a
+                  href={liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex items-center gap-2 px-8 py-3.5 bg-sunset text-neon-navy font-medium rounded-full hover:bg-white transition-all"
+                >
+                  Visit Live Site
+                  <ExternalLink className="h-4 w-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </a>
+              </motion.div>
+            )}
           </motion.div>
         </div>
       </section>
@@ -172,6 +199,49 @@ export function PortfolioDetail({
                   </ul>
                 </motion.div>
               )}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Related Services */}
+      {relatedServices && relatedServices.length > 0 && (
+        <section className="py-24 bg-white">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-12"
+            >
+              <p className="text-sm font-medium tracking-widest uppercase text-astro-grey mb-4">
+                Services Used
+              </p>
+              <h2 className="text-3xl sm:text-4xl font-bold text-neon-navy">
+                Related Services
+              </h2>
+            </motion.div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {relatedServices.map((service, i) => (
+                <motion.div
+                  key={service.href}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.4, delay: i * 0.08 }}
+                >
+                  <Link
+                    href={service.href}
+                    className="group flex items-center justify-between p-5 rounded-2xl border border-black/5 hover:border-neon-navy/15 hover:bg-neon-navy/[0.02] transition-all duration-300"
+                  >
+                    <span className="font-semibold text-nebulosity group-hover:text-neon-navy transition-colors">
+                      {service.title}
+                    </span>
+                    <ArrowRight className="h-4 w-4 text-wild-dove group-hover:text-neon-navy group-hover:translate-x-1 transition-all" />
+                  </Link>
+                </motion.div>
+              ))}
             </div>
           </div>
         </section>

@@ -36,6 +36,11 @@ export default function EleveDesignWebsitePage() {
           "Structured layouts showcasing brand craftsmanship",
           "Enhanced local search visibility",
         ]}
+        liveUrl="https://elevedesign.ca/"
+        relatedServices={[
+          { title: "Website Development", href: "/services/website-development" },
+          { title: "Website SEO", href: "/services/website-seo" },
+        ]}
       />
     </div>
   );

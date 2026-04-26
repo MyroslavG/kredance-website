@@ -49,6 +49,10 @@ export default function DzvinSkiPage() {
           "Reviews provide social proof at decision points",
           "Scalable structure enables location and seasonal expansion",
         ]}
+        relatedServices={[
+          { title: "Website Development", href: "/services/website-development" },
+          { title: "Website SEO", href: "/services/website-seo" },
+        ]}
       />
     </div>
   );

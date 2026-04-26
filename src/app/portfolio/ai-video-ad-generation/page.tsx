@@ -39,6 +39,10 @@ export default function AIVideoAdGenerationPage() {
           "Improved campaign effectiveness",
           "Rapid scalability",
         ]}
+        relatedServices={[
+          { title: "AI Automation", href: "/services/ai-automation" },
+          { title: "Advertisement Creation", href: "/services/advertisement-creation" },
+        ]}
       />
     </div>
   );

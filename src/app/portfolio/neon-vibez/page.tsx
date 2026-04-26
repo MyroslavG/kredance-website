@@ -38,6 +38,11 @@ export default function NeonVibezPage() {
           "Optimized performance across all devices",
           "Clean navigation enhancing user experience",
         ]}
+        liveUrl="https://neonvibez.ca"
+        relatedServices={[
+          { title: "Website Development", href: "/services/website-development" },
+          { title: "Design", href: "/services/design" },
+        ]}
       />
     </div>
   );

@@ -37,6 +37,9 @@ export default function RestaurantMenuDesignPage() {
           "Enhanced customer dining experience",
           "Edge-to-edge polished finish with sharp imagery",
         ]}
+        relatedServices={[
+          { title: "Design", href: "/services/design" },
+        ]}
       />
     </div>
   );

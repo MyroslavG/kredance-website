@@ -38,6 +38,9 @@ export default function EbossRecruitmentCrmPage() {
           "Efficient communication with clients",
           "Organized task management on-the-go",
         ]}
+        relatedServices={[
+          { title: "Mobile App Development", href: "/services/mobile-app-development" },
+        ]}
       />
     </div>
   );

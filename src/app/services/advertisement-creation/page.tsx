@@ -71,6 +71,12 @@ export default function AdvertisementCreationPage() {
               "We monitor performance daily, refine targeting, test new creatives, and scale winning campaigns to maximize your results.",
           },
         ]}
+        relatedProjects={[
+          { title: "BRP Truck Advertising", href: "/portfolio/brp-truck-advertising", image: "https://www.kredance.com/wp-content/uploads/2024/10/pexels-amar-12983282-495x400.jpg" },
+          { title: "ShopKlub Lead Generation", href: "/portfolio/shopklub", image: "https://www.kredance.com/wp-content/uploads/2014/12/logo-e1729615458837.png" },
+          { title: "Green-Agro", href: "/portfolio/green-agro", image: "https://www.kredance.com/wp-content/uploads/2024/10/greenagr-e1729533961289-495x400.png" },
+          { title: "AI Video Ad Generation", href: "/portfolio/ai-video-ad-generation", image: "https://www.kredance.com/wp-content/uploads/2024/10/pexels-asphotograpy-887751-495x400.jpg" },
+        ]}
       />
     </div>
   );

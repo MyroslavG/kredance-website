@@ -71,6 +71,12 @@ export default function UniversalPluginSolutionsPage() {
               "We handle publishing to marketplaces or private distribution, then provide ongoing maintenance and feature updates as needed.",
           },
         ]}
+        relatedProjects={[
+          { title: "Shopify Loyalty Program Plugin", href: "/portfolio/shopify-loyalty-plugin", image: "https://www.kredance.com/wp-content/uploads/2024/10/pexels-shoper-pl-550490863-17485352-495x400.jpg" },
+          { title: "AI User Activity Plugin", href: "/portfolio/ai-user-activity-plugin", image: "https://www.kredance.com/wp-content/uploads/2024/10/pexels-pixabay-265667-495x400.jpg" },
+          { title: "Hide & Seek Chrome Extension", href: "/portfolio/hide-seek-chrome-extension", image: "https://www.kredance.com/wp-content/uploads/2024/10/chrome-495x400.jpg" },
+          { title: "AI Content Publisher", href: "/portfolio/ai-content-publisher", image: "https://www.kredance.com/wp-content/uploads/2024/10/pexels-airamdphoto-16450745-495x400.jpg" },
+        ]}
       />
     </div>
   );

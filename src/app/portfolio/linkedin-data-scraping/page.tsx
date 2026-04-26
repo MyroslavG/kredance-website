@@ -50,6 +50,9 @@ export default function LinkedInDataScrapingPage() {
           "72-hour completion time",
           "99.5% accuracy rate",
         ]}
+        relatedServices={[
+          { title: "Data Mining & Scraping", href: "/services/data-mining" },
+        ]}
       />
     </div>
   );
