@@ -7,8 +7,6 @@ import { Menu, ChevronDown } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { motion, AnimatePresence } from "framer-motion";
 
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
-
 const services = [
   { name: "Advertisement Creation", href: "/services/advertisement-creation" },
   { name: "AI Automation", href: "/services/ai-automation" },
@@ -51,8 +49,8 @@ export function Navbar() {
   const useLight = isDarkPage && !scrolled;
 
   const logoSrc = useLight
-    ? `${basePath}/white_no_bg.png`
-    : `${basePath}/black_no_bg.png`;
+    ? "/white_no_bg.png"
+    : "/black_no_bg.png";
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -166,7 +164,7 @@ export function Navbar() {
                 <div className="flex flex-col h-full">
                   <div className="p-6 border-b border-black/5">
                     <img
-                      src={`${basePath}/black_no_bg.png`}
+                      src="/black_no_bg.png"
                       alt="Kredance"
                       width={44}
                       height={44}

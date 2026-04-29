@@ -78,7 +78,7 @@ export function Hero() {
           playsInline
           className="w-full h-full object-cover"
         >
-          <source src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/mobile_hero_video.mp4`} type="video/mp4" />
+          <source src="/mobile_hero_video.mp4" type="video/mp4" />
         </video>
         {/* Scroll indicator - mobile */}
         <motion.div
@@ -108,7 +108,7 @@ export function Hero() {
           playsInline
           className="w-full h-full object-cover object-top"
         >
-          <source src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/hero_video.mp4`} type="video/mp4" />
+          <source src="/hero_video.mp4" type="video/mp4" />
         </video>
         {/* Scroll indicator - desktop */}
         <motion.div
