@@ -342,31 +342,20 @@ export function Portfolio() {
                   ease: [0.22, 1, 0.36, 1],
                 }}
               >
-                <Link href={project.link} className="group block">
-                  <div className="relative h-52 rounded-2xl overflow-hidden bg-gradient-to-br">
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="h-12 w-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                        <ArrowRight className="h-5 w-5 text-white" />
-                      </div>
+                <Link href={project.link} className="group block rounded-2xl border border-transparent p-5 transition-all duration-300 hover:border-neon-navy/20 hover:bg-neon-navy/5 hover:shadow-lg">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <span className="text-xs font-medium text-astro-grey uppercase tracking-wider">
+                        {project.category}
+                      </span>
+                      <h3 className="mt-1 font-semibold text-nebulosity group-hover:text-neon-navy transition-colors">
+                        {project.title}
+                      </h3>
+                      <p className="mt-2 text-sm text-wild-dove leading-relaxed">
+                        {project.description}
+                      </p>
                     </div>
-                  </div>
-                  <div className="mt-4">
-                    <span className="text-xs font-medium text-astro-grey uppercase tracking-wider">
-                      {project.category}
-                    </span>
-                    <h3 className="mt-1 font-semibold text-nebulosity group-hover:text-neon-navy transition-colors">
-                      {project.title}
-                    </h3>
-                    <p className="mt-2 text-sm text-wild-dove leading-relaxed">
-                      {project.description}
-                    </p>
+                    <ArrowRight className="mt-1 h-5 w-5 shrink-0 text-wild-dove opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-neon-navy transition-all duration-300" />
                   </div>
                 </Link>
               </motion.div>
