@@ -13,7 +13,7 @@ interface PortfolioDetailProps {
   title: string;
   category: string;
   description: string;
-  image: string;
+  image?: string;
   sections: {
     heading: string;
     content: string;
@@ -103,27 +103,8 @@ export function PortfolioDetail({
         </div>
       </section>
 
-      {/* Featured image */}
-      <section className="py-16 bg-white">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="rounded-3xl overflow-hidden bg-sunset/30 border border-black/5"
-          >
-            <img
-              src={image}
-              alt={title}
-              className="w-full h-auto max-h-[500px] object-contain mx-auto"
-            />
-          </motion.div>
-        </div>
-      </section>
-
       {/* Content sections */}
-      <section className="pb-24 bg-white">
+      <section className="py-24 bg-white">
         <div className="mx-auto max-w-4xl px-6 lg:px-8">
           {sections.map((section, i) => (
             <motion.div

@@ -232,24 +232,14 @@ export function ServiceDetail({
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.4, delay: i * 0.08 }}
                 >
-                  <Link href={project.href} className="group block">
-                    <div className="relative h-48 rounded-2xl overflow-hidden bg-sunset/30">
-                      <img
-                        src={project.image}
-                        alt={project.title}
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div className="h-12 w-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                          <ArrowRight className="h-5 w-5 text-white" />
-                        </div>
-                      </div>
-                    </div>
-                    <h3 className="mt-3 font-semibold text-nebulosity group-hover:text-neon-navy transition-colors">
+                  <Link
+                    href={project.href}
+                    className="group flex items-center justify-between p-5 rounded-2xl border border-black/5 hover:border-neon-navy/15 hover:bg-neon-navy/[0.02] transition-all duration-300"
+                  >
+                    <span className="font-semibold text-nebulosity group-hover:text-neon-navy transition-colors">
                       {project.title}
-                    </h3>
+                    </span>
+                    <ArrowRight className="h-4 w-4 text-wild-dove group-hover:text-neon-navy group-hover:translate-x-1 transition-all" />
                   </Link>
                 </motion.div>
               ))}
