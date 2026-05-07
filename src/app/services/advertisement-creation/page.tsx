@@ -1,4 +1,5 @@
 import { ServiceDetail } from "@/components/service-detail";
+import { AdCreativeDemo } from "@/components/demos/ad-creative-demo";
 
 export const metadata = {
   title: "Advertisement Creation | Kredance",
@@ -77,6 +78,7 @@ export default function AdvertisementCreationPage() {
           { title: "Green-Agro", href: "/portfolio/green-agro", image: "https://www.kredance.com/wp-content/uploads/2024/10/greenagr-e1729533961289-495x400.png" },
           { title: "AI Video Ad Generation", href: "/portfolio/ai-video-ad-generation", image: "https://www.kredance.com/wp-content/uploads/2024/10/pexels-asphotograpy-887751-495x400.jpg" },
         ]}
+        demo={<AdCreativeDemo />}
       />
     </div>
   );

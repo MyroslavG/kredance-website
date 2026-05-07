@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { Bot, Cpu, BarChart3, Workflow, ArrowRight, Play } from "lucide-react";
 import Link from "next/link";
-import { GmailAutomationDemo } from "./gmail-automation-demo";
+import { GmailAutomationDemo } from "./demos/gmail-automation-demo";
 
 const features = [
   {

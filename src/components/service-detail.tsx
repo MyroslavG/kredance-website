@@ -29,6 +29,7 @@ interface ServiceDetailProps {
   features: Feature[];
   process: ProcessStep[];
   relatedProjects?: RelatedProject[];
+  demo?: React.ReactNode;
 }
 
 export function ServiceDetail({
@@ -38,6 +39,7 @@ export function ServiceDetail({
   features,
   process,
   relatedProjects,
+  demo,
 }: ServiceDetailProps) {
   return (
     <>
@@ -109,6 +111,9 @@ export function ServiceDetail({
           </motion.div>
         </div>
       </section>
+
+      {/* Optional interactive demo — right after hero */}
+      {demo}
 
       {/* Features — interactive selectable cards */}
       <FeaturesSection features={features} />

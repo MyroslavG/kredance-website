@@ -1,4 +1,5 @@
 import { ServiceDetail } from "@/components/service-detail";
+import { AIIntegrationDemo } from "@/components/demos/ai-integration-demo";
 
 export const metadata = {
   title: "AI Integration | Kredance",
@@ -78,6 +79,7 @@ export default function AIIntegrationPage() {
           { title: "WhatsApp Chatbox Integration", href: "/portfolio/whatsapp-chatbox-integration", image: "https://www.kredance.com/wp-content/uploads/2024/10/pexels-anton-8100-46924-495x400.jpg" },
           { title: "Hide & Seek Chrome Extension", href: "/portfolio/hide-seek-chrome-extension", image: "https://www.kredance.com/wp-content/uploads/2024/10/chrome-495x400.jpg" },
         ]}
+        demo={<AIIntegrationDemo />}
       />
     </div>
   );

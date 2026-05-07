@@ -1,4 +1,5 @@
 import { ServiceDetail } from "@/components/service-detail";
+import { DesignDemo } from "@/components/demos/design-demo";
 
 export const metadata = {
   title: "Design | Kredance",
@@ -76,6 +77,7 @@ export default function DesignPage() {
           { title: "Restaurant PDF Menu Design", href: "/portfolio/restaurant-menu-design", image: "https://www.kredance.com/wp-content/uploads/2024/10/viber_image_2024-10-23_13-47-57-299-495x400.png" },
           { title: "Neon Vibez Website", href: "/portfolio/neon-vibez", image: "https://www.kredance.com/wp-content/uploads/2026/01/Neon-Vibez-Logo-411x400.png" },
         ]}
+        demo={<DesignDemo />}
       />
     </div>
   );

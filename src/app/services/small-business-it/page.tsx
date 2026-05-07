@@ -1,4 +1,5 @@
 import { ServiceDetail } from "@/components/service-detail";
+import { SmallBusinessDemo } from "@/components/demos/small-business-demo";
 
 export const metadata = {
   title: "Small Business IT Package | Kredance",
@@ -76,6 +77,7 @@ export default function SmallBusinessItPage() {
           { title: "Fidan Construction", href: "/portfolio/fidan-construction", image: "https://www.kredance.com/wp-content/uploads/2025/03/fidan1-495x400.png" },
           { title: "Eleve Design Website", href: "/portfolio/eleve-design-website", image: "https://www.kredance.com/wp-content/uploads/2025/12/elevedesign_logo-495x400.jpg" },
         ]}
+        demo={<SmallBusinessDemo />}
       />
     </div>
   );

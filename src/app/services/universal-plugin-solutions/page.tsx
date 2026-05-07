@@ -1,4 +1,5 @@
 import { ServiceDetail } from "@/components/service-detail";
+import { PluginDemo } from "@/components/demos/plugin-demo";
 
 export const metadata = {
   title: "Universal Plugin Solutions | Kredance",
@@ -77,6 +78,7 @@ export default function UniversalPluginSolutionsPage() {
           { title: "Hide & Seek Chrome Extension", href: "/portfolio/hide-seek-chrome-extension", image: "https://www.kredance.com/wp-content/uploads/2024/10/chrome-495x400.jpg" },
           { title: "AI Content Publisher", href: "/portfolio/ai-content-publisher", image: "https://www.kredance.com/wp-content/uploads/2024/10/pexels-airamdphoto-16450745-495x400.jpg" },
         ]}
+        demo={<PluginDemo />}
       />
     </div>
   );

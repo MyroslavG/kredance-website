@@ -1,4 +1,5 @@
 import { ServiceDetail } from "@/components/service-detail";
+import { EcommerceDemo } from "@/components/demos/ecommerce-demo";
 
 export const metadata = {
   title: "Ecommerce Shop Development | Kredance",
@@ -78,6 +79,7 @@ export default function EcommercePage() {
           { title: "ShopKlub Lead Generation", href: "/portfolio/shopklub", image: "https://www.kredance.com/wp-content/uploads/2014/12/logo-e1729615458837.png" },
           { title: "Shopify Loyalty Program Plugin", href: "/portfolio/shopify-loyalty-plugin", image: "https://www.kredance.com/wp-content/uploads/2024/10/pexels-shoper-pl-550490863-17485352-495x400.jpg" },
         ]}
+        demo={<EcommerceDemo />}
       />
     </div>
   );

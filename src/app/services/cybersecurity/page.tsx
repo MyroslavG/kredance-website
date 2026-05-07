@@ -1,4 +1,5 @@
 import { ServiceDetail } from "@/components/service-detail";
+import { CybersecurityDemo } from "@/components/demos/cybersecurity-demo";
 
 export const metadata = {
   title: "Cybersecurity Services | Kredance",
@@ -75,6 +76,7 @@ export default function CybersecurityPage() {
           { title: "National Car Washing Security", href: "/portfolio/car-washing-security", image: "https://www.kredance.com/wp-content/uploads/2024/10/pexels-bertellifotografia-28993080-1-495x400.jpg" },
           { title: "AI User Activity Plugin", href: "/portfolio/ai-user-activity-plugin", image: "https://www.kredance.com/wp-content/uploads/2024/10/pexels-pixabay-265667-495x400.jpg" },
         ]}
+        demo={<CybersecurityDemo />}
       />
     </div>
   );

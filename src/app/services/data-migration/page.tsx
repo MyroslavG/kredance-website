@@ -1,4 +1,5 @@
 import { ServiceDetail } from "@/components/service-detail";
+import { DataMigrationDemo } from "@/components/demos/data-migration-demo";
 
 export const metadata = {
   title: "Data Migration | Kredance",
@@ -75,6 +76,7 @@ export default function DataMigrationPage() {
           { title: "Australian Travel Data Mining", href: "/portfolio/australian-travel-data-mining", image: "https://www.kredance.com/wp-content/uploads/2024/10/aus-495x400.png" },
           { title: "Large-Scale CV Processing", href: "/portfolio/cv-processing", image: "https://www.kredance.com/wp-content/uploads/2024/10/pexels-cottonbro-7439127-495x400.jpg" },
         ]}
+        demo={<DataMigrationDemo />}
       />
     </div>
   );

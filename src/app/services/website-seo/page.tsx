@@ -1,4 +1,5 @@
 import { ServiceDetail } from "@/components/service-detail";
+import { SeoAdsDemo } from "@/components/demos/seo-ads-demo";
 
 export const metadata = {
   title: "Website SEO | Kredance",
@@ -79,6 +80,7 @@ export default function WebsiteSeoPage() {
           { title: "Talent Connect", href: "/portfolio/talent-connect", image: "https://www.kredance.com/wp-content/uploads/2024/10/screencapture-talent-connect-pro-en-2024-10-08-15_14_17-e1728389780496-495x400.png" },
           { title: "Green-Agro", href: "/portfolio/green-agro", image: "https://www.kredance.com/wp-content/uploads/2024/10/greenagr-e1729533961289-495x400.png" },
         ]}
+        demo={<SeoAdsDemo />}
       />
     </div>
   );

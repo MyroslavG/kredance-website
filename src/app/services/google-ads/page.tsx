@@ -1,4 +1,5 @@
 import { ServiceDetail } from "@/components/service-detail";
+import { SeoAdsDemo } from "@/components/demos/seo-ads-demo";
 
 export const metadata = {
   title: "Google Ads Specialist | Kredance",
@@ -77,6 +78,7 @@ export default function GoogleAdsPage() {
           { title: "Fidan Construction", href: "/portfolio/fidan-construction", image: "https://www.kredance.com/wp-content/uploads/2025/03/fidan1-495x400.png" },
           { title: "ConsoleGroup", href: "/portfolio/consolegroup", image: "https://www.kredance.com/wp-content/uploads/2024/10/ss-495x400.png" },
         ]}
+        demo={<SeoAdsDemo />}
       />
     </div>
   );
