@@ -1,8 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Bot, Cpu, BarChart3, Workflow, ArrowRight } from "lucide-react";
+import { Bot, Cpu, BarChart3, Workflow, ArrowRight, Play } from "lucide-react";
 import Link from "next/link";
+import { GmailAutomationDemo } from "./gmail-automation-demo";
 
 const features = [
   {
@@ -58,9 +59,27 @@ export function AIAutomation() {
             We build custom AI solutions that automate workflows, enhance decision-making,
             and unlock new possibilities for your business.
           </p>
+
+          <motion.a
+            href="#try-it"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.3 }}
+            className="group inline-flex items-center gap-3 mt-10 px-10 py-4 bg-blue-500 text-white font-semibold text-lg rounded-full hover:bg-blue-400 transition-all shadow-lg shadow-blue-500/25"
+          >
+            <Play className="h-5 w-5" />
+            See It in Action
+          </motion.a>
         </motion.div>
 
-        <div className="mt-20 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Interactive Demo */}
+        <div id="try-it" className="scroll-mt-32">
+          <GmailAutomationDemo />
+        </div>
+
+        {/* Services */}
+        <div className="mt-24 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature, i) => (
             <motion.div
               key={feature.title}
