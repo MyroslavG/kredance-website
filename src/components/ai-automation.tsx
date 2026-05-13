@@ -1,9 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { Bot, Cpu, BarChart3, Workflow, ArrowRight, Play } from "lucide-react";
+import { Bot, Cpu, BarChart3, Workflow, ArrowRight, Play, Mail, FileText, FolderOpen } from "lucide-react";
 import Link from "next/link";
 import { GmailAutomationDemo } from "./demos/gmail-automation-demo";
+import { StatementsAutomationDemo } from "./demos/statements-automation-demo";
+import { FileOrganizerDemo } from "./demos/file-organizer-demo";
 
 const features = [
   {
@@ -32,7 +35,17 @@ const features = [
   },
 ];
 
+const DEMO_TABS = [
+  { id: "gmail", label: "Gmail Sorting", icon: Mail },
+  { id: "statements", label: "Statement Extraction", icon: FileText },
+  { id: "files", label: "File Organizer", icon: FolderOpen },
+] as const;
+
+type DemoTab = (typeof DEMO_TABS)[number]["id"];
+
 export function AIAutomation() {
+  const [activeDemo, setActiveDemo] = useState<DemoTab>("gmail");
+
   return (
     <section className="pt-32 pb-24 bg-nebulosity relative overflow-hidden">
       {/* Background elements */}
@@ -73,9 +86,33 @@ export function AIAutomation() {
           </motion.a>
         </motion.div>
 
-        {/* Interactive Demo */}
+        {/* Demo Selector Tabs */}
         <div id="try-it" className="scroll-mt-32">
-          <GmailAutomationDemo />
+          <div className="mt-16 flex flex-wrap justify-center gap-2 sm:gap-3">
+            {DEMO_TABS.map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeDemo === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveDemo(tab.id)}
+                  className={`flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
+                    isActive
+                      ? "bg-blue-500 text-white shadow-lg shadow-blue-500/20"
+                      : "bg-white/5 text-sunset/60 border border-white/10 hover:bg-white/10 hover:text-sunset"
+                  }`}
+                >
+                  <Icon className="h-4 w-4" />
+                  <span className="hidden sm:inline">{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Active Demo */}
+          {activeDemo === "gmail" && <GmailAutomationDemo />}
+          {activeDemo === "statements" && <StatementsAutomationDemo />}
+          {activeDemo === "files" && <FileOrganizerDemo />}
         </div>
 
         {/* Services */}
