@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useRef, type FormEvent } from "react";
+import { useState, useRef, useEffect, type FormEvent } from "react";
 import emailjs from "@emailjs/browser";
 import { motion } from "framer-motion";
-import { Mail, MapPin, Phone, ArrowRight, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
+import { Mail, MapPin, Phone, ArrowRight, CheckCircle, AlertCircle, Loader2, Calendar } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -37,7 +37,45 @@ export function Contact() {
   }
 
   return (
+    <>
+    {/* Calendly Booking Section */}
     <section className="pt-32 pb-24 bg-nebulosity relative overflow-hidden">
+      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="text-center mb-10"
+        >
+          <div className="inline-flex items-center gap-2 mb-4">
+            <Calendar className="h-5 w-5 text-sunset/60" />
+            <span className="text-xs font-medium tracking-widest uppercase text-astro-grey">
+              Book a Call
+            </span>
+          </div>
+          <h2 className="text-3xl lg:text-4xl font-bold tracking-tight text-sunset">
+            Schedule a Free Consultation
+          </h2>
+          <p className="mt-4 text-lg text-sunset/50 max-w-2xl mx-auto">
+            Prefer to talk it through? Book a 30-minute call and let&apos;s discuss your project.
+          </p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          className="rounded-2xl overflow-hidden border border-white/5"
+        >
+          <CalendlyEmbed />
+        </motion.div>
+      </div>
+    </section>
+
+    {/* Contact Form Section */}
+    <section className="pb-24 bg-nebulosity relative overflow-hidden">
       <div className="absolute top-0 left-0 w-96 h-96 bg-neon-navy/20 rounded-full blur-3xl" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-red-inferno/10 rounded-full blur-3xl" />
 
@@ -182,5 +220,30 @@ export function Contact() {
         </div>
       </div>
     </section>
+    </>
+  );
+}
+
+function CalendlyEmbed() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://assets.calendly.com/assets/external/widget.js";
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  return (
+    <div
+      ref={containerRef}
+      className="calendly-inline-widget"
+      data-url="https://calendly.com/realmyros/30min"
+      style={{ minWidth: "320px", height: "700px" }}
+    />
   );
 }
