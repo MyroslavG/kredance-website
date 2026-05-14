@@ -108,7 +108,7 @@ export function Contact() {
                 </div>
                 <div>
                   <div className="text-sm text-sunset/40">Email</div>
-                  <div className="text-sunset font-medium">realmyros@gmail.com</div>
+                  <div className="text-sunset font-medium">myroslav@kredance.com</div>
                 </div>
               </div>
               <div className="flex items-center gap-4">
@@ -242,7 +242,7 @@ function CalendlyEmbed() {
     <div
       ref={containerRef}
       className="calendly-inline-widget"
-      data-url="https://calendly.com/realmyros/30min"
+      data-url="https://calendly.com/kredance/30min"
       style={{ minWidth: "320px", height: "700px" }}
     />
   );
