@@ -4,8 +4,8 @@
       "staticDistDir": "./out",
       "url": [
         "/",
-        "/services/website-development",
-        "/portfolio"
+        "/services/website-development.html",
+        "/portfolio.html"
       ],
       "numberOfRuns": 1,
       "settings": {
