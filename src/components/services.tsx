@@ -161,9 +161,9 @@ export function Services() {
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center justify-between">
-                    <h3 className="font-semibold text-nebulosity text-sm">
+                    <h2 className="font-semibold text-nebulosity text-sm">
                       {service.name}
-                    </h3>
+                    </h2>
                     <ArrowRight className="h-4 w-4 text-wild-dove/0 group-hover:text-neon-navy transition-all group-hover:translate-x-1" />
                   </div>
                   <p className="mt-1.5 text-sm text-wild-dove leading-relaxed">

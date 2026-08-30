@@ -78,6 +78,8 @@ jobs:
           NEXT_PUBLIC_EMAILJS_PUBLIC_KEY: JWGZjO3KXrRoBb_3Z
       - name: Validate SEO output
         run: npm run check:seo
+      - name: Run Lighthouse CI
+        run: npm run check:lighthouse
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
