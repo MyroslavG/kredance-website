@@ -360,9 +360,9 @@ export function Portfolio() {
                       <span className="text-xs font-medium text-astro-grey uppercase tracking-wider">
                         {project.category}
                       </span>
-                      <h3 className="mt-1 font-semibold text-nebulosity group-hover:text-neon-navy transition-colors">
+                      <h2 className="mt-1 font-semibold text-nebulosity group-hover:text-neon-navy transition-colors">
                         {project.title}
-                      </h3>
+                      </h2>
                       <p className="mt-2 text-sm text-wild-dove leading-relaxed">
                         {project.description}
                       </p>

@@ -110,9 +110,14 @@ export function AIAutomation() {
           </div>
 
           {/* Active Demo */}
-          {activeDemo === "gmail" && <GmailAutomationDemo />}
-          {activeDemo === "statements" && <StatementsAutomationDemo />}
-          {activeDemo === "files" && <FileOrganizerDemo />}
+          <section aria-labelledby="ai-automation-demo-heading">
+            <h2 id="ai-automation-demo-heading" className="sr-only">
+              AI Automation Demos
+            </h2>
+            {activeDemo === "gmail" && <GmailAutomationDemo />}
+            {activeDemo === "statements" && <StatementsAutomationDemo />}
+            {activeDemo === "files" && <FileOrganizerDemo />}
+          </section>
         </div>
 
         {/* Services */}
@@ -133,9 +138,9 @@ export function AIAutomation() {
               <div className="h-12 w-12 rounded-xl bg-neon-navy flex items-center justify-center">
                 <feature.icon className="h-6 w-6 text-sunset" />
               </div>
-              <h3 className="mt-5 font-semibold text-sunset">
+              <h2 className="mt-5 font-semibold text-sunset">
                 {feature.title}
-              </h3>
+              </h2>
               <p className="mt-3 text-sm text-sunset/40 leading-relaxed">
                 {feature.description}
               </p>

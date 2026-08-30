@@ -81,9 +81,9 @@ export function About() {
                 <div className="h-10 w-10 rounded-xl bg-neon-navy/10 group-hover:bg-sunset/20 flex items-center justify-center transition-colors duration-500">
                   <value.icon className="h-5 w-5 text-neon-navy group-hover:text-sunset transition-colors duration-500" />
                 </div>
-                <h3 className="mt-4 font-semibold text-nebulosity group-hover:text-sunset transition-colors duration-500">
+                <h2 className="mt-4 font-semibold text-nebulosity group-hover:text-sunset transition-colors duration-500">
                   {value.title}
-                </h3>
+                </h2>
                 <p className="mt-2 text-sm text-wild-dove group-hover:text-sunset/70 leading-relaxed transition-colors duration-500">
                   {value.description}
                 </p>

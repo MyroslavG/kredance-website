@@ -119,7 +119,14 @@ export function ServiceDetail({
       </section>
 
       {/* Optional interactive demo — right after hero */}
-      {demo}
+      {demo && (
+        <section aria-labelledby="interactive-demo-heading">
+          <h2 id="interactive-demo-heading" className="sr-only">
+            Interactive {title} Demo
+          </h2>
+          {demo}
+        </section>
+      )}
 
       {/* Features — interactive selectable cards */}
       <FeaturesSection features={features} />

@@ -81,6 +81,8 @@ const pages = htmlFiles.map((file) => ({
 const routes = new Set(pages.map(({ route }) => normalizePathname(route)));
 const titles = new Map();
 const descriptions = new Map();
+const linkGraph = new Map(pages.map(({ route }) => [normalizePathname(route), new Set()]));
+const inboundLinks = new Map(pages.map(({ route }) => [normalizePathname(route), new Set()]));
 
 for (const page of pages) {
   const title = decodeHtml(page.html.match(/<title>([\s\S]*?)<\/title>/i)?.[1]?.trim() ?? "");
@@ -102,6 +104,15 @@ for (const page of pages) {
     else descriptions.set(description, page.route);
   }
 
+  const headings = [...page.html.matchAll(/<h([1-6])\b[^>]*>/gi)].map((match) => Number(match[1]));
+  const h1Count = headings.filter((level) => level === 1).length;
+  if (h1Count !== 1) errors.push(`${page.route}: expected exactly one H1, found ${h1Count}`);
+  for (let index = 1; index < headings.length; index += 1) {
+    if (headings[index] > headings[index - 1] + 1) {
+      errors.push(`${page.route}: heading level jumps from H${headings[index - 1]} to H${headings[index]}`);
+    }
+  }
+
   const canonicalTag = findTag(page.html, "link", "rel", "canonical");
   const canonicalValue = canonicalTag ? attribute(canonicalTag, "href") : undefined;
   if (!canonicalValue) {
@@ -118,6 +129,59 @@ for (const page of pages) {
       if (canonical.search || canonical.hash) errors.push(`${page.route}: canonical contains a query or fragment`);
     } catch {
       errors.push(`${page.route}: invalid canonical URL "${canonicalValue}"`);
+    }
+  }
+
+  const requiredSocialTags = [
+    ["meta", "property", "og:title"],
+    ["meta", "property", "og:description"],
+    ["meta", "property", "og:url"],
+    ["meta", "property", "og:image"],
+    ["meta", "name", "twitter:card"],
+    ["meta", "name", "twitter:title"],
+    ["meta", "name", "twitter:description"],
+    ["meta", "name", "twitter:image"],
+  ];
+  for (const [tagName, attributeName, attributeValue] of requiredSocialTags) {
+    const tag = findTag(page.html, tagName, attributeName, attributeValue);
+    if (!tag || !attribute(tag, "content")?.trim()) {
+      errors.push(`${page.route}: missing ${attributeValue} metadata`);
+    }
+  }
+
+  const openGraphUrlTag = findTag(page.html, "meta", "property", "og:url");
+  const openGraphUrl = openGraphUrlTag ? attribute(openGraphUrlTag, "content") : undefined;
+  if (canonicalValue && openGraphUrl !== canonicalValue) {
+    errors.push(`${page.route}: og:url does not match canonical URL`);
+  }
+
+  const openGraphImageTag = findTag(page.html, "meta", "property", "og:image");
+  const openGraphImage = openGraphImageTag ? attribute(openGraphImageTag, "content") : undefined;
+  if (openGraphImage) {
+    try {
+      const imageUrl = new URL(openGraphImage);
+      if (imageUrl.protocol !== "https:") errors.push(`${page.route}: og:image must use HTTPS`);
+      if (imageUrl.origin === siteOrigin && !outputAssetExists(imageUrl.pathname)) {
+        errors.push(`${page.route}: og:image does not exist in the export`);
+      }
+    } catch {
+      errors.push(`${page.route}: og:image is not a valid absolute URL`);
+    }
+  }
+
+  const openGraphWidthTag = findTag(page.html, "meta", "property", "og:image:width");
+  const openGraphHeightTag = findTag(page.html, "meta", "property", "og:image:height");
+  const openGraphWidth = Number(openGraphWidthTag ? attribute(openGraphWidthTag, "content") : 0);
+  const openGraphHeight = Number(openGraphHeightTag ? attribute(openGraphHeightTag, "content") : 0);
+  if (openGraphWidth < 1200 || openGraphHeight < 630) {
+    errors.push(`${page.route}: social image metadata must be at least 1200x630`);
+  }
+
+  for (const directive of ["robots", "googlebot"]) {
+    const robotsTag = findTag(page.html, "meta", "name", directive);
+    const content = robotsTag ? attribute(robotsTag, "content") : undefined;
+    if (content && /(?:^|,)\s*noindex\b/i.test(content)) {
+      errors.push(`${page.route}: contains an unexpected noindex directive`);
     }
   }
 
@@ -144,6 +208,12 @@ for (const page of pages) {
     if (!routes.has(targetPath) && !outputAssetExists(target.pathname)) {
       errors.push(`${page.route}: broken internal link "${href}"`);
       continue;
+    }
+
+    if (routes.has(targetPath)) {
+      const sourcePath = normalizePathname(page.route);
+      linkGraph.get(sourcePath)?.add(targetPath);
+      if (sourcePath !== targetPath) inboundLinks.get(targetPath)?.add(sourcePath);
     }
 
     if (target.hash && routes.has(targetPath)) {
@@ -189,6 +259,23 @@ for (const page of pages) {
       errors.push(`${page.route}: JSON-LD does not parse (${error.message})`);
     }
   }
+}
+
+const reachableRoutes = new Set(["/"]);
+const routesToVisit = ["/"];
+while (routesToVisit.length > 0) {
+  const source = routesToVisit.shift();
+  for (const target of linkGraph.get(source) ?? []) {
+    if (reachableRoutes.has(target)) continue;
+    reachableRoutes.add(target);
+    routesToVisit.push(target);
+  }
+}
+
+for (const route of routes) {
+  if (route === "/") continue;
+  if ((inboundLinks.get(route)?.size ?? 0) === 0) errors.push(`${route}: orphaned page has no inbound internal links`);
+  if (!reachableRoutes.has(route)) errors.push(`${route}: page is not reachable from the homepage`);
 }
 
 const sitemapPath = path.join(outputDirectory, "sitemap.xml");
@@ -238,4 +325,4 @@ if (errors.length > 0) {
 }
 
 console.log(`SEO validation passed for ${pages.length} pages.`);
-console.log("Checked unique metadata, canonicals, image alt text, internal links, discovery files, and JSON-LD.");
+console.log("Checked metadata, headings, social cards, canonicals, images, link graph, discovery files, and JSON-LD.");
