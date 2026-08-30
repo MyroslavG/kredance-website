@@ -10,3 +10,8 @@ export const siteConfig = {
     "https://www.threads.com/@itskredance",
   ],
 } as const;
+
+export const defaultSocialImage = {
+  url: "/kredance_logo_2026.png",
+  alt: "Kredance digital agency",
+} as const;

@@ -1,10 +1,12 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { PortfolioDetail } from "@/components/portfolio-detail";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/portfolio/beauty-stories",
   title: "Beauty Stories Shopify Store | Kredance",
   description:
     "Kredance developed a modern, user-friendly e-commerce platform for Beauty Stories using Shopify, focusing on brand identity and seamless shopping experience.",
-};
+});
 
 export default function BeautyStoriesPage() {
   return (

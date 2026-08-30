@@ -1,10 +1,12 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { PortfolioDetail } from "@/components/portfolio-detail";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/portfolio/cv-processing",
   title: "Large-Scale CV Processing | Kredance",
   description:
     "Kredance optimized the handling of thousands of CVs through streamlined data extraction, classification, and parsing for a recruitment software company.",
-};
+});
 
 export default function CvProcessingPage() {
   return (

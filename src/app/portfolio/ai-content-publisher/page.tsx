@@ -1,10 +1,12 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { PortfolioDetail } from "@/components/portfolio-detail";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/portfolio/ai-content-publisher",
   title: "AI Content Publisher | Kredance",
   description:
     "Kredance developed an automated content publishing platform with AI integration to streamline content creation and distribution across multiple channels.",
-};
+});
 
 export default function AIContentPublisherPage() {
   return (

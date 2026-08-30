@@ -1,10 +1,12 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { PortfolioDetail } from "@/components/portfolio-detail";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/portfolio/australian-travel-data-mining",
   title: "Australian Travel Resource Data Mining | Kredance",
   description:
     "A comprehensive data mining initiative aggregating travel information from multiple sources to create an integrated database for Australian destinations.",
-};
+});
 
 export default function AustralianTravelDataMiningPage() {
   return (

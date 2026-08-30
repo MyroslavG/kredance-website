@@ -1,11 +1,13 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { ServiceDetail } from "@/components/service-detail";
 import { SeoAdsDemo } from "@/components/demos/seo-ads-demo";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/services/google-ads",
   title: "Google Ads Specialist | Kredance",
   description:
     "Maximize your advertising ROI with Kredance's Google Ads management. Expert PPC campaigns, keyword research, ad optimization, conversion tracking, and remarketing strategies.",
-};
+});
 
 export default function GoogleAdsPage() {
   return (

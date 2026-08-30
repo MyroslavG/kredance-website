@@ -1,10 +1,12 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { PortfolioDetail } from "@/components/portfolio-detail";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/portfolio/the-wow-camp-website",
   title: "The Wow Camp Website | Kredance",
   description:
     "Kredance built a website for The Wow Camp, a youth-focused summer camp in Ottawa, to showcase leadership programs and facilitate parent engagement.",
-};
+});
 
 export default function TheWowCampWebsitePage() {
   return (

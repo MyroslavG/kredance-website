@@ -1,10 +1,12 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { PortfolioDetail } from "@/components/portfolio-detail";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/portfolio/brp-truck-advertising",
   title: "BRP Reseller Truck Advertising | Kredance",
   description:
     "A large-scale truck wrap design for a BRP reseller, creating an eye-catching mobile advertisement to promote the brand with focus on visibility and recognition.",
-};
+});
 
 export default function BrpTruckAdvertisingPage() {
   return (

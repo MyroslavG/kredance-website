@@ -1,10 +1,12 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { PortfolioDetail } from "@/components/portfolio-detail";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/portfolio/zahid-power-motors",
   title: "Zahid Power Motors | Kredance",
   description:
     "Kredance built an ecommerce site for Zahid Power Motors, a premium Ukrainian powersports dealer, combining high-performance development with specialized SEO strategies.",
-};
+});
 
 export default function ZahidPowerMotorsPage() {
   return (

@@ -1,11 +1,13 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { ServiceDetail } from "@/components/service-detail";
 import { DesignDemo } from "@/components/demos/design-demo";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/services/design",
   title: "Design | Kredance",
   description:
     "Elevate your brand with Kredance's professional design services. UI/UX design, brand identity, logo design, marketing materials, and scalable design systems.",
-};
+});
 
 export default function DesignPage() {
   return (

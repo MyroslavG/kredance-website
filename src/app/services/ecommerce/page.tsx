@@ -1,11 +1,13 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { ServiceDetail } from "@/components/service-detail";
 import { EcommerceDemo } from "@/components/demos/ecommerce-demo";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/services/ecommerce",
   title: "Ecommerce Shop Development | Kredance",
   description:
     "Launch and scale your online store with Kredance. Shopify, WooCommerce, and custom ecommerce solutions with payment integration, inventory management, and conversion optimization.",
-};
+});
 
 export default function EcommercePage() {
   return (

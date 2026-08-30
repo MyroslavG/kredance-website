@@ -63,11 +63,11 @@ export function AIAutomation() {
           <span className="text-xs font-medium tracking-widest uppercase text-astro-grey">
             AI Automation
           </span>
-          <h2 className="mt-4 text-4xl lg:text-5xl font-bold tracking-tight text-sunset leading-[1.15]">
+          <h1 className="mt-4 text-4xl lg:text-5xl font-bold tracking-tight text-sunset leading-[1.15]">
             Supercharge Your Business
             <br />
             with <span className="text-astro-grey">AI</span>
-          </h2>
+          </h1>
           <p className="mt-6 text-lg text-sunset/50 leading-relaxed">
             We build custom AI solutions that automate workflows, enhance decision-making,
             and unlock new possibilities for your business.

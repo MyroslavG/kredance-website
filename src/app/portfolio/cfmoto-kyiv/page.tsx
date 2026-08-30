@@ -1,10 +1,12 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { PortfolioDetail } from "@/components/portfolio-detail";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/portfolio/cfmoto-kyiv",
   title: "CFMoto Kyiv | Kredance",
   description:
     "Kredance rebuilt the official CFMoto dealer website for the Kyiv region, implementing SEO strategies and mobile-first architecture to increase organic traffic and lead generation.",
-};
+});
 
 export default function CFMotoKyivPage() {
   return (

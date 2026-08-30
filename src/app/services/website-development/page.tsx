@@ -1,11 +1,13 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { ServiceDetail } from "@/components/service-detail";
 import { WebsiteBuilderDemo } from "@/components/demos/website-builder-demo";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/services/website-development",
   title: "Website Development | Kredance",
   description:
     "Custom website development with React, Next.js, and modern frameworks. Kredance builds fast, responsive, and conversion-optimized websites for businesses of every size.",
-};
+});
 
 export default function WebsiteDevelopmentPage() {
   return (

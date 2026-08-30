@@ -1,11 +1,13 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { ServiceDetail } from "@/components/service-detail";
 import { PluginDemo } from "@/components/demos/plugin-demo";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/services/universal-plugin-solutions",
   title: "Universal Plugin Solutions | Kredance",
   description:
     "Custom WordPress plugins, Shopify apps, browser extensions, and platform integrations built by Kredance to extend your technology and automate workflows.",
-};
+});
 
 export default function UniversalPluginSolutionsPage() {
   return (

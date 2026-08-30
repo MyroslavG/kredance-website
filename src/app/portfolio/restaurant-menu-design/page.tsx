@@ -1,10 +1,12 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { PortfolioDetail } from "@/components/portfolio-detail";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/portfolio/restaurant-menu-design",
   title: "Restaurant PDF Menu Design | Kredance",
   description:
     "A visually appealing PDF menu designed and optimized for professional color printing, balancing aesthetic appeal with functional design.",
-};
+});
 
 export default function RestaurantMenuDesignPage() {
   return (

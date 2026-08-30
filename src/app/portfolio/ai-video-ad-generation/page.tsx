@@ -1,10 +1,12 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { PortfolioDetail } from "@/components/portfolio-detail";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/portfolio/ai-video-ad-generation",
   title: "AI-Powered Video Ad Generation | Kredance",
   description:
     "An AI-powered solution using advanced algorithms to automate high-quality video advertisement creation, streamlining production and enabling rapid scaling.",
-};
+});
 
 export default function AIVideoAdGenerationPage() {
   return (

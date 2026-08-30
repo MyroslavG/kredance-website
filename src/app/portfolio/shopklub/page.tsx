@@ -1,10 +1,12 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { PortfolioDetail } from "@/components/portfolio-detail";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/portfolio/shopklub",
   title: "ShopKlub Lead Generation | Kredance",
   description:
     "A UK-based platform connecting users with exclusive discounts from luxury retailers, designed to make luxury shopping accessible while driving lead generation.",
-};
+});
 
 export default function ShopklubPage() {
   return (

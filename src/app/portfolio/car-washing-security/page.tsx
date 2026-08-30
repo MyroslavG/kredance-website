@@ -1,10 +1,12 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { PortfolioDetail } from "@/components/portfolio-detail";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/portfolio/car-washing-security",
   title: "National Car Washing Security | Kredance",
   description:
     "Kredance completed a security project for a nationwide car wash service that suffered DDoS attacks and data loss, implementing protective measures to restore operations.",
-};
+});
 
 export default function CarWashingSecurityPage() {
   return (

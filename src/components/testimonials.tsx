@@ -97,9 +97,9 @@ export function Testimonials() {
           <span className="text-xs font-medium tracking-widest uppercase text-astro-grey">
             Testimonials
           </span>
-          <h2 className="mt-4 text-4xl lg:text-5xl font-bold tracking-tight text-nebulosity leading-[1.15]">
+          <h1 className="mt-4 text-4xl lg:text-5xl font-bold tracking-tight text-nebulosity leading-[1.15]">
             Trusted by <span className="text-neon-navy">Ambitious</span> Teams
-          </h2>
+          </h1>
           <p className="mt-6 text-lg text-wild-dove leading-relaxed">
             Don&apos;t just take our word for it &mdash; here&apos;s what our clients have to say.
           </p>

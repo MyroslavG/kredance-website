@@ -1,10 +1,12 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { PortfolioDetail } from "@/components/portfolio-detail";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/portfolio/eleve-design-website",
   title: "Eleve Design Website | Kredance",
   description:
     "Kredance created a modern website for Eleve Design, a Canadian design-build brand specializing in custom cabinetry and kitchen solutions.",
-};
+});
 
 export default function EleveDesignWebsitePage() {
   return (

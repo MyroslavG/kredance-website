@@ -1,11 +1,13 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { ServiceDetail } from "@/components/service-detail";
 import { AIIntegrationDemo } from "@/components/demos/ai-integration-demo";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/services/ai-integration",
   title: "AI Integration | Kredance",
   description:
     "Seamlessly embed AI capabilities into your existing tech stack. Kredance integrates cutting-edge AI models and tools into your workflows.",
-};
+});
 
 export default function AIIntegrationPage() {
   return (

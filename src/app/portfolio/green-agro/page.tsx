@@ -1,10 +1,12 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { PortfolioDetail } from "@/components/portfolio-detail";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/portfolio/green-agro",
   title: "Green-Agro Website & Brand Advertising | Kredance",
   description:
     "Kredance partnered with a leading Ukrainian food ingredient supplier to develop their website and execute strategic advertising campaigns on Facebook and Google.",
-};
+});
 
 export default function GreenAgroPage() {
   return (
