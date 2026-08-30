@@ -1,10 +1,12 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { PortfolioDetail } from "@/components/portfolio-detail";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/portfolio/ai-user-activity-plugin",
   title: "AI User Activity Analysis Plugin | Kredance",
   description:
     "A WordPress plugin with AI-driven analysis that monitors user behavior, identifies suspicious activity, and provides real-time security insights.",
-};
+});
 
 export default function AIUserActivityPluginPage() {
   return (

@@ -1,10 +1,12 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { PortfolioDetail } from "@/components/portfolio-detail";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/portfolio/consolegroup",
   title: "ConsoleGroup Web & Marketing | Kredance",
   description:
     "Kredance developed a modern, responsive website and comprehensive digital marketing campaign for ConsoleGroup.",
-};
+});
 
 export default function ConsoleGroupPage() {
   return (

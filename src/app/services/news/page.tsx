@@ -1,10 +1,12 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { ServiceDetail } from "@/components/service-detail";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/services/news",
   title: "News & Insights | Kredance",
   description:
     "Stay ahead of the curve with Kredance's coverage of tech news, AI breakthroughs, digital marketing trends, and actionable industry insights.",
-};
+});
 
 export default function NewsPage() {
   return (

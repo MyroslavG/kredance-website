@@ -1,10 +1,12 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { PortfolioDetail } from "@/components/portfolio-detail";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/portfolio/hide-seek-chrome-extension",
   title: "Hide & Seek Chrome Extension | Kredance",
   description:
     "A browser plugin for SymfonyLabs that integrates eBoss Recruitment CRM with LinkedIn via API, enabling automatic data synchronization for recruiters.",
-};
+});
 
 export default function HideSeekChromeExtensionPage() {
   return (

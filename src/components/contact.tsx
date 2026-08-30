@@ -54,9 +54,9 @@ export function Contact() {
               Book a Call
             </span>
           </div>
-          <h2 className="text-3xl lg:text-4xl font-bold tracking-tight text-sunset">
+          <h1 className="text-3xl lg:text-4xl font-bold tracking-tight text-sunset">
             Schedule a Free Consultation
-          </h2>
+          </h1>
           <p className="mt-4 text-lg text-sunset/50 max-w-2xl mx-auto">
             Prefer to talk it through? Book a 30-minute call and let&apos;s discuss your project.
           </p>

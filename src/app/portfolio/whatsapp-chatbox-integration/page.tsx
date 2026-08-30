@@ -1,10 +1,12 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { PortfolioDetail } from "@/components/portfolio-detail";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/portfolio/whatsapp-chatbox-integration",
   title: "WhatsApp Chatbox Integration | Kredance",
   description:
     "A messaging system integration for an airport taxi company enabling passengers to book rides and receive real-time updates through WhatsApp.",
-};
+});
 
 export default function WhatsAppChatboxIntegrationPage() {
   return (

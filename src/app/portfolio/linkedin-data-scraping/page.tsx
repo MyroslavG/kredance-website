@@ -1,10 +1,12 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { PortfolioDetail } from "@/components/portfolio-detail";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/portfolio/linkedin-data-scraping",
   title: "LinkedIn Data Scraping & Structuring | Kredance",
   description:
     "A project extracting professional profiles and connection data from LinkedIn using Selenium, converting information into structured JSON for analysis.",
-};
+});
 
 export default function LinkedInDataScrapingPage() {
   return (

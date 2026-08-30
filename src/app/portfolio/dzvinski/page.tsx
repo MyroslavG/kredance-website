@@ -1,10 +1,12 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { PortfolioDetail } from "@/components/portfolio-detail";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/portfolio/dzvinski",
   title: "DzvinSki | Kredance",
   description:
     "Kredance developed a conversion-focused website for DzvinSki, a ski and snowboard rental network in the Carpathians, emphasizing fast booking pathways and SEO optimization.",
-};
+});
 
 export default function DzvinSkiPage() {
   return (

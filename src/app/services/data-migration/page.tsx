@@ -1,11 +1,13 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { ServiceDetail } from "@/components/service-detail";
 import { DataMigrationDemo } from "@/components/demos/data-migration-demo";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/services/data-migration",
   title: "Data Migration | Kredance",
   description:
     "Smooth, secure data transitions between platforms with zero downtime. Kredance handles complex data migrations so you can modernize without disruption.",
-};
+});
 
 export default function DataMigrationPage() {
   return (

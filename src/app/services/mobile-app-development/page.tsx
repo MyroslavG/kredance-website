@@ -1,11 +1,13 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { ServiceDetail } from "@/components/service-detail";
 import { MobileAppDemo } from "@/components/demos/mobile-app-demo";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/services/mobile-app-development",
   title: "Mobile App Development | Kredance",
   description:
     "Build exceptional mobile apps with Kredance. iOS, Android, and cross-platform development using React Native, with app store optimization and ongoing support.",
-};
+});
 
 export default function MobileAppDevelopmentPage() {
   return (

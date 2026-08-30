@@ -1,11 +1,13 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { ServiceDetail } from "@/components/service-detail";
 import { SeoAdsDemo } from "@/components/demos/seo-ads-demo";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/services/website-seo",
   title: "Website SEO | Kredance",
   description:
     "Data-driven SEO services from Kredance - on-page optimization, technical SEO, link building, keyword strategy, analytics, and local SEO to grow your organic traffic.",
-};
+});
 
 export default function WebsiteSeoPage() {
   return (

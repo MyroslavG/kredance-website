@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, ArrowLeft, ExternalLink } from "lucide-react";
+import { BreadcrumbJsonLd } from "@/components/breadcrumb-json-ld";
 
 interface RelatedService {
   title: string;
@@ -37,6 +38,11 @@ export function PortfolioDetail({
 }: PortfolioDetailProps) {
   return (
     <>
+      <BreadcrumbJsonLd
+        sectionName="Portfolio"
+        sectionPath="/portfolio"
+        currentName={title}
+      />
       {/* Hero */}
       <section className="relative pt-32 pb-24 bg-neon-navy overflow-hidden">
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-white/[0.02] rounded-full -translate-y-1/2 translate-x-1/3" />

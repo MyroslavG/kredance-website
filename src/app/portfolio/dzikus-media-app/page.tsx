@@ -1,10 +1,12 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { PortfolioDetail } from "@/components/portfolio-detail";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/portfolio/dzikus-media-app",
   title: "Dzikus Media Mobile App | Kredance",
   description:
     "A cutting-edge news application delivering real-time updates with a user-friendly interface and personalized news feeds.",
-};
+});
 
 export default function DzikusMediaAppPage() {
   return (

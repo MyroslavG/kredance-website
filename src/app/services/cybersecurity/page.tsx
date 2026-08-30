@@ -1,11 +1,13 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { ServiceDetail } from "@/components/service-detail";
 import { CybersecurityDemo } from "@/components/demos/cybersecurity-demo";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/services/cybersecurity",
   title: "Cybersecurity Services | Kredance",
   description:
     "Protect your digital assets with enterprise-grade security solutions. Kredance provides comprehensive cybersecurity services from audits to ongoing monitoring.",
-};
+});
 
 export default function CybersecurityPage() {
   return (

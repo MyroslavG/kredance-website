@@ -45,11 +45,11 @@ export function About() {
             <span className="text-xs font-medium tracking-widest uppercase text-astro-grey">
               About Us
             </span>
-            <h2 className="mt-4 text-4xl lg:text-5xl font-bold tracking-tight text-nebulosity leading-[1.15]">
+            <h1 className="mt-4 text-4xl lg:text-5xl font-bold tracking-tight text-nebulosity leading-[1.15]">
               Your Digital Growth
               <br />
               <span className="text-neon-navy">Partner</span>
-            </h2>
+            </h1>
             <p className="mt-6 text-lg text-wild-dove leading-relaxed">
               Kredance is a full-service digital agency specializing in AI automation,
               custom web development, SEO, eCommerce, and digital marketing. We combine

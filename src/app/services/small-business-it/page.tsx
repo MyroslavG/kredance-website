@@ -1,11 +1,13 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { ServiceDetail } from "@/components/service-detail";
 import { SmallBusinessDemo } from "@/components/demos/small-business-demo";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/services/small-business-it",
   title: "Small Business IT Package | Kredance",
   description:
     "Get your business online fast with Kredance's all-in-one IT package - domain registration, professional email, hosting, a starter website, and ongoing support.",
-};
+});
 
 export default function SmallBusinessItPage() {
   return (

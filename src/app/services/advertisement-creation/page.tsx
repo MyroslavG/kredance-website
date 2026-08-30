@@ -1,11 +1,13 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { ServiceDetail } from "@/components/service-detail";
 import { AdCreativeDemo } from "@/components/demos/ad-creative-demo";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/services/advertisement-creation",
   title: "Advertisement Creation | Kredance",
   description:
     "Eye-catching ad campaigns across all platforms. Kredance creates data-driven advertisements that convert viewers into loyal customers.",
-};
+});
 
 export default function AdvertisementCreationPage() {
   return (

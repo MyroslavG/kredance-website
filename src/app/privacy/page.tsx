@@ -1,7 +1,9 @@
-export const metadata = {
+import { createPageMetadata } from "@/lib/metadata";
+export const metadata = createPageMetadata({
+  path: "/privacy",
   title: "Privacy Policy | Kredance",
   description: "Kredance privacy policy — how we collect, use, and protect your personal information.",
-};
+});
 
 export default function PrivacyPage() {
   return (

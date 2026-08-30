@@ -1,10 +1,12 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { PortfolioDetail } from "@/components/portfolio-detail";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/portfolio/fidan-construction",
   title: "Fidan Construction Website | Kredance",
   description:
     "Kredance developed a comprehensive website for Fidan Construction, an Ottawa-based demolition and restoration company, with SEO and Google Ads implementation.",
-};
+});
 
 export default function FidanConstructionPage() {
   return (

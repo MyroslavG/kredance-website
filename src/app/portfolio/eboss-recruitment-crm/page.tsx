@@ -1,10 +1,12 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { PortfolioDetail } from "@/components/portfolio-detail";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/portfolio/eboss-recruitment-crm",
   title: "eBoss Recruitment CRM Mobile App | Kredance",
   description:
     "A mobile recruitment platform helping recruiters manage candidate profiles, communicate with clients, and track job applications from a single interface.",
-};
+});
 
 export default function EbossRecruitmentCrmPage() {
   return (

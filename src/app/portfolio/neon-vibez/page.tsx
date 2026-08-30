@@ -1,10 +1,12 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { PortfolioDetail } from "@/components/portfolio-detail";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/portfolio/neon-vibez",
   title: "Neon Vibez Website | Kredance",
   description:
     "A modern brand website built to showcase products with bold, visually engaging design and smooth user experience.",
-};
+});
 
 export default function NeonVibezPage() {
   return (

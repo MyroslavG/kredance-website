@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, CheckCircle } from "lucide-react";
+import { BreadcrumbJsonLd } from "@/components/breadcrumb-json-ld";
 
 interface Feature {
   title: string;
@@ -43,6 +44,11 @@ export function ServiceDetail({
 }: ServiceDetailProps) {
   return (
     <>
+      <BreadcrumbJsonLd
+        sectionName="Services"
+        sectionPath="/services"
+        currentName={title}
+      />
       {/* Hero — full-width dark banner */}
       <section className="relative pt-32 pb-24 bg-neon-navy overflow-hidden">
         {/* Decorative elements */}

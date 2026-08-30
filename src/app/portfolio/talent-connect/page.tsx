@@ -1,10 +1,12 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { PortfolioDetail } from "@/components/portfolio-detail";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/portfolio/talent-connect",
   title: "Talent Connect Website | Kredance",
   description:
     "Kredance developed a job market platform connecting seekers and employers using rapid development methods to minimize costs while maintaining professional functionality.",
-};
+});
 
 export default function TalentConnectPage() {
   return (

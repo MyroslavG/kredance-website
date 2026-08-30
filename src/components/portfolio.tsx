@@ -301,9 +301,9 @@ export function Portfolio() {
           <span className="text-xs font-medium tracking-widest uppercase text-astro-grey">
             Portfolio
           </span>
-          <h2 className="mt-4 text-4xl lg:text-5xl font-bold tracking-tight text-nebulosity leading-[1.15]">
+          <h1 className="mt-4 text-4xl lg:text-5xl font-bold tracking-tight text-nebulosity leading-[1.15]">
             Featured <span className="text-neon-navy">Work</span>
-          </h2>
+          </h1>
           <p className="mt-6 text-lg text-wild-dove leading-relaxed">
             Real projects, real results. Here&apos;s a selection of work we&apos;ve delivered for our clients.
           </p>

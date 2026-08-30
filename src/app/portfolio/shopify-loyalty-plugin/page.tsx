@@ -1,10 +1,12 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { PortfolioDetail } from "@/components/portfolio-detail";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/portfolio/shopify-loyalty-plugin",
   title: "Shopify Loyalty Program Plugin | Kredance",
   description:
     "A Shopify plugin enabling merchants to build personalized loyalty programs where customers earn points for purchases, referrals, and engagement.",
-};
+});
 
 export default function ShopifyLoyaltyPluginPage() {
   return (

@@ -1,11 +1,13 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { ServiceDetail } from "@/components/service-detail";
 import { DataMiningDemo } from "@/components/demos/data-mining-demo";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/services/data-mining",
   title: "Data Mining & Scraping | Kredance",
   description:
     "Extract actionable insights from the web with Kredance's compliant, scalable data mining and scraping services. Competitive intelligence, market research, and structured data delivery.",
-};
+});
 
 export default function DataMiningPage() {
   return (

@@ -1,10 +1,12 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { PortfolioDetail } from "@/components/portfolio-detail";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/portfolio/tamar-film-website",
   title: "Tamar Film Website | Kredance",
   description:
     "Kredance developed and optimized a website for Tamar Film, a creative production company specializing in cinematic video and visual content.",
-};
+});
 
 export default function TamarFilmWebsitePage() {
   return (

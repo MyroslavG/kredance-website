@@ -69,53 +69,28 @@ const capabilities = [
 export function Hero() {
   return (
     <section className="bg-white">
-      {/* Mobile video - full screen, sides cropped */}
-      <div className="relative sm:hidden w-full h-screen overflow-hidden">
+      {/* The browser selects one source for the current viewport. */}
+      <div className="relative w-full h-screen sm:h-auto sm:aspect-[16/8] overflow-hidden">
         <video
           autoPlay
           loop
           muted
           playsInline
-          className="w-full h-full object-cover"
+          preload="metadata"
+          className="w-full h-full object-cover sm:object-top"
         >
-          <source src="/mobile_hero_video.mp4" type="video/mp4" />
-        </video>
-        {/* Scroll indicator - mobile */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 0.8 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-        >
-          <span className="text-xs font-medium text-white/80 tracking-widest uppercase">
-            Scroll to explore
-          </span>
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <ChevronDown className="h-5 w-5 text-white/80" />
-          </motion.div>
-        </motion.div>
-      </div>
-
-      {/* Desktop video */}
-      <div className="relative hidden sm:block w-full aspect-[16/8] overflow-hidden">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover object-top"
-        >
+          <source
+            src="/mobile_hero_video.mp4"
+            type="video/mp4"
+            media="(max-width: 639px)"
+          />
           <source src="/hero_video.mp4" type="video/mp4" />
         </video>
-        {/* Scroll indicator - desktop */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5, duration: 0.8 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+          className="absolute bottom-8 sm:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
         >
           <span className="text-xs font-medium text-white/80 tracking-widest uppercase">
             Scroll to explore

@@ -1,10 +1,12 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { PortfolioDetail } from "@/components/portfolio-detail";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/portfolio/iamqr",
   title: "IAMQR Mobile App with AI | Kredance",
   description:
     "A mobile application enabling users to share personal data through QR code technology, incorporating AI-powered features for content generation and enhancement.",
-};
+});
 
 export default function IamqrPage() {
   return (

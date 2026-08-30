@@ -1,10 +1,12 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { PortfolioDetail } from "@/components/portfolio-detail";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/portfolio/telegram-shopify-integration",
   title: "Telegram × Shopify Integration | Kredance",
   description:
     "Kredance developed a seamless connection between Shopify and a custom Telegram bot for real-time customer engagement and order notifications.",
-};
+});
 
 export default function TelegramShopifyIntegrationPage() {
   return (

@@ -1,7 +1,9 @@
-export const metadata = {
+import { createPageMetadata } from "@/lib/metadata";
+export const metadata = createPageMetadata({
+  path: "/terms",
   title: "Terms of Service | Kredance",
   description: "Kredance terms of service — the terms and conditions governing use of our website and services.",
-};
+});
 
 export default function TermsPage() {
   return (

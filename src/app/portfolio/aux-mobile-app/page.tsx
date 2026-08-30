@@ -1,10 +1,12 @@
+import { createPageMetadata } from "@/lib/metadata";
 import { PortfolioDetail } from "@/components/portfolio-detail";
 
-export const metadata = {
+export const metadata = createPageMetadata({
+  path: "/portfolio/aux-mobile-app",
   title: "AUX Mobile App | Kredance",
   description:
     "A social media mobile app that lets people share the music they love and connect through messages, built with a focus on usability and performance.",
-};
+});
 
 export default function AuxMobileAppPage() {
   return (

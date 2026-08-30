@@ -128,11 +128,11 @@ export function Services() {
           <span className="text-xs font-medium tracking-widest uppercase text-astro-grey">
             Our Services
           </span>
-          <h2 className="mt-4 text-4xl lg:text-5xl font-bold tracking-tight text-nebulosity leading-[1.15]">
+          <h1 className="mt-4 text-4xl lg:text-5xl font-bold tracking-tight text-nebulosity leading-[1.15]">
             Everything You Need to
             <br />
             <span className="text-neon-navy">Succeed Online</span>
-          </h2>
+          </h1>
           <p className="mt-6 text-lg text-wild-dove leading-relaxed">
             From concept to launch and beyond, we offer a comprehensive suite of
             digital services to power your business growth.
