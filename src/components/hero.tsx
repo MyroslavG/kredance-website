@@ -77,6 +77,7 @@ export function Hero() {
           muted
           playsInline
           preload="metadata"
+          poster="/hero-poster.jpg"
           className="w-full h-full object-cover sm:object-top"
         >
           <source
