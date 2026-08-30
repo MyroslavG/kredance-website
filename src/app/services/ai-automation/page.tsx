@@ -3,7 +3,7 @@ import { ServiceDetail } from "@/components/service-detail";
 
 export const metadata = createPageMetadata({
   path: "/services/ai-automation",
-  title: "AI Automation | Kredance",
+  title: "AI Automation Services | Kredance",
   description:
     "Intelligent automation solutions that streamline operations and boost productivity. Kredance builds custom AI workflows tailored to your business.",
 });

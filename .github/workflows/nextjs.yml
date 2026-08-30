@@ -8,6 +8,8 @@ on:
   # Runs on pushes targeting the default branch
   push:
     branches: ["main"]
+  pull_request:
+    branches: ["main"]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -74,6 +76,8 @@ jobs:
           NEXT_PUBLIC_EMAILJS_SERVICE_ID: service_tdjf70m
           NEXT_PUBLIC_EMAILJS_TEMPLATE_ID: template_k0nuuq2
           NEXT_PUBLIC_EMAILJS_PUBLIC_KEY: JWGZjO3KXrRoBb_3Z
+      - name: Validate SEO output
+        run: npm run check:seo
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -81,6 +85,7 @@ jobs:
 
   # Deployment job
   deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
