@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 const categories = ["All", "Website", "Ecommerce", "Mobile App", "AI / Plugins", "Integration", "Design", "Cybersecurity", "Data Mining"];
 
@@ -343,6 +344,17 @@ export function Portfolio() {
                 }}
               >
                 <Link href={project.link} className="group block rounded-2xl border border-transparent p-5 transition-all duration-300 hover:border-neon-navy/20 hover:bg-neon-navy/5 hover:shadow-lg">
+                  <div className="relative mb-5 aspect-[495/400] overflow-hidden rounded-xl bg-sunset/40">
+                    <Image
+                      src={project.image}
+                      alt={`${project.title} ${project.category.toLowerCase()} project preview`}
+                      fill
+                      sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <span className="text-xs font-medium text-astro-grey uppercase tracking-wider">

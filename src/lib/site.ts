@@ -12,6 +12,8 @@ export const siteConfig = {
 } as const;
 
 export const defaultSocialImage = {
-  url: "/kredance_logo_2026.png",
-  alt: "Kredance digital agency",
+  url: "/og-image.jpg",
+  width: 1200,
+  height: 630,
+  alt: "Kredance — digital solutions that drive growth",
 } as const;
