@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: "ci-${{ github.ref }}"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build and validate SEO output
+        run: npm run ci:seo
+        env:
+          NEXT_PUBLIC_EMAILJS_SERVICE_ID: service_tdjf70m
+          NEXT_PUBLIC_EMAILJS_TEMPLATE_ID: template_k0nuuq2
+          NEXT_PUBLIC_EMAILJS_PUBLIC_KEY: JWGZjO3KXrRoBb_3Z
+
+      - name: Run Lighthouse CI
+        run: npm run check:lighthouse
+
+      - name: Upload Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: ./lighthouse-reports
+          if-no-files-found: ignore
