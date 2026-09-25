@@ -18,7 +18,9 @@ Security advisors report no warnings or errors. Three informational [RLS Enabled
 
 EmailJS non-browser API access is enabled with the account owner's confirmation. Private-key protection remains enabled, and both settings were verified after reloading the account page.
 
-Pending: private-key configuration and other server environment variables in Vercel, retry schedule activation, staging email/booking checks, and production launch. Database and EmailJS account readiness alone do not activate the website form.
+Vercel access to `ua-connect/kredance-website` is confirmed. `EMAILJS_PRIVATE_KEY`, `LEAD_HASH_SECRET`, and `CRON_SECRET` are saved as secrets, and `SUPABASE_URL` is saved as configuration, each scoped to Production and the `codex/contractor-lead-funnel` preview branch. The original four public EmailJS settings remain configured for Production and Preview.
+
+Pending: `SUPABASE_SECRET_KEY` (Supabase dashboard sign-in required), preview redeployment and the approved notification test, retry schedule activation, staging booking checks, and production launch. Saved environment variables require a new deployment before they take effect.
 ## Preview without accounts
 
 ```sh

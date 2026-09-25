@@ -23,7 +23,7 @@ The current Contact template already uses `from_name`, `from_email`, `subject`, 
 
 The website server sends after saving the inquiry, so it needs the existing EmailJS account's non-browser API access. On September 25, 2026, with the account owner's confirmation, **Allow EmailJS API for non-browser applications** was enabled in **Account → Security → API Settings**. **Use Private Key** remains checked; both settings were verified after reloading the page.
 
-Place the existing private key into Vercel as **EMAILJS_PRIVATE_KEY**, with no `NEXT_PUBLIC_` prefix. Never send it in chat, embed it in the browser, or commit it. The existing public service/template/key environment variables remain in use. An optional `EMAILJS_LEAD_OWNER_TEMPLATE_ID` override is available but not needed for this account.
+The existing private key is saved in Vercel as the server-only secret **EMAILJS_PRIVATE_KEY** for Production and the `codex/contractor-lead-funnel` preview branch. It was transferred with the account owner's confirmation without displaying its value. Never send it in chat, embed it in the browser, or commit it. The existing public service/template/key environment variables remain in use. An optional `EMAILJS_LEAD_OWNER_TEMPLATE_ID` override is available but not needed for this account.
 
 No EmailJS security setting changes the database permissions. Supabase tables remain accessible only to the website backend.
 
