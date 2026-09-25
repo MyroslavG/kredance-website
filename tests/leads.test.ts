@@ -12,6 +12,9 @@ import {
   buildEmails,
   sendEmail,
   leadConfig,
+  ConfigurationError,
+  StorageError,
+  leadFailureDetails,
   type EmailJob,
   dispatchLeadEmails,
   handleLeadRequest,
@@ -48,6 +51,28 @@ function request(body: unknown, origin = "https://www.kredance.com") {
 }
 
 describe("validation and privacy", () => {
+  it("diagnoses configuration and storage failures without logging provider or request secrets", () => {
+    assert.deepEqual(
+      leadFailureDetails(new ConfigurationError("SUPABASE_SECRET_KEY")),
+      {
+        code: "configuration_invalid",
+        field: "SUPABASE_SECRET_KEY",
+      },
+    );
+    assert.deepEqual(
+      leadFailureDetails(new StorageError("private provider response", 401)),
+      {
+        code: "storage_unavailable",
+        httpStatus: 401,
+      },
+    );
+    assert.deepEqual(
+      leadFailureDetails(new Error("secret key and private form contents")),
+      {
+        code: "unexpected_error",
+      },
+    );
+  });
   it("uses the browser-facing host while rejecting cross-origin requests", () => {
     const localRequest = (origin: string) =>
       new Request("http://localhost:3000/api/leads", {

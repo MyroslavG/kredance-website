@@ -2,6 +2,7 @@ import {
   databaseRpc,
   hashValue,
   leadConfig,
+  leadFailureDetails,
   trustedClientIp,
 } from "@/lib/leads/server";
 import {
@@ -36,6 +37,7 @@ export async function POST(request: Request) {
         { error: error.message },
         { status: error.status, headers },
       );
+    console.error("lead_funnel_unavailable", leadFailureDetails(error));
     return new Response(null, { status: 503, headers });
   }
 }

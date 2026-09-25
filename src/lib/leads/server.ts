@@ -28,32 +28,71 @@ export type LeadConfig = {
   emailjsOwnerTemplateId: string;
   hashSecret: string;
 };
-function required(name: string): string {
-  const value = process.env[name]?.trim();
-  if (!value) throw new Error(`Missing ${name}`);
+type ConfigField =
+  | "SUPABASE_URL"
+  | "SUPABASE_SECRET_KEY"
+  | "NEXT_PUBLIC_EMAILJS_SERVICE_ID"
+  | "NEXT_PUBLIC_EMAILJS_PUBLIC_KEY"
+  | "NEXT_PUBLIC_EMAILJS_TEMPLATE_ID"
+  | "EMAILJS_PRIVATE_KEY"
+  | "LEAD_HASH_SECRET";
+
+export class ConfigurationError extends Error {
+  constructor(public field: ConfigField) {
+    super(`Missing or invalid ${field}`);
+  }
+}
+
+function required(name: ConfigField, rawValue: string | undefined): string {
+  const value = rawValue?.trim();
+  if (!value) throw new ConfigurationError(name);
   return value;
 }
 
 export function leadConfig(): LeadConfig {
   const config = {
-    supabaseUrl: required("SUPABASE_URL").replace(/\/$/, ""),
-    supabaseKey: required("SUPABASE_SECRET_KEY"),
-    emailjsServiceId: required("NEXT_PUBLIC_EMAILJS_SERVICE_ID"),
-    emailjsPublicKey: required("NEXT_PUBLIC_EMAILJS_PUBLIC_KEY"),
-    emailjsPrivateKey: required("EMAILJS_PRIVATE_KEY"),
+    supabaseUrl: required("SUPABASE_URL", process.env.SUPABASE_URL).replace(
+      /\/$/,
+      "",
+    ),
+    supabaseKey: required(
+      "SUPABASE_SECRET_KEY",
+      process.env.SUPABASE_SECRET_KEY,
+    ),
+    // Direct references let Next.js inline the existing public settings at build time.
+    emailjsServiceId: required(
+      "NEXT_PUBLIC_EMAILJS_SERVICE_ID",
+      process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+    ),
+    emailjsPublicKey: required(
+      "NEXT_PUBLIC_EMAILJS_PUBLIC_KEY",
+      process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
+    ),
+    emailjsPrivateKey: required(
+      "EMAILJS_PRIVATE_KEY",
+      process.env.EMAILJS_PRIVATE_KEY,
+    ),
     emailjsOwnerTemplateId:
       process.env.EMAILJS_LEAD_OWNER_TEMPLATE_ID?.trim() ||
-      required("NEXT_PUBLIC_EMAILJS_TEMPLATE_ID"),
-    hashSecret: required("LEAD_HASH_SECRET"),
+      required(
+        "NEXT_PUBLIC_EMAILJS_TEMPLATE_ID",
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+      ),
+    hashSecret: required("LEAD_HASH_SECRET", process.env.LEAD_HASH_SECRET),
   };
   if (config.hashSecret.length < 32)
-    throw new Error("LEAD_HASH_SECRET must contain at least 32 characters");
-  const url = new URL(config.supabaseUrl);
+    throw new ConfigurationError("LEAD_HASH_SECRET");
+  let url: URL;
+  try {
+    url = new URL(config.supabaseUrl);
+  } catch {
+    throw new ConfigurationError("SUPABASE_URL");
+  }
   const local =
     process.env.NODE_ENV !== "production" &&
     ["127.0.0.1", "localhost"].includes(url.hostname);
   if (url.protocol !== "https:" && !local)
-    throw new Error("SUPABASE_URL must use HTTPS");
+    throw new ConfigurationError("SUPABASE_URL");
   return config;
 }
 
@@ -64,6 +103,14 @@ export class StorageError extends Error {
   ) {
     super(code);
   }
+}
+
+export function leadFailureDetails(error: unknown) {
+  if (error instanceof ConfigurationError)
+    return { code: "configuration_invalid", field: error.field };
+  if (error instanceof StorageError)
+    return { code: "storage_unavailable", httpStatus: error.httpStatus };
+  return { code: "unexpected_error" };
 }
 
 export async function databaseRpc<T>(
@@ -215,7 +262,8 @@ export async function handleLeadRequest(
         { status: 409, headers },
       );
     }
-    console.error("lead_intake_unavailable"); // No request bodies, credentials, or provider responses in logs.
+    // Only fixed error codes, configuration names, and HTTP status; never raw error messages.
+    console.error("lead_intake_unavailable", leadFailureDetails(error));
     return Response.json(
       {
         error:
