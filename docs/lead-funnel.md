@@ -16,7 +16,9 @@ A rolled-back database check verified lead creation, duplicate handling, one que
 
 Security advisors report no warnings or errors. Three informational [RLS Enabled No Policy notices](https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy) are expected: browser access is deliberately denied and the backend uses the service role. Public execution grants on the dashboard's automatic-RLS helper were revoked while preserving the trigger.
 
-Pending: EmailJS server-request authorization and private-key configuration, server environment variables in Vercel, retry schedule activation, staging email/booking checks, and production launch. Database readiness alone does not activate the website form.
+EmailJS non-browser API access is enabled with the account owner's confirmation. Private-key protection remains enabled, and both settings were verified after reloading the account page.
+
+Pending: private-key configuration and other server environment variables in Vercel, retry schedule activation, staging email/booking checks, and production launch. Database and EmailJS account readiness alone do not activate the website form.
 ## Preview without accounts
 
 ```sh
