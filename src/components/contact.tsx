@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect, type FormEvent } from "react";
+import { useState, useRef, type FormEvent } from "react";
+import { CalendlyEmbed } from "@/components/calendly-embed";
 import emailjs from "@emailjs/browser";
 import { motion } from "framer-motion";
 import { Mail, MapPin, Phone, ArrowRight, CheckCircle, AlertCircle, Loader2, Calendar } from "lucide-react";
@@ -221,29 +222,5 @@ export function Contact() {
       </div>
     </section>
     </>
-  );
-}
-
-function CalendlyEmbed() {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://assets.calendly.com/assets/external/widget.js";
-    script.async = true;
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
-
-  return (
-    <div
-      ref={containerRef}
-      className="calendly-inline-widget"
-      data-url="https://calendly.com/kredance/30min"
-      style={{ minWidth: "320px", height: "700px" }}
-    />
   );
 }

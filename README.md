@@ -21,7 +21,13 @@ npm run ci:seo
 npm run check:lighthouse
 ```
 
-`ci:seo` creates a temporary static export so the SEO validator and Lighthouse can inspect every generated page. Regular `npm run build` uses Vercel's native Next.js runtime and image optimization.
+`ci:seo` builds the native Next.js application and validates its prerendered pages. Lighthouse starts the production server. The lead intake endpoints require a server runtime; static export is no longer used.
+
+## Contractor lead funnel
+
+The contractor landing page, durable lead intake, email queue, and conversion events are documented in [docs/lead-funnel.md](docs/lead-funnel.md). Run `npm run preview:leads` to test the complete flow locally with synthetic data and captured emails, without connecting external accounts.
+
+Production activation requires the Supabase schema, a verified Resend sender, server environment variables, and the retry scheduler described in that guide. Existing Contact/Insights EmailJS settings remain in use.
 
 ## Vercel migration
 

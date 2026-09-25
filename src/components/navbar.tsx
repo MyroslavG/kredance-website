@@ -8,6 +8,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { motion, AnimatePresence } from "framer-motion";
 
 const services = [
+  { name: "Websites for Contractors", href: "/websites-for-contractors" },
   { name: "Advertisement Creation", href: "/services/advertisement-creation" },
   { name: "AI Automation", href: "/services/ai-automation" },
   { name: "AI Integration", href: "/services/ai-integration" },
@@ -34,7 +35,7 @@ const navLinks = [
   { name: "Contact", href: "/contact" },
 ];
 
-const darkPages = ["/", "/contact", "/ai-automation", "/insights"];
+const darkPages = ["/", "/contact", "/ai-automation", "/insights", "/websites-for-contractors"];
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -160,7 +161,7 @@ export function Navbar() {
           <div className="lg:hidden">
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger
-                render={<button className="p-2 rounded-full hover:bg-nebulosity/5 transition-colors" />}
+                render={<button aria-label="Open menu" className="p-2 rounded-full hover:bg-nebulosity/5 transition-colors" />}
               >
                 <Menu className={`h-5 w-5 ${useLight ? "text-white" : "text-nebulosity"}`} />
               </SheetTrigger>

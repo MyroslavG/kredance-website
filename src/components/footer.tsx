@@ -8,7 +8,7 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-6 lg:px-8 py-6">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           {/* Copyright */}
-          <p className="text-xs text-nebulosity/50 sm:flex-1">
+          <p className="text-xs text-nebulosity/70 sm:flex-1">
             &copy; 2026 Kredance. All rights reserved.
           </p>
 
@@ -68,7 +68,7 @@ export function Footer() {
           </div>
 
           {/* Legal links */}
-          <div className="flex items-center justify-end gap-3 text-[11px] text-nebulosity/40 sm:flex-1">
+          <div className="flex items-center justify-end gap-3 text-[11px] text-nebulosity/70 sm:flex-1">
             <Link href="/privacy" className="hover:text-nebulosity/70 transition-colors">
               Privacy
             </Link>

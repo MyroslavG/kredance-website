@@ -11,7 +11,7 @@ export default function PrivacyPage() {
       <section className="pt-32 pb-24">
         <div className="mx-auto max-w-3xl px-6 lg:px-8">
           <h1 className="text-4xl font-bold text-neon-navy mb-8">Privacy Policy</h1>
-          <p className="text-sm text-wild-dove mb-12">Last updated: April 25, 2026</p>
+          <p className="text-sm text-wild-dove mb-12">Last updated: September 25, 2026</p>
 
           <div className="space-y-8 text-nebulosity/80 leading-relaxed">
             <div>
@@ -19,7 +19,9 @@ export default function PrivacyPage() {
               <p>
                 We collect information you provide directly to us, such as when you fill out a contact form,
                 request a quote, or communicate with us via email. This may include your name, email address,
-                phone number, company name, and project details.
+                phone number, company name, business website, and project details. For website review requests,
+                we also record the entry page, referring website hostname, and campaign labels to understand
+                how the inquiry reached us. We use a keyed hash of the network address to limit repeated submissions.
               </p>
             </div>
 
@@ -28,7 +30,7 @@ export default function PrivacyPage() {
               <p>We use the information we collect to:</p>
               <ul className="list-disc pl-6 mt-2 space-y-1">
                 <li>Respond to your inquiries and provide requested services</li>
-                <li>Communicate with you about projects, updates, and promotions</li>
+                <li>Communicate with you about your inquiry or project; a website review request does not subscribe you to marketing emails</li>
                 <li>Improve our website and services</li>
                 <li>Comply with legal obligations</li>
               </ul>
@@ -40,6 +42,8 @@ export default function PrivacyPage() {
                 We do not sell, trade, or otherwise transfer your personal information to third parties.
                 We may share information with trusted service providers who assist us in operating our
                 website and conducting our business, provided they agree to keep this information confidential.
+                Website review requests use Supabase for storage and Resend for acknowledgment and notification
+                emails. Optional call scheduling is handled by Calendly.
               </p>
             </div>
 
@@ -49,6 +53,10 @@ export default function PrivacyPage() {
                 Our website may use cookies and similar tracking technologies to enhance your browsing
                 experience and analyze site traffic. You can control cookie preferences through your
                 browser settings.
+                We keep first-visit campaign information in session storage for the current browser tab.
+                Our conversion events describe actions such as starting a form or completing a booking;
+                they do not include your name, email address, website, or message. Query strings are removed
+                from the URLs sent to Vercel Web Analytics.
               </p>
             </div>
 
