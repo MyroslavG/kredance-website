@@ -30,6 +30,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Test lead intake and database permissions
+        run: npm test
+
       - name: Build and validate SEO output
         run: npm run ci:seo
         env:

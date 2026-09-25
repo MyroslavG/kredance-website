@@ -142,6 +142,9 @@ export function Hero() {
               Explore Services
             </Link>
           </div>
+          <p className="mt-6 text-sm text-nebulosity/70">
+            In the trades? <Link href="/websites-for-contractors" className="font-medium text-neon-navy underline underline-offset-4">Explore websites for Ottawa contractors.</Link>
+          </p>
         </motion.div>
       </div>
 

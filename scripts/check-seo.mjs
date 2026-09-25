@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-const outputDirectory = path.resolve("out");
+const outputDirectory = path.resolve(".next/server/app");
 const siteOrigin = "https://www.kredance.com";
 const errors = [];
 
@@ -45,7 +45,7 @@ function collectHtmlFiles(directory) {
     const target = path.join(directory, entry.name);
     if (entry.isDirectory()) return collectHtmlFiles(target);
     if (!entry.name.endsWith(".html")) return [];
-    if (["404.html", "_not-found.html"].includes(entry.name)) return [];
+    if (["404.html", "_not-found.html", "_global-error.html"].includes(entry.name)) return [];
     return [target];
   });
 }
@@ -64,11 +64,11 @@ function schemasFrom(value) {
 
 function outputAssetExists(pathname) {
   const relative = pathname.replace(/^\//, "");
-  return relative !== "" && fs.existsSync(path.join(outputDirectory, relative));
+  return relative !== "" && fs.existsSync(path.join("public", relative));
 }
 
 if (!fs.existsSync(outputDirectory)) {
-  console.error("SEO check failed: out/ does not exist. Run `npm run build` first.");
+  console.error("SEO check failed: .next/server/app/ does not exist. Run `npm run build` first.");
   process.exit(1);
 }
 
@@ -278,7 +278,7 @@ for (const route of routes) {
   if (!reachableRoutes.has(route)) errors.push(`${route}: page is not reachable from the homepage`);
 }
 
-const sitemapPath = path.join(outputDirectory, "sitemap.xml");
+const sitemapPath = path.join(outputDirectory, "sitemap.xml.body");
 if (!fs.existsSync(sitemapPath)) {
   errors.push("sitemap.xml: file is missing");
 } else {
@@ -306,7 +306,7 @@ if (!fs.existsSync(sitemapPath)) {
   }
 }
 
-const robotsPath = path.join(outputDirectory, "robots.txt");
+const robotsPath = path.join(outputDirectory, "robots.txt.body");
 if (!fs.existsSync(robotsPath)) {
   errors.push("robots.txt: file is missing");
 } else {
