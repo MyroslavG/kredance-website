@@ -1,5 +1,5 @@
 import { PGlite } from "@electric-sql/pglite";
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import { StorageError, type LeadConfig } from "../../src/lib/leads/server";
 
 export async function createLeadDatabase() {
@@ -7,15 +7,13 @@ export async function createLeadDatabase() {
   await db.exec(
     "create role anon; create role authenticated; create role service_role bypassrls; grant usage on schema public to service_role, anon, authenticated;",
   );
-  await db.exec(
-    await readFile(
-      new URL(
-        "../../supabase/migrations/20260925194742_contractor_lead_capture.sql",
-        import.meta.url,
-      ),
-      "utf8",
-    ),
-  );
+  const migrations = new URL("../../supabase/migrations/", import.meta.url);
+  const files = (await readdir(migrations))
+    .filter((name) => name.endsWith(".sql"))
+    .sort();
+  for (const file of files) {
+    await db.exec(await readFile(new URL(file, migrations), "utf8"));
+  }
   async function rpc<T>(
     _config: LeadConfig,
     name: string,

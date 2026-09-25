@@ -8,6 +8,15 @@ The form sends to `POST /api/leads`. A single database transaction saves the inq
 
 The existing general Contact and Insights email forms retain EmailJS. The Contact calendar uses the same tracked Calendly component as the review confirmation screen.
 
+## Kredance setup status — September 25, 2026
+
+The dedicated `kredance-website` Supabase project (`jsticdyoptfqtysklclr`) is active. Both committed migrations have been applied; filenames match the versions in its migration history.
+
+A rolled-back database check verified lead creation, duplicate handling, two queued email jobs, follow-up fields, and one saved-inquiry event. All three tables have RLS enabled, deny browser roles access, and allow the backend service role. Automatic RLS still works for new tables. No test leads, queued mail, or analytics events remain.
+
+Security advisors report no warnings or errors. Three informational [RLS Enabled No Policy notices](https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy) are expected: browser access is deliberately denied and the backend uses the service role. Public execution grants on the dashboard's automatic-RLS helper were revoked while preserving the trigger.
+
+Pending: Resend account and sender verification, server environment variables in Vercel, retry schedule activation, staging email/booking checks, and production launch. Database readiness alone does not activate the website form.
 ## Preview without accounts
 
 ```sh
@@ -21,7 +30,7 @@ The local fixture's read-only `http://127.0.0.1:4317/__test/state` reports test 
 
 ## Connect production services
 
-1. Create a Supabase project dedicated to Kredance in the intended organization and region. Do not reuse an unrelated project. Apply `supabase/migrations/20260925194742_contractor_lead_capture.sql` once through the normal migration process or SQL Editor. Run Supabase's security advisors afterward. The tables/functions grant access only to the backend service role; there are no public lead-reading policies.
+1. Create a Supabase project dedicated to Kredance in the intended organization and region. Do not reuse an unrelated project. Apply `supabase/migrations/20260925203437_contractor_lead_capture.sql` and `supabase/migrations/20260925203559_restrict_auto_rls_function.sql` in order through the normal migration process or SQL Editor. Run Supabase's security advisors afterward. The tables/functions grant access only to the backend service role; there are no public lead-reading policies.
 2. Create a Resend account and verify a domain you control. Add its required DNS records. Choose an actual verified sender for `LEAD_EMAIL_FROM`; the example sender is not automatically verified. Create a server-side API key authorized to send from that domain.
 3. Set all server variables from `.env.example` in the appropriate Vercel environments: `SUPABASE_URL`, `SUPABASE_SECRET_KEY`, `RESEND_API_KEY`, `LEAD_EMAIL_FROM`, `LEAD_OWNER_EMAIL`, `LEAD_HASH_SECRET`, `CRON_SECRET`. Use independent random values of at least 32 characters for the two secrets. Never use `NEXT_PUBLIC_` for them or paste them into source control. New `sb_secret_` keys and legacy service-role JWTs are supported; publishable/anon keys are not suitable for this backend.
 4. Deploy to a Vercel preview with a separate test database and mailboxes you control. Verify both messages, the saved row, source information, and the scheduled next action. A Resend `sent` queue status means the provider accepted the message; inspect provider delivery/bounce logs to verify actual delivery.
