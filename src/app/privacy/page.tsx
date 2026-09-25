@@ -42,7 +42,7 @@ export default function PrivacyPage() {
                 We do not sell, trade, or otherwise transfer your personal information to third parties.
                 We may share information with trusted service providers who assist us in operating our
                 website and conducting our business, provided they agree to keep this information confidential.
-                Website review requests use Supabase for storage and Resend for acknowledgment and notification
+                Website review requests use Supabase for storage and EmailJS for notification
                 emails. Optional call scheduling is handled by Calendly.
               </p>
             </div>

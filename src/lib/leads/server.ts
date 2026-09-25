@@ -1,6 +1,5 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 import {
-  BOOKING_URL,
   InputError,
   parseLead,
   readJson,
@@ -8,14 +7,11 @@ import {
   type LeadInput,
 } from "./validation";
 
-type EmailPayload = {
-  from: string;
-  to: string[];
-  subject: string;
-  text: string;
-  reply_to: string;
+export type EmailPayload = {
+  template_id: string;
+  template_params: Record<string, string>;
 };
-type EmailJob = {
+export type EmailJob = {
   id: string;
   lead_id: string;
   kind: string;
@@ -26,12 +22,12 @@ export type SavedLead = { id: string; created: boolean };
 export type LeadConfig = {
   supabaseUrl: string;
   supabaseKey: string;
-  resendKey: string;
-  from: string;
-  owner: string;
+  emailjsServiceId: string;
+  emailjsPublicKey: string;
+  emailjsPrivateKey: string;
+  emailjsOwnerTemplateId: string;
   hashSecret: string;
 };
-
 function required(name: string): string {
   const value = process.env[name]?.trim();
   if (!value) throw new Error(`Missing ${name}`);
@@ -42,9 +38,12 @@ export function leadConfig(): LeadConfig {
   const config = {
     supabaseUrl: required("SUPABASE_URL").replace(/\/$/, ""),
     supabaseKey: required("SUPABASE_SECRET_KEY"),
-    resendKey: required("RESEND_API_KEY"),
-    from: required("LEAD_EMAIL_FROM"),
-    owner: required("LEAD_OWNER_EMAIL"),
+    emailjsServiceId: required("NEXT_PUBLIC_EMAILJS_SERVICE_ID"),
+    emailjsPublicKey: required("NEXT_PUBLIC_EMAILJS_PUBLIC_KEY"),
+    emailjsPrivateKey: required("EMAILJS_PRIVATE_KEY"),
+    emailjsOwnerTemplateId:
+      process.env.EMAILJS_LEAD_OWNER_TEMPLATE_ID?.trim() ||
+      required("NEXT_PUBLIC_EMAILJS_TEMPLATE_ID"),
     hashSecret: required("LEAD_HASH_SECRET"),
   };
   if (config.hashSecret.length < 32)
@@ -55,11 +54,6 @@ export function leadConfig(): LeadConfig {
     ["127.0.0.1", "localhost"].includes(url.hostname);
   if (url.protocol !== "https:" && !local)
     throw new Error("SUPABASE_URL must use HTTPS");
-  if (
-    !/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(config.owner) ||
-    /[\r\n]/.test(config.from)
-  )
-    throw new Error("Invalid lead email configuration");
   return config;
 }
 
@@ -107,45 +101,39 @@ export function buildEmails(
   lead: LeadInput,
   config: LeadConfig,
 ): { kind: string; payload: EmailPayload }[] {
-  // Freeze the payload at acceptance so provider idempotency retries are identical.
-  return [
+  // Freeze the template and its inputs at acceptance; never store credentials.
+  const emails: { kind: string; payload: EmailPayload }[] = [
     {
       kind: "owner",
       payload: {
-        from: config.from,
-        to: [config.owner],
-        reply_to: lead.email,
-        subject: "New contractor website review request",
-        text: [
-          "A new website review request has been saved.",
-          "",
-          `Name: ${lead.name}`,
-          `Email: ${lead.email}`,
-          `Website: ${lead.website}`,
-          "",
-          "Main problem:",
-          lead.problem,
-          "",
-          "Next action: review the website and reply with three improvements within one business day.",
-          "",
-          `Attribution: ${JSON.stringify(lead.attribution)}`,
-        ].join("\n"),
-      },
-    },
-    {
-      kind: "acknowledgment",
-      payload: {
-        from: config.from,
-        to: [lead.email],
-        reply_to: config.owner,
-        subject: "Kredance received your website review request",
-        // Do not reflect untrusted free text/URLs in auto-replies to arbitrary recipients.
-        text: `Thanks for requesting a website review from Kredance.\n\nWe have your request and will reply within one business day with three practical improvements. No call is required.\n\nIf you would like to talk, you can optionally book a 30-minute consultation: ${BOOKING_URL}\n\nThis message confirms your request; you have not been subscribed to marketing emails. If you did not make this request, you can ignore this message.\n\nKredance\nOttawa, ON\n${config.owner}`,
+        template_id: config.emailjsOwnerTemplateId,
+        template_params: {
+          name: lead.name,
+          time: new Date().toISOString(),
+          from_name: lead.name,
+          from_email: lead.email,
+          reply_to: lead.email,
+          subject: "New contractor website review request",
+          message: [
+            "A new website review request has been saved.",
+            "",
+            `Name: ${lead.name}`,
+            `Email: ${lead.email}`,
+            `Website: ${lead.website}`,
+            "",
+            "Main problem:",
+            lead.problem,
+            "",
+            "Next action: review the website and reply with three improvements within one business day.",
+            "",
+            `Attribution: ${JSON.stringify(lead.attribution)}`,
+          ].join("\n"),
+        },
       },
     },
   ];
+  return emails;
 }
-
 export function hashValue(value: string, secret: string) {
   return createHmac("sha256", secret).update(value).digest("hex");
 }
@@ -241,8 +229,12 @@ export async function handleLeadRequest(
 export async function sendEmail(
   config: LeadConfig,
   job: EmailJob,
-): Promise<string> {
-  let endpoint = "https://api.resend.com/emails";
+  request: typeof fetch = fetch,
+): Promise<string | null> {
+  if (!job.payload.template_id || !job.payload.template_params) {
+    throw new Error("email_invalid_payload");
+  }
+  let endpoint = "https://api.emailjs.com/api/v1.0/email/send";
   if (process.env.NODE_ENV === "development" && process.env.LEAD_DEV_MAIL_URL) {
     const local = new URL(process.env.LEAD_DEV_MAIL_URL);
     if (
@@ -252,20 +244,30 @@ export async function sendEmail(
       throw new Error("Invalid local mail capture URL");
     endpoint = local.toString();
   }
-  const response = await fetch(endpoint, {
+  const response = await request(endpoint, {
     method: "POST",
-    headers: {
-      Authorization: `Bearer ${config.resendKey}`,
-      "Content-Type": "application/json",
-      "Idempotency-Key": `lead-${job.lead_id}-${job.kind}`,
-    },
-    body: JSON.stringify(job.payload),
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      service_id: config.emailjsServiceId,
+      user_id: config.emailjsPublicKey,
+      ...(config.emailjsPrivateKey
+        ? { accessToken: config.emailjsPrivateKey }
+        : {}),
+      template_id: job.payload.template_id,
+      template_params: {
+        ...job.payload.template_params,
+        lead_reference: job.lead_id,
+      },
+    }),
     signal: AbortSignal.timeout(8000),
   });
   if (!response.ok) throw new Error(`email_http_${response.status}`);
-  const result = await response.json();
-  if (typeof result.id !== "string") throw new Error("email_missing_id");
-  return result.id;
+  // EmailJS returns HTTP 200 + plain "OK", not a provider message ID.
+  // Treat any unexpected response as uncertain; a second send could duplicate mail.
+  if (response.status !== 200 || (await response.text()).trim() !== "OK") {
+    throw new Error("email_delivery_uncertain");
+  }
+  return null;
 }
 
 export async function dispatchLeadEmails(
@@ -274,12 +276,18 @@ export async function dispatchLeadEmails(
   rpc = databaseRpc,
   send = sendEmail,
 ) {
-  const jobs = await rpc<EmailJob[]>(config, "claim_lead_emails", {
-    p_lead_id: leadId,
-    p_limit: 2,
-  });
+  let claimed = 0;
   let sent = 0;
-  for (const job of jobs) {
+  // Claim one at a time. The database serializes workers and enforces cooldown.
+  const limit = leadId ? 1 : 2;
+  for (let index = 0; index < limit; index++) {
+    const jobs = await rpc<EmailJob[]>(config, "claim_lead_emails", {
+      p_lead_id: leadId,
+      p_limit: 1,
+    });
+    const job = jobs[0];
+    if (!job) break;
+    claimed++;
     let providerId: string | null = null;
     let failure: string | null = null;
     try {
@@ -287,11 +295,14 @@ export async function dispatchLeadEmails(
     } catch (error) {
       failure =
         error instanceof Error &&
-        /^email_(http_\d{3}|missing_id)$/.test(error.message)
+        /^email_(http_\d{3}|invalid_payload|delivery_uncertain)$/.test(
+          error.message,
+        )
           ? error.message
-          : "email_network_error";
+          : "email_delivery_uncertain";
     }
-    // If completion storage fails, the lease expires and the same idempotency key is retried.
+    // A timeout, unknown response, or lost completion write must not resend blindly.
+    // Only a confirmed 429 rejection is automatically retried by the database.
     const finished = await rpc<boolean>(config, "finish_lead_email", {
       p_id: job.id,
       p_lease_token: job.lease_token,
@@ -300,14 +311,15 @@ export async function dispatchLeadEmails(
     });
     if (finished && !failure) sent++;
     if (failure)
-      console.error("lead_email_queued_for_retry", {
+      console.error("lead_email_needs_attention", {
         jobId: job.id,
         reason: failure,
       });
+    if (index + 1 < limit)
+      await new Promise((resolve) => setTimeout(resolve, 1150));
   }
-  return { claimed: jobs.length, sent };
+  return { claimed, sent };
 }
-
 export function isRetryAuthorized(request: Request) {
   const secret = process.env.CRON_SECRET;
   const actual = request.headers.get("authorization") ?? "";

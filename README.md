@@ -27,7 +27,7 @@ npm run check:lighthouse
 
 The contractor landing page, durable lead intake, email queue, and conversion events are documented in [docs/lead-funnel.md](docs/lead-funnel.md). Run `npm run preview:leads` to test the complete flow locally with synthetic data and captured emails, without connecting external accounts.
 
-Production activation requires the Supabase schema, a verified Resend sender, server environment variables, and the retry scheduler described in that guide. Existing Contact/Insights EmailJS settings remain in use.
+Production activation requires the Supabase schema, server access to the existing EmailJS account, server environment variables, and the retry scheduler described in that guide. Existing Contact/Insights EmailJS settings remain in use.
 
 ## Vercel migration
 

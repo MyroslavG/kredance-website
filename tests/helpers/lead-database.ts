@@ -72,8 +72,9 @@ export async function createLeadDatabase() {
 export const testConfig: LeadConfig = {
   supabaseUrl: "http://127.0.0.1:4317",
   supabaseKey: "local-test-key",
-  resendKey: "local-test-key",
-  from: "Kredance test <test@example.com>",
-  owner: "owner@example.com",
+  emailjsServiceId: "service_local_test",
+  emailjsPublicKey: "public-local-test-key",
+  emailjsPrivateKey: "private-local-test-key",
+  emailjsOwnerTemplateId: "template_owner_test",
   hashSecret: "test-only-secret-32-characters-minimum",
 };

@@ -39,10 +39,16 @@ async function main() {
       }
       const parsed = JSON.parse(body);
       if (request.url === "/emails" && request.method === "POST") {
-        const key = String(request.headers["idempotency-key"]);
-        const email = emails.get(key) ?? { id: randomUUID(), payload: parsed };
+        const key = randomUUID();
+        const safePayload = {
+          service_id: parsed.service_id,
+          template_id: parsed.template_id,
+          template_params: parsed.template_params,
+        };
+        const email = { id: key, payload: safePayload };
         emails.set(key, email);
-        response.end(JSON.stringify({ id: email.id }));
+        response.setHeader("Content-Type", "text/plain");
+        response.end("OK");
         return;
       }
       if (
@@ -88,9 +94,11 @@ async function main() {
         ...process.env,
         SUPABASE_URL: testConfig.supabaseUrl,
         SUPABASE_SECRET_KEY: testConfig.supabaseKey,
-        RESEND_API_KEY: testConfig.resendKey,
-        LEAD_EMAIL_FROM: testConfig.from,
-        LEAD_OWNER_EMAIL: testConfig.owner,
+        NEXT_PUBLIC_EMAILJS_SERVICE_ID: testConfig.emailjsServiceId,
+        NEXT_PUBLIC_EMAILJS_PUBLIC_KEY: testConfig.emailjsPublicKey,
+        NEXT_PUBLIC_EMAILJS_TEMPLATE_ID: testConfig.emailjsOwnerTemplateId,
+        EMAILJS_PRIVATE_KEY: testConfig.emailjsPrivateKey,
+        EMAILJS_LEAD_OWNER_TEMPLATE_ID: testConfig.emailjsOwnerTemplateId,
         LEAD_HASH_SECRET: testConfig.hashSecret,
         LEAD_DEV_MAIL_URL: "http://127.0.0.1:4317/emails",
         CRON_SECRET: "local-preview-only-cron-secret-32-chars",
