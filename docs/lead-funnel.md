@@ -12,15 +12,20 @@ The existing general Contact and Insights email forms retain EmailJS. The Contac
 
 The dedicated `kredance-website` Supabase project (`jsticdyoptfqtysklclr`) is active. All three committed migrations have been applied; filenames match the versions in its migration history.
 
-A rolled-back database check verified lead creation, duplicate handling, one queued EmailJS notification, follow-up fields, and one saved-inquiry event. All three tables have RLS enabled, deny browser roles access, and allow the backend service role. Automatic RLS still works for new tables. No test leads, queued mail, or analytics events remain.
+A rolled-back database check verified lead creation, duplicate handling, one queued EmailJS notification, follow-up fields, and one saved-inquiry event. All three tables have RLS enabled, deny browser roles access, and allow the backend service role. Automatic RLS still works for new tables.
 
 Security advisors report no warnings or errors. Three informational [RLS Enabled No Policy notices](https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy) are expected: browser access is deliberately denied and the backend uses the service role. Public execution grants on the dashboard's automatic-RLS helper were revoked while preserving the trigger.
 
 EmailJS non-browser API access is enabled with the account owner's confirmation. Private-key protection remains enabled, and both settings were verified after reloading the account page.
 
-Vercel access to `ua-connect/kredance-website` is confirmed. `EMAILJS_PRIVATE_KEY`, `LEAD_HASH_SECRET`, and `CRON_SECRET` are saved as secrets, and `SUPABASE_URL` is saved as configuration, each scoped to Production and the `codex/contractor-lead-funnel` preview branch. The original four public EmailJS settings remain configured for Production and Preview.
+Vercel access to `ua-connect/kredance-website` is confirmed. `EMAILJS_PRIVATE_KEY`, `SUPABASE_SECRET_KEY`, `LEAD_HASH_SECRET`, and `CRON_SECRET` are saved as secrets, and `SUPABASE_URL` is saved as configuration, each scoped to Production and the `codex/contractor-lead-funnel` preview branch. The account owner entered the Supabase key directly.
 
-Pending: `SUPABASE_SECRET_KEY` (Supabase dashboard sign-in required), preview redeployment and the approved notification test, retry schedule activation, staging booking checks, and production launch. Saved environment variables require a new deployment before they take effect.
+The four `NEXT_PUBLIC_EMAILJS_*` values have verified **Config** overrides for the contractor preview branch. The older Production/general Preview entries are **Secret** entries: Vercel rejects their public prefixes, and deployed diagnostics identified a missing EmailJS service ID. Before production launch, replace those four old entries with Config values from `docs/emailjs-setup.md`; the private EmailJS/Supabase keys and hashing/retry secrets must stay Secret.
+
+The approved deployed-preview test passed at 21:34 UTC on September 25: one synthetic `Kredance Setup Test` inquiry was saved with `setup-test` / `emailjs-verification` attribution, the next action and date, and one saved-inquiry conversion. The page showed its success confirmation. The owner-notification job is `sent` after exactly one attempt, and EmailJS Email History shows one `OK` request through Gmail / Contact Us. The account owner confirmed receipt in the inbox. The labeled test lead, its sent job, and three test funnel events remain for verification; exclude them from sales reporting.
+
+Pending: replacement of the four Production/general Preview public Config entries, retry schedule activation, staging booking checks, and production launch. Saved environment variables require a new deployment before they take effect.
+
 ## Preview without accounts
 
 ```sh

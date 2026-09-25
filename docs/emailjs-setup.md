@@ -2,6 +2,17 @@
 
 The contractor funnel reuses the site's existing EmailJS account, Gmail service `service_tdjf70m`, and Contact template `template_k0nuuq2`. The Insights form keeps `template_c7mv3gp`. No new service, template, sending domain, or paid upgrade is needed for the chosen workflow.
 
+## Public Vercel configuration
+
+Use Vercel's **Config** type for these values. Vercel rejects public-framework prefixes on Secret entries. Verified Config overrides are configured for the contractor preview branch; the old Production/general Preview entries still need replacement before launch.
+
+| Variable | Public value |
+| --- | --- |
+| `NEXT_PUBLIC_EMAILJS_SERVICE_ID` | `service_tdjf70m` |
+| `NEXT_PUBLIC_EMAILJS_TEMPLATE_ID` | `template_k0nuuq2` |
+| `NEXT_PUBLIC_EMAILJS_INSIGHTS_TEMPLATE_ID` | `template_c7mv3gp` |
+| `NEXT_PUBLIC_EMAILJS_PUBLIC_KEY` | `JWGZjO3KXrRoBb_3Z` |
+
 ## Notification behavior
 
 One notification goes to the existing recipient fixed in the Contact template. Customer confirmation appears on the website after the database transaction commits. No automatic customer email is sent. Replying to the notification uses the visitor's email address.
@@ -28,6 +39,8 @@ The existing private key is saved in Vercel as the server-only secret **EMAILJS_
 No EmailJS security setting changes the database permissions. Supabase tables remain accessible only to the website backend.
 
 ## Verification
+
+The approved deployed-preview test on September 25, 2026 saved one inquiry and one conversion, displayed the customer confirmation, and sent one owner notification. The job finished as `sent` with one attempt and no error; EmailJS Email History showed `OK` through the existing Gmail service and Contact Us template at 21:34 UTC. The account owner confirmed receipt in the inbox. No automatic customer email was sent.
 
 After the server settings and Vercel variables are configured, submit one controlled inquiry and verify: one saved lead, one owner email, and one saved-inquiry conversion. Check EmailJS Email History and the inbox. Customer confirmation should appear on the page. Review jobs with uncertain delivery before attempting another send.
 
