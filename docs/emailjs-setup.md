@@ -4,7 +4,7 @@ The contractor funnel reuses the site's existing EmailJS account, Gmail service 
 
 ## Public Vercel configuration
 
-Use Vercel's **Config** type for these values. Vercel rejects public-framework prefixes on Secret entries. Verified Config overrides are configured for the contractor preview branch; the old Production/general Preview entries still need replacement before launch.
+Use Vercel's **Config** type for these values. Vercel rejects public-framework prefixes on Secret entries. Verified Config entries are saved for Production and general Preview, and the working contractor-branch overrides are retained. The account owner approved replacing the old public Secret entries; private credentials remain Secret.
 
 | Variable | Public value |
 | --- | --- |
