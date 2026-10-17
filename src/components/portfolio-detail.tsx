@@ -23,18 +23,19 @@ interface PortfolioDetailProps {
   results?: string[];
   relatedServices?: RelatedService[];
   liveUrl?: string;
+  liveLinkLabel?: string;
 }
 
 export function PortfolioDetail({
   title,
   category,
   description,
-  image,
   sections,
   technologies,
   results,
   relatedServices,
   liveUrl,
+  liveLinkLabel = "Visit Live Site",
 }: PortfolioDetailProps) {
   return (
     <>
@@ -100,7 +101,7 @@ export function PortfolioDetail({
                   rel="noopener noreferrer"
                   className="group inline-flex items-center gap-2 px-8 py-3.5 bg-sunset text-neon-navy font-medium rounded-full hover:bg-white transition-all"
                 >
-                  Visit Live Site
+                  {liveLinkLabel}
                   <ExternalLink className="h-4 w-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </a>
               </motion.div>
