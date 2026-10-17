@@ -4,7 +4,7 @@ import { Contact } from "@/components/contact";
 export const metadata = createPageMetadata({
   path: "/contact",
   title: "Contact | Kredance",
-  description: "Get in touch with Kredance. Tell us about your project and we'll get back to you within 24 hours.",
+  description: "Tell Kredance about your project or request a free website review. We'll reply within one business day.",
 });
 
 export default function ContactPage() {

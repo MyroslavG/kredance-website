@@ -1,3 +1,5 @@
+import { cleanService, UUID } from "../engagement/shared";
+
 export const CONTRACTOR_PATH = "/websites-for-contractors";
 export const BOOKING_URL = "https://calendly.com/kredance/30min";
 export const UTM_KEYS = [
@@ -45,6 +47,10 @@ export type LeadInput = {
   website: string;
   problem: string;
   attribution: Attribution;
+  kind: "contractor_review" | "contact" | "website_review";
+  service: string;
+  subject: string;
+  sessionId?: string;
 };
 
 export class InputError extends Error {
@@ -125,24 +131,40 @@ export function parseLead(value: unknown): LeadInput {
   ) {
     throw new InputError("Please enter a valid name and email address.");
   }
-  let website = field(raw.website, "Website", 4, 500);
-  try {
-    if (!/^https?:\/\//i.test(website)) website = `https://${website}`;
-    const url = new URL(website);
-    if (
-      !["http:", "https:"].includes(url.protocol) ||
-      !url.hostname.includes(".") ||
-      url.username ||
-      url.password
-    )
-      throw new Error();
-    url.search = "";
-    url.hash = "";
-    website = url.toString();
-  } catch {
-    throw new InputError(
-      "Enter a valid business website, such as example.com.",
-    );
+  const kind =
+    raw.kind === "contact" || raw.kind === "website_review"
+      ? raw.kind
+      : "contractor_review";
+  const service = cleanService(raw.service);
+  const subject =
+    kind === "contact"
+      ? field(raw.subject, "Subject", 2, 150)
+      : "Website review";
+  if (/[\r\n\x00-\x1f]/.test(subject))
+    throw new InputError("Enter a valid subject.");
+  let website =
+    kind === "contact" && !raw.website
+      ? ""
+      : field(raw.website, "Website", 4, 500);
+  if (website) {
+    try {
+      if (!/^https?:\/\//i.test(website)) website = `https://${website}`;
+      const url = new URL(website);
+      if (
+        !["http:", "https:"].includes(url.protocol) ||
+        !url.hostname.includes(".") ||
+        url.username ||
+        url.password
+      )
+        throw new Error();
+      url.search = "";
+      url.hash = "";
+      website = url.toString();
+    } catch {
+      throw new InputError(
+        "Enter a valid business website, such as example.com.",
+      );
+    }
   }
   const problem = field(raw.problem, "Main problem", 10, 2000);
   return {
@@ -152,6 +174,13 @@ export function parseLead(value: unknown): LeadInput {
     website,
     problem,
     attribution: cleanAttribution(raw.attribution),
+    kind,
+    service,
+    subject,
+    sessionId:
+      typeof raw.sessionId === "string" && UUID.test(raw.sessionId)
+        ? raw.sessionId
+        : undefined,
   };
 }
 

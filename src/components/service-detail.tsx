@@ -3,6 +3,9 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cleanService } from "@/lib/engagement/shared";
+import { testimonials } from "@/components/testimonials";
 import { ArrowRight, CheckCircle } from "lucide-react";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-json-ld";
 
@@ -42,6 +45,19 @@ export function ServiceDetail({
   relatedProjects,
   demo,
 }: ServiceDetailProps) {
+  const service = cleanService(usePathname().split("/").at(-1));
+  const contactHref = `/contact?service=${service}#inquiry-form`;
+  const proofName: Record<string, string> = {
+    "website-development": "Volodymyr",
+    "website-seo": "Katya Boiko",
+    ecommerce: "Olha Hylevych",
+    "google-ads": "Seyfullah Fidan",
+    "advertisement-creation": "Volodymyr",
+    design: "Olha Hylevych",
+    "mobile-app-development": "Oleksa Voznyak",
+    "ai-integration": "Emmanuel Akintayo",
+  };
+  const proof = testimonials.find((item) => item.name === proofName[service]);
   return (
     <>
       <BreadcrumbJsonLd
@@ -101,7 +117,8 @@ export function ServiceDetail({
               className="mt-8 flex flex-col sm:flex-row gap-4"
             >
               <Link
-                href="/contact"
+                href={contactHref}
+                data-placement="hero"
                 className="group inline-flex items-center gap-2 px-8 py-3.5 bg-sunset text-neon-navy font-medium rounded-full hover:bg-white transition-all"
               >
                 Get Started
@@ -129,7 +146,7 @@ export function ServiceDetail({
       )}
 
       {/* Features — interactive selectable cards */}
-      <FeaturesSection features={features} />
+      <FeaturesSection features={features} contactHref={contactHref} />
 
       {/* Process — timeline style */}
       <section className="py-24 bg-sunset/30 relative overflow-hidden">
@@ -281,16 +298,27 @@ export function ServiceDetail({
             <div className="absolute bottom-0 left-0 w-48 h-48 bg-sunset/5 rounded-full translate-y-1/2 -translate-x-1/4" />
 
             <div className="relative z-10 text-center max-w-2xl mx-auto">
+              {proof && (
+                <figure className="mb-10 rounded-2xl border border-white/15 bg-white/5 p-6 text-left">
+                  <blockquote className="text-white/90 leading-relaxed">
+                    “{proof.content}”
+                  </blockquote>
+                  <figcaption className="mt-4 text-sm text-white/60">
+                    {proof.name} · {proof.role}
+                  </figcaption>
+                </figure>
+              )}
               <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
                 Ready to Get Started?
               </h2>
               <p className="text-white/40 mb-8 leading-relaxed">
-                Let&apos;s discuss how our {title.toLowerCase()} services can help
-                your business grow. Get in touch for a free consultation.
+                Let&apos;s discuss how our {title.toLowerCase()} services can
+                help your business grow. Get in touch for a free consultation.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Link
-                  href="/contact"
+                  href={contactHref}
+                  data-placement="cta"
                   className="group inline-flex items-center gap-2 px-8 py-3.5 bg-sunset text-neon-navy font-medium rounded-full hover:bg-white transition-all"
                 >
                   Start a Project
@@ -303,6 +331,17 @@ export function ServiceDetail({
                   View All Services
                 </Link>
               </div>
+              {["website-development", "website-seo", "ecommerce"].includes(
+                service,
+              ) && (
+                <Link
+                  href={`/contact?intent=review&service=${service}#inquiry-form`}
+                  data-placement="cta"
+                  className="mt-6 inline-block text-sm text-white/80 underline"
+                >
+                  Already have a website? Get a free review.
+                </Link>
+              )}
             </div>
           </motion.div>
         </div>
@@ -311,7 +350,13 @@ export function ServiceDetail({
   );
 }
 
-function FeaturesSection({ features }: { features: Feature[] }) {
+function FeaturesSection({
+  features,
+  contactHref,
+}: {
+  features: Feature[];
+  contactHref: string;
+}) {
   const [active, setActive] = useState(0);
 
   return (
@@ -356,7 +401,9 @@ function FeaturesSection({ features }: { features: Feature[] }) {
                 <div className="flex items-center gap-3">
                   <CheckCircle
                     className={`h-5 w-5 flex-shrink-0 transition-colors duration-300 ${
-                      active === i ? "text-sunset/70" : "text-neon-navy/30 group-hover:text-neon-navy/60"
+                      active === i
+                        ? "text-sunset/70"
+                        : "text-neon-navy/30 group-hover:text-neon-navy/60"
                     }`}
                   />
                   <h3
@@ -395,7 +442,8 @@ function FeaturesSection({ features }: { features: Feature[] }) {
                 </p>
                 <div className="mt-6">
                   <Link
-                    href="/contact"
+                    href={contactHref}
+                    data-placement="cta"
                     className="group inline-flex items-center gap-2 text-sm font-medium text-neon-navy hover:text-nebulosity transition-colors"
                   >
                     Discuss this with us

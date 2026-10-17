@@ -11,7 +11,7 @@ export default function PrivacyPage() {
       <section className="pt-32 pb-24">
         <div className="mx-auto max-w-3xl px-6 lg:px-8">
           <h1 className="text-4xl font-bold text-neon-navy mb-8">Privacy Policy</h1>
-          <p className="text-sm text-wild-dove mb-12">Last updated: September 25, 2026</p>
+          <p className="text-sm text-wild-dove mb-12">Last updated: October 17, 2026</p>
 
           <div className="space-y-8 text-nebulosity/80 leading-relaxed">
             <div>
@@ -19,7 +19,7 @@ export default function PrivacyPage() {
               <p>
                 We collect information you provide directly to us, such as when you fill out a contact form,
                 request a quote, or communicate with us via email. This may include your name, email address,
-                phone number, company name, business website, and project details. For website review requests,
+                phone number, company name, business website, and project details. For inquiries,
                 we also record the entry page, referring website hostname, and campaign labels to understand
                 how the inquiry reached us. We use a keyed hash of the network address to limit repeated submissions.
               </p>
@@ -42,7 +42,7 @@ export default function PrivacyPage() {
                 We do not sell, trade, or otherwise transfer your personal information to third parties.
                 We may share information with trusted service providers who assist us in operating our
                 website and conducting our business, provided they agree to keep this information confidential.
-                Website review requests use Supabase for storage and EmailJS for notification
+                Inquiries use Supabase for storage and EmailJS for notification
                 emails. Optional call scheduling is handled by Calendly.
               </p>
             </div>
@@ -50,14 +50,19 @@ export default function PrivacyPage() {
             <div>
               <h2 className="text-xl font-semibold text-neon-navy mb-3">4. Cookies and Tracking</h2>
               <p>
-                Our website may use cookies and similar tracking technologies to enhance your browsing
-                experience and analyze site traffic. You can control cookie preferences through your
-                browser settings.
+                Optional analytics and session recordings start only after you choose “Allow analytics”.
+                Choose “Essential only” to decline, or change your choice using “Privacy settings” in the footer.
+                Declining does not prevent you from sending an inquiry.
                 We keep first-visit campaign information in session storage for the current browser tab.
+                With your permission, Vercel Web Analytics and Speed Insights measure visits and performance,
+                and our database records page views, service clicks, and form starts or errors. A random browser-tab
+                session identifier expires after 30 minutes of inactivity and is stored as a keyed hash on the server.
                 Our conversion events describe actions such as starting a form or completing a booking;
                 they do not include your name, email address, website, or message. Query strings are removed
                 from the URLs sent to Vercel Web Analytics.
               </p>
+              <p className="mt-3">With your permission, Microsoft Clarity provides heatmaps and masked session recordings to help us understand how visitors use the site. Inquiry forms are masked and the private dashboard is excluded. Clarity processes usage data for site analytics; advertising storage is disabled in our consent signal. See <a href="https://privacy.microsoft.com/privacystatement" className="underline" target="_blank" rel="noopener noreferrer">Microsoft’s privacy statement</a>. We record saved inquiries and their campaign source to handle your request even if you decline optional analytics.</p>
+              <p className="mt-3">Owner sign-in uses an essential, secure session cookie lasting up to eight hours. Sign-in codes expire after ten minutes. We retain inquiry records to manage your request and client relationship; contact us to request deletion. The dashboard’s reporting period filters records and does not delete them.</p>
             </div>
 
             <div>

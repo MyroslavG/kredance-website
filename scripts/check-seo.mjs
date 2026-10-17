@@ -4,7 +4,7 @@ import path from "node:path";
 const outputDirectory = path.resolve(".next/server/app");
 const siteOrigin = "https://www.kredance.com";
 // These pages remain available by direct URL but are excluded from navigation and search indexing.
-const hiddenRoutes = new Set(["/about", "/insights"]);
+const hiddenRoutes = new Set(["/about", "/insights", "/dashboard"]);
 const errors = [];
 
 function decodeHtml(value) {

@@ -22,6 +22,40 @@ export async function createLeadDatabase() {
     const body = raw as Record<string, unknown>;
     try {
       // Fixed SQL only: this helper never interpolates incoming RPC names/arguments.
+      const statements: Record<string, [string, unknown[]]> = {
+        record_site_event: [
+          "select public.record_site_event($1::jsonb,$2) as result",
+          [JSON.stringify(body.p_event), body.p_ip_hash],
+        ],
+        dashboard_issue_code: [
+          "select public.dashboard_issue_code($1::uuid,$2,$3) as result",
+          [body.p_id, body.p_code_hash, body.p_ip_hash],
+        ],
+        dashboard_verify_code: [
+          "select public.dashboard_verify_code($1::uuid,$2,$3) as result",
+          [body.p_id, body.p_code_hash, body.p_session_hash],
+        ],
+        dashboard_session_valid: [
+          "select public.dashboard_session_valid($1) as result",
+          [body.p_session_hash],
+        ],
+        dashboard_logout: [
+          "select public.dashboard_logout($1) as result",
+          [body.p_session_hash],
+        ],
+        dashboard_report: [
+          "select public.dashboard_report($1,$2::integer) as result",
+          [body.p_session_hash, body.p_days],
+        ],
+        dashboard_update_lead: [
+          "select public.dashboard_update_lead($1,$2::uuid,$3::jsonb) as result",
+          [body.p_session_hash, body.p_id, JSON.stringify(body.p_changes)],
+        ],
+      };
+      if (Object.hasOwn(statements, name)) {
+        const [sql, values] = statements[name];
+        return (await db.query<{ result: T }>(sql, values)).rows[0].result;
+      }
       if (name === "accept_website_lead") {
         const result = await db.query<{ result: T }>(
           "select public.accept_website_lead($1::uuid, $2, $3, $4::jsonb, $5::jsonb) as result",

@@ -1,6 +1,7 @@
 "use client";
 
 import { track } from "@vercel/analytics";
+import { analyticsAllowed } from "../engagement/shared";
 
 export type FunnelEvent =
   | "contractor_page_viewed"
@@ -15,6 +16,7 @@ export type FunnelLocation =
   | "contact";
 
 export function trackFunnel(event: FunnelEvent, location: FunnelLocation) {
+  if (!analyticsAllowed()) return;
   try {
     track(event, { location });
   } catch {

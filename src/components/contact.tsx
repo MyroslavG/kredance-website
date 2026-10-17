@@ -1,226 +1,325 @@
 "use client";
 
-import { useState, useRef, type FormEvent } from "react";
+import { Suspense, useRef, useState, type FormEvent } from "react";
+import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { CalendlyEmbed } from "@/components/calendly-embed";
-import emailjs from "@emailjs/browser";
-import { motion } from "framer-motion";
-import { Mail, MapPin, Phone, ArrowRight, CheckCircle, AlertCircle, Loader2, Calendar } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { captureAttribution } from "@/lib/leads/attribution";
+import { engagementSession, trackSite } from "@/lib/engagement/client";
+import { cleanService, serviceOptions } from "@/lib/engagement/shared";
 
-const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "";
-const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "";
-const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "";
-
-type Status = "idle" | "sending" | "sent" | "error";
+const inputClass =
+  "mt-2 w-full rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-white placeholder:text-white/40 focus:outline-2 focus:outline-sunset";
 
 export function Contact() {
-  const formRef = useRef<HTMLFormElement>(null);
-  const [status, setStatus] = useState<Status>("idle");
+  return (
+    <Suspense fallback={<ContactForm review={false} initialService="" />}>
+      <ContactWithParams />
+    </Suspense>
+  );
+}
 
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    if (!formRef.current) return;
-
+function ContactWithParams() {
+  const params = useSearchParams();
+  const review = params.get("intent") === "review";
+  const initialService = cleanService(params.get("service"));
+  return (
+    <ContactForm
+      key={`${review}:${initialService}`}
+      review={review}
+      initialService={initialService}
+    />
+  );
+}
+function ContactForm({
+  review,
+  initialService,
+}: {
+  review: boolean;
+  initialService: string;
+}) {
+  const submissionId = useRef<string | undefined>(undefined);
+  const started = useRef(false);
+  const inFlight = useRef(false);
+  const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
+  const [error, setError] = useState("");
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (inFlight.current) return;
+    inFlight.current = true;
     setStatus("sending");
+    setError("");
+    const form = new FormData(event.currentTarget);
+    submissionId.current ??= crypto.randomUUID();
     try {
-      await emailjs.sendForm(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
-        formRef.current,
-        EMAILJS_PUBLIC_KEY,
-      );
+      const response = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        signal: AbortSignal.timeout(20_000),
+        body: JSON.stringify({
+          submissionId: submissionId.current,
+          sessionId: engagementSession(),
+          kind: review ? "website_review" : "contact",
+          service: form.get("service"),
+          subject: form.get("subject"),
+          name: form.get("name"),
+          email: form.get("email"),
+          website: form.get("website"),
+          problem: form.get("message"),
+          companyFax: form.get("companyFax"),
+          attribution: captureAttribution(),
+        }),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || !result.accepted) {
+        if ([400, 409, 422].includes(response.status))
+          submissionId.current = undefined;
+        throw new Error(
+          result.error || "We couldn’t save your request. Please try again.",
+        );
+      }
       setStatus("sent");
-      formRef.current.reset();
-    } catch {
-      setStatus("error");
+    } catch (cause) {
+      trackSite("form_error", String(form.get("service") || ""), "contact");
+      setError(
+        cause instanceof Error && cause.name !== "TimeoutError"
+          ? cause.message
+          : "We couldn’t confirm your request. Please retry; duplicate requests are safely handled.",
+      );
+      setStatus("idle");
+    } finally {
+      inFlight.current = false;
     }
   }
-
   return (
     <>
-    {/* Calendly Booking Section */}
-    <section className="pt-32 pb-24 bg-nebulosity relative overflow-hidden">
-      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="text-center mb-10"
-        >
-          <div className="inline-flex items-center gap-2 mb-4">
-            <Calendar className="h-5 w-5 text-sunset/60" />
-            <span className="text-xs font-medium tracking-widest uppercase text-astro-grey">
-              Book a Call
-            </span>
-          </div>
-          <h1 className="text-3xl lg:text-4xl font-bold tracking-tight text-sunset">
-            Schedule a Free Consultation
-          </h1>
-          <p className="mt-4 text-lg text-sunset/50 max-w-2xl mx-auto">
-            Prefer to talk it through? Book a 30-minute call and let&apos;s discuss your project.
-          </p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          className="rounded-2xl overflow-hidden border border-white/5"
-        >
-          <CalendlyEmbed />
-        </motion.div>
-      </div>
-    </section>
-
-    {/* Contact Form Section */}
-    <section className="pb-24 bg-nebulosity relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-96 h-96 bg-neon-navy/20 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-red-inferno/10 rounded-full blur-3xl" />
-
-      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-16">
-          {/* Left */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <span className="text-xs font-medium tracking-widest uppercase text-astro-grey">
-              Contact
-            </span>
-            <h2 className="mt-4 text-4xl lg:text-5xl font-bold tracking-tight text-sunset leading-[1.15]">
-              Let&apos;s Build Something
-              <br />
-              <span className="text-astro-grey">Great Together</span>
-            </h2>
-            <p className="mt-6 text-lg text-sunset/50 leading-relaxed">
-              Ready to transform your digital presence? Tell us about your project
-              and we&apos;ll get back to you within 24 hours.
+      <section
+        id="inquiry-form"
+        className="bg-nebulosity px-6 pt-32 pb-24 scroll-mt-24"
+      >
+        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2">
+          <div className="text-sunset">
+            <p className="text-sm uppercase tracking-widest text-sunset/60">
+              Let’s talk
             </p>
-
-            <div className="mt-12 flex flex-col gap-6">
-              <div className="flex items-center gap-4">
-                <div className="h-11 w-11 rounded-xl bg-white/5 flex items-center justify-center">
-                  <Mail className="h-5 w-5 text-sunset/60" />
-                </div>
-                <div>
-                  <div className="text-sm text-sunset/40">Email</div>
-                  <div className="text-sunset font-medium">myroslav@kredance.com</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="h-11 w-11 rounded-xl bg-white/5 flex items-center justify-center">
-                  <Phone className="h-5 w-5 text-sunset/60" />
-                </div>
-                <div>
-                  <div className="text-sm text-sunset/40">Phone</div>
-                  <div className="text-sunset font-medium">+1 (438) 497-3894</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="h-11 w-11 rounded-xl bg-white/5 flex items-center justify-center">
-                  <MapPin className="h-5 w-5 text-sunset/60" />
-                </div>
-                <div>
-                  <div className="text-sm text-sunset/40">Location</div>
-                  <div className="text-sunset font-medium">Ottawa, ON</div>
-                </div>
-              </div>
+            <h1 className="mt-4 text-4xl sm:text-5xl font-bold leading-tight">
+              {review
+                ? "Get three ideas for a better website."
+                : "What would you like to build?"}
+            </h1>
+            <p className="mt-6 text-lg text-sunset/70">
+              {review
+                ? "Share your website and what you want it to do better. We’ll send three practical improvements within one business day. No call required."
+                : "Tell us a little about your project. We’ll reply within one business day with a useful next step."}
+            </p>
+            <div className="mt-10 space-y-4">
+              <p>
+                <span className="block text-sm text-sunset/60">Email</span>
+                <a
+                  href="mailto:myroslav@kredance.com"
+                  className="underline underline-offset-4"
+                >
+                  myroslav@kredance.com
+                </a>
+              </p>
+              <p>
+                <span className="block text-sm text-sunset/60">Phone</span>
+                <a
+                  href="tel:+14384973894"
+                  className="underline underline-offset-4"
+                >
+                  +1 (438) 497-3894
+                </a>
+              </p>
+              <p className="text-sunset/70">Ottawa, ON</p>
             </div>
-          </motion.div>
-
-          {/* Right - Form */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <form
-              ref={formRef}
-              onSubmit={handleSubmit}
-              className="space-y-5 p-8 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-sm"
+            <a
+              href="#book-a-call"
+              className="mt-8 inline-block rounded-full border border-white/30 px-6 py-3"
             >
-              <div className="grid sm:grid-cols-2 gap-5">
-                <div>
-                  <label className="block text-sm text-sunset/60 mb-2">Name</label>
-                  <Input
-                    name="from_name"
-                    required
-                    placeholder="Your name"
-                    className="bg-white/5 border-white/10 text-sunset placeholder:text-sunset/30 focus:border-sunset/30 rounded-xl h-11"
-                  />
+              Prefer a call? Choose a time
+            </a>
+            <p className="mt-5 text-sm text-sunset/70">
+              {review ? (
+                <Link href="/contact#inquiry-form" className="underline">
+                  Have a new project instead?
+                </Link>
+              ) : (
+                <Link
+                  href="/contact?intent=review#inquiry-form"
+                  className="underline"
+                >
+                  Already have a website? Request a free review.
+                </Link>
+              )}
+            </p>
+          </div>
+          {status === "sent" ? (
+            <div
+              role="status"
+              className="h-fit rounded-2xl border border-white/15 bg-white/5 p-8 text-sunset"
+            >
+              <h2 className="text-2xl font-semibold">
+                Your {review ? "review request" : "message"} is in.
+              </h2>
+              <p className="mt-4">
+                We’ve saved your request and will reply within one business day.
+                You don’t need to submit it again.
+              </p>
+              <a href="#book-a-call" className="mt-6 inline-block underline">
+                You can also book a free consultation.
+              </a>
+            </div>
+          ) : (
+            <form
+              onSubmit={submit}
+              onChange={() => {
+                if (!started.current) {
+                  started.current = true;
+                  trackSite("form_start", initialService, "contact");
+                }
+              }}
+              data-clarity-mask="true"
+              aria-label={
+                review ? "Request a website review" : "Project inquiry"
+              }
+              className="rounded-2xl border border-white/10 bg-white/5 p-6 sm:p-8 text-sunset"
+            >
+              <fieldset disabled={status === "sending"} className="space-y-5">
+                <div className="grid sm:grid-cols-2 gap-5">
+                  <label className="block text-sm">
+                    Name
+                    <input
+                      className={inputClass}
+                      name="name"
+                      autoComplete="name"
+                      required
+                      minLength={2}
+                      maxLength={100}
+                    />
+                  </label>
+                  <label className="block text-sm">
+                    Email
+                    <input
+                      className={inputClass}
+                      name="email"
+                      type="email"
+                      autoComplete="email"
+                      required
+                      maxLength={254}
+                    />
+                  </label>
                 </div>
-                <div>
-                  <label className="block text-sm text-sunset/60 mb-2">Email</label>
-                  <Input
-                    name="from_email"
-                    type="email"
-                    required
-                    placeholder="you@company.com"
-                    className="bg-white/5 border-white/10 text-sunset placeholder:text-sunset/30 focus:border-sunset/30 rounded-xl h-11"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm text-sunset/60 mb-2">Subject</label>
-                <Input
-                  name="subject"
-                  required
-                  placeholder="Project inquiry"
-                  className="bg-white/5 border-white/10 text-sunset placeholder:text-sunset/30 focus:border-sunset/30 rounded-xl h-11"
-                />
-              </div>
-              <div>
-                <label className="block text-sm text-sunset/60 mb-2">Message</label>
-                <Textarea
-                  name="message"
-                  required
-                  placeholder="Tell us about your project..."
-                  rows={5}
-                  className="bg-white/5 border-white/10 text-sunset placeholder:text-sunset/30 focus:border-sunset/30 rounded-xl resize-none"
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={status === "sending"}
-                className="group w-full inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-sunset text-neon-navy font-medium rounded-full hover:bg-white transition-all disabled:opacity-60 disabled:cursor-not-allowed"
-              >
-                {status === "sending" ? (
-                  <>
-                    Sending...
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  </>
-                ) : (
-                  <>
-                    Send Message
-                    <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </>
+                <label className="block text-sm">
+                  Service
+                  <select
+                    key={initialService}
+                    name="service"
+                    defaultValue={initialService}
+                    className={`${inputClass} [&>option]:bg-nebulosity`}
+                  >
+                    <option value="">Not sure yet</option>
+                    {serviceOptions.map(([slug, label]) => (
+                      <option key={slug} value={slug}>
+                        {label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                {!review && (
+                  <label className="block text-sm">
+                    Subject
+                    <input
+                      className={inputClass}
+                      name="subject"
+                      required
+                      minLength={2}
+                      maxLength={150}
+                      placeholder="A new website for my business"
+                    />
+                  </label>
                 )}
-              </button>
-
-              {status === "sent" && (
-                <div className="flex items-center gap-2 text-sm text-green-400">
-                  <CheckCircle className="h-4 w-4" />
-                  Message sent! We&apos;ll get back to you soon.
+                <label className="block text-sm">
+                  Website {review ? "" : "(optional)"}
+                  <input
+                    className={inputClass}
+                    name="website"
+                    inputMode="url"
+                    autoComplete="url"
+                    required={review}
+                    minLength={4}
+                    maxLength={500}
+                    placeholder="yourbusiness.ca"
+                  />
+                </label>
+                <label className="block text-sm">
+                  {review
+                    ? "What would you like your website to do better?"
+                    : "Tell us about your project"}
+                  <textarea
+                    className={inputClass}
+                    name="message"
+                    rows={4}
+                    required
+                    minLength={10}
+                    maxLength={2000}
+                    placeholder={
+                      review
+                        ? "For example: help visitors request a quote."
+                        : "What do you need, and when would you like to start?"
+                    }
+                  />
+                </label>
+                <div
+                  aria-hidden="true"
+                  className="absolute -left-[10000px] h-px w-px overflow-hidden"
+                >
+                  <label>
+                    Company fax
+                    <input name="companyFax" tabIndex={-1} autoComplete="off" />
+                  </label>
                 </div>
+                <button
+                  disabled={status === "sending"}
+                  className="w-full rounded-full bg-sunset px-6 py-3.5 font-medium text-neon-navy hover:bg-white disabled:opacity-60"
+                >
+                  {status === "sending"
+                    ? "Saving your request…"
+                    : review
+                      ? "Get my free website review"
+                      : "Send message"}
+                </button>
+              </fieldset>
+              {error && (
+                <p role="alert" className="mt-4 text-red-200">
+                  {error} You can also email us directly.
+                </p>
               )}
-              {status === "error" && (
-                <div className="flex items-center gap-2 text-sm text-red-400">
-                  <AlertCircle className="h-4 w-4" />
-                  Something went wrong. Please try again or email us directly.
-                </div>
-              )}
+              <p className="mt-4 text-xs text-sunset/60">
+                We use these details to respond to your request. No marketing
+                subscription.{" "}
+                <Link href="/privacy" className="underline">
+                  Privacy policy
+                </Link>
+              </p>
             </form>
-          </motion.div>
+          )}
         </div>
-      </div>
-    </section>
+      </section>
+      <section
+        id="book-a-call"
+        className="bg-nebulosity px-6 pb-24 scroll-mt-24"
+      >
+        <div className="mx-auto max-w-5xl">
+          <h2 className="text-center text-3xl font-bold text-sunset">
+            Schedule a free consultation
+          </h2>
+          <p className="mt-3 mb-8 text-center text-sunset/60">
+            A 30-minute conversation about your project.
+          </p>
+          <CalendlyEmbed />
+        </div>
+      </section>
     </>
   );
 }

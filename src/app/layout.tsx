@@ -4,7 +4,6 @@ import "./globals.css";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { siteConfig } from "@/lib/site";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { SiteAnalytics } from "@/components/site-analytics";
 
 const roboto = Roboto({
@@ -23,6 +22,7 @@ export const metadata: Metadata = {
   title: "Kredance | AI Automation, Web Development & Digital Marketing",
   description: siteConfig.description,
   applicationName: siteConfig.name,
+  verification: { google: "eo3RBBhOHP8vcbvrcHRRKLRCJbrVY-lQEd2eTp3hLdI" },
   robots: {
     index: true,
     follow: true,
@@ -73,7 +73,6 @@ export default function RootLayout({
         <Navbar />
         <main className="flex-1 flex flex-col">{children}</main>
         <Footer />
-        <SpeedInsights />
         <SiteAnalytics />
       </body>
     </html>

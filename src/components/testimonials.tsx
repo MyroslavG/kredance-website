@@ -11,7 +11,7 @@ interface Testimonial {
 }
 
 // Approval and attribution for the six latest entries: docs/testimonial-sources.md.
-const testimonials: Testimonial[] = [
+export const testimonials: Testimonial[] = [
   {
     name: "Volodymyr",
     role: "Skyline Flow",

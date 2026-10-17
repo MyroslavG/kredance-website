@@ -1,4 +1,5 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
+import { serviceLabel } from "../engagement/shared";
 import {
   InputError,
   parseLead,
@@ -160,18 +161,29 @@ export function buildEmails(
           from_name: lead.name,
           from_email: lead.email,
           reply_to: lead.email,
-          subject: "New contractor website review request",
+          subject:
+            lead.kind === "contact"
+              ? `New Kredance inquiry: ${lead.subject}`
+              : lead.kind === "website_review"
+                ? "New website review request"
+                : "New contractor website review request",
           message: [
-            "A new website review request has been saved.",
+            lead.kind === "contact"
+              ? "A new project inquiry has been saved."
+              : "A new website review request has been saved.",
             "",
             `Name: ${lead.name}`,
             `Email: ${lead.email}`,
             `Website: ${lead.website}`,
+            `Service: ${serviceLabel(lead.service)}`,
+            `Subject: ${lead.subject}`,
             "",
             "Main problem:",
             lead.problem,
             "",
-            "Next action: review the website and reply with three improvements within one business day.",
+            lead.kind === "contact"
+              ? "Next action: reply to the inquiry within one business day."
+              : "Next action: review the website and reply with three improvements within one business day.",
             "",
             `Attribution: ${JSON.stringify(lead.attribution)}`,
           ].join("\n"),
@@ -198,7 +210,7 @@ export type IntakeDependencies = {
     config: LeadConfig,
     body: Record<string, unknown>,
   ) => Promise<SavedLead>;
-  accepted: (lead: SavedLead) => void;
+  accepted: (lead: SavedLead, input: LeadInput) => void;
 };
 
 export async function handleLeadRequest(
@@ -219,6 +231,9 @@ export async function handleLeadRequest(
         lead.website,
         lead.problem,
         lead.attribution,
+        lead.kind,
+        lead.service,
+        lead.subject,
       ]),
       config.hashSecret,
     );
@@ -226,11 +241,17 @@ export async function handleLeadRequest(
       p_submission_id: lead.submissionId,
       p_payload_hash: payloadHash,
       p_ip_hash: hashValue(ip || "unknown", config.hashSecret),
-      p_lead: lead,
+      p_lead: {
+        ...lead,
+        sessionId: undefined,
+        sessionHash: lead.sessionId
+          ? hashValue(`visit:${lead.sessionId}`, config.hashSecret)
+          : null,
+      },
       p_emails: buildEmails(lead, config),
     });
     try {
-      dependencies.accepted(saved);
+      dependencies.accepted(saved, lead);
     } catch {
       console.error("lead_dispatch_schedule_failed", { leadId: saved.id });
     }
