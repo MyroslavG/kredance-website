@@ -19,48 +19,56 @@ const capabilities = [
   {
     icon: Bot,
     title: "AI Automation",
+    href: "/services/ai-automation",
     description:
       "Streamline operations with intelligent automation, chatbots, and AI-powered workflows that save time and reduce costs.",
   },
   {
     icon: Globe,
     title: "Website Development",
+    href: "/services/website-development",
     description:
       "Custom-built, responsive websites that look stunning and perform flawlessly across every device and browser.",
   },
   {
     icon: Smartphone,
     title: "Mobile App Development",
+    href: "/services/mobile-app-development",
     description:
       "Native and cross-platform mobile apps designed to engage users and extend your digital reach.",
   },
   {
     icon: ShoppingCart,
     title: "Ecommerce Solutions",
+    href: "/services/ecommerce",
     description:
       "End-to-end online store development with secure payments, inventory management, and conversion optimization.",
   },
   {
     icon: Search,
     title: "SEO & Analytics",
+    href: "/services/website-seo",
     description:
       "Data-driven search engine optimization that boosts visibility and drives qualified organic traffic to your site.",
   },
   {
     icon: Megaphone,
     title: "Digital Marketing",
+    href: "/services/advertisement-creation",
     description:
       "Strategic advertising campaigns across Google, social media, and more to maximize your ROI and brand awareness.",
   },
   {
     icon: Shield,
     title: "Cybersecurity",
+    href: "/services/cybersecurity",
     description:
       "Comprehensive security audits, penetration testing, and protection strategies to safeguard your digital assets.",
   },
   {
     icon: Palette,
     title: "Design & Branding",
+    href: "/services/design",
     description:
       "Eye-catching UI/UX design, brand identity, and creative assets that make a lasting impression.",
   },
@@ -184,17 +192,22 @@ export function Hero() {
                   delay: i * 0.08,
                   ease: [0.22, 1, 0.36, 1],
                 }}
-                className="group p-6 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 transition-all"
               >
-                <div className="h-10 w-10 rounded-xl bg-sunset/10 flex items-center justify-center mb-4">
-                  <cap.icon className="h-5 w-5 text-sunset/80" />
-                </div>
-                <h3 className="text-lg font-semibold text-white mb-2">
-                  {cap.title}
-                </h3>
-                <p className="text-sm text-white/40 leading-relaxed">
-                  {cap.description}
-                </p>
+                <Link
+                  href={cap.href}
+                  aria-label={cap.title}
+                  className="group block h-full p-6 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white transition-colors"
+                >
+                  <div className="h-10 w-10 rounded-xl bg-sunset/10 flex items-center justify-center mb-4">
+                    <cap.icon aria-hidden="true" className="h-5 w-5 text-sunset/80" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-white mb-2">
+                    {cap.title}
+                  </h3>
+                  <p className="text-sm text-white/40 leading-relaxed">
+                    {cap.description}
+                  </p>
+                </Link>
               </motion.div>
             ))}
           </div>
