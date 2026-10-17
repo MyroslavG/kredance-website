@@ -77,7 +77,7 @@ export function Hero() {
   return (
     <section className="bg-white">
       {/* The browser selects one source for the current viewport. */}
-      <div className="w-full h-[70svh] sm:h-auto sm:aspect-[16/7] max-h-[720px] overflow-hidden bg-neon-navy">
+      <div className="w-full aspect-[9/16] sm:aspect-[16/7] sm:max-h-[720px] overflow-hidden bg-neon-navy">
         <video
           autoPlay
           loop
@@ -85,7 +85,7 @@ export function Hero() {
           playsInline
           preload="metadata"
           poster="/hero-poster.jpg"
-          className="w-full h-full object-contain sm:object-cover"
+          className="block w-full h-full object-cover"
         >
           <source
             src="/mobile_hero_video.mp4"
