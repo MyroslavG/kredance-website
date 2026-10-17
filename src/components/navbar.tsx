@@ -27,9 +27,7 @@ const services = [
 ];
 
 const navLinks = [
-  { name: "About", href: "/about" },
   { name: "AI Automation", href: "/ai-automation" },
-  { name: "Insights", href: "/insights" },
   { name: "Portfolio", href: "/portfolio" },
   { name: "Testimonials", href: "/testimonials" },
   { name: "Contact", href: "/contact" },
@@ -88,14 +86,8 @@ export function Navbar() {
 
           {/* Desktop Nav */}
           <div className="hidden lg:flex items-center gap-1">
-            <NavLink href="/about" active={pathname === "/about"} light={useLight}>
-              About
-            </NavLink>
             <NavLink href="/ai-automation" active={pathname === "/ai-automation"} light={useLight}>
               AI Automation
-            </NavLink>
-            <NavLink href="/insights" active={pathname === "/insights"} light={useLight}>
-              Insights
             </NavLink>
 
             {/* Services Dropdown */}
@@ -177,7 +169,7 @@ export function Navbar() {
                   </div>
                   <div className="flex-1 overflow-y-auto p-4">
                     <div className="flex flex-col gap-1">
-                      {navLinks.slice(0, 3).map((link) => (
+                      {navLinks.slice(0, 1).map((link) => (
                         <MobileNavLink
                           key={link.name}
                           href={link.href}
@@ -239,7 +231,7 @@ export function Navbar() {
                         </AnimatePresence>
                       </div>
 
-                      {navLinks.slice(3).map((link) => (
+                      {navLinks.slice(1).map((link) => (
                         <MobileNavLink
                           key={link.name}
                           href={link.href}

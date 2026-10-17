@@ -3,6 +3,8 @@ import path from "node:path";
 
 const outputDirectory = path.resolve(".next/server/app");
 const siteOrigin = "https://www.kredance.com";
+// These pages remain available by direct URL but are excluded from navigation and search indexing.
+const hiddenRoutes = new Set(["/about", "/insights"]);
 const errors = [];
 
 function decodeHtml(value) {
@@ -180,7 +182,10 @@ for (const page of pages) {
   for (const directive of ["robots", "googlebot"]) {
     const robotsTag = findTag(page.html, "meta", "name", directive);
     const content = robotsTag ? attribute(robotsTag, "content") : undefined;
-    if (content && /(?:^|,)\s*noindex\b/i.test(content)) {
+    const noindex = Boolean(content && /(?:^|,)\s*noindex\b/i.test(content));
+    if (hiddenRoutes.has(page.route) && !noindex) {
+      errors.push(`${page.route}: hidden page is missing ${directive} noindex directive`);
+    } else if (!hiddenRoutes.has(page.route) && noindex) {
       errors.push(`${page.route}: contains an unexpected noindex directive`);
     }
   }
@@ -205,6 +210,9 @@ for (const page of pages) {
 
     if (target.origin !== siteOrigin) continue;
     const targetPath = normalizePathname(target.pathname);
+    if (hiddenRoutes.has(targetPath) && targetPath !== normalizePathname(page.route)) {
+      errors.push(`${page.route}: links to hidden page "${href}"`);
+    }
     if (!routes.has(targetPath) && !outputAssetExists(target.pathname)) {
       errors.push(`${page.route}: broken internal link "${href}"`);
       continue;
@@ -273,7 +281,7 @@ while (routesToVisit.length > 0) {
 }
 
 for (const route of routes) {
-  if (route === "/") continue;
+  if (route === "/" || hiddenRoutes.has(route)) continue;
   if ((inboundLinks.get(route)?.size ?? 0) === 0) errors.push(`${route}: orphaned page has no inbound internal links`);
   if (!reachableRoutes.has(route)) errors.push(`${route}: page is not reachable from the homepage`);
 }
@@ -299,9 +307,10 @@ if (!fs.existsSync(sitemapPath)) {
   }
   if (locations.length !== sitemapRoutes.size) errors.push("sitemap.xml: contains duplicate URLs");
   for (const route of routes) {
-    if (!sitemapRoutes.has(route)) errors.push(`sitemap.xml: missing route ${route}`);
+    if (!hiddenRoutes.has(route) && !sitemapRoutes.has(route)) errors.push(`sitemap.xml: missing route ${route}`);
   }
   for (const route of sitemapRoutes) {
+    if (hiddenRoutes.has(route)) errors.push(`sitemap.xml: contains hidden route ${route}`);
     if (!routes.has(route)) errors.push(`sitemap.xml: URL has no exported page ${route}`);
   }
 }
