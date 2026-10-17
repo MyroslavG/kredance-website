@@ -92,6 +92,11 @@ export function Hero() {
             type="video/mp4"
             media="(max-width: 639px)"
           />
+          <source
+            src="/hero_video_1080p.mp4"
+            type="video/mp4"
+            media="(min-width: 1280px)"
+          />
           <source src="/hero_video.mp4" type="video/mp4" />
         </video>
       </div>
