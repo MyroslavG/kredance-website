@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/site";
+import { portfolioAdditions } from "@/lib/portfolio-additions";
 
 export const dynamic = "force-static";
 
@@ -63,5 +64,8 @@ const routes = [
 ] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return routes.map((route) => ({ url: `${siteConfig.url}${route}` }));
+  return [
+    ...routes,
+    ...portfolioAdditions.map(({ slug }) => `/portfolio/${slug}`),
+  ].map((route) => ({ url: `${siteConfig.url}${route}` }));
 }

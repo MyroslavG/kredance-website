@@ -1,0 +1,127 @@
+// Sources and scope: docs/portfolio-sources.md (reviewed 2026-10-17).
+// Describe published work without inferring technologies or performance results.
+export const portfolioAdditions = [
+  {
+    slug: "skyline-flow",
+    title: "Skyline Flow Website & Ads",
+    category: "Website",
+    description: "Website development and advertising for a residential and renovation plumbing business serving Toronto and the GTA.",
+    sections: [
+      { heading: "Project Overview", content: "Skyline Flow provides residential, renovation and condo plumbing services across Toronto and the Greater Toronto Area. Kredance's work covers the business website and advertising." },
+      { heading: "Website Experience", content: "The website introduces plumbing services, bathroom renovations, radiant floor heating and diagnostic work. Service information, contact options and a service request form help visitors describe their project and get in touch." },
+    ],
+    liveUrl: "https://skylineflow.ca/",
+    liveLinkLabel: "Visit Live Site",
+    relatedServices: [
+      { title: "Website Development", href: "/services/website-development" },
+      { title: "Advertisement Creation", href: "/services/advertisement-creation" },
+    ],
+  },
+  {
+    slug: "kolo-app",
+    title: "Kolo App",
+    category: "Mobile App",
+    description: "A mobile directory connecting people with Ukrainian-owned businesses and local services across Canada.",
+    sections: [
+      { heading: "Project Overview", content: "Kolo brings Ukrainian businesses and their customers together in one app. People can discover local services by city and category, while business owners can create and manage their own listings." },
+      { heading: "Business Discovery", content: "Listings bring together business contact details, websites, social profiles and locations. The app supports discovery across categories such as restaurants, beauty, trades and professional services, helping people explore the Ukrainian business community in Canada." },
+    ],
+    liveUrl: "https://apps.apple.com/ca/app/kolo-app/id6786062529",
+    liveLinkLabel: "View on the App Store",
+    relatedServices: [{ title: "Mobile App Development", href: "/services/mobile-app-development" }],
+  },
+  {
+    slug: "queen-cookie",
+    title: "Queen Cookie Website",
+    category: "Ecommerce",
+    description: "An online storefront for Queen Cookie by Olha, with occasion collections, ready-to-order sets and custom cookie requests.",
+    sections: [
+      { heading: "Project Overview", content: "Queen Cookie by Olha creates cookies for celebrations, gifts and events. Kredance's website project presents the brand's collections and gives customers separate paths for ready-to-order products and custom requests." },
+      { heading: "Shopping Experience", content: "Visitors can browse cookies by occasion, explore the gallery, read ordering information and start a custom order. The storefront includes collections for birthdays, weddings, corporate events and seasonal celebrations." },
+    ],
+    liveUrl: "https://queencookie.ca/",
+    liveLinkLabel: "Visit Live Site",
+    relatedServices: [{ title: "Ecommerce Shop Development", href: "/services/ecommerce" }],
+  },
+  {
+    slug: "fefa-events",
+    title: "FeFa Event Agency Website",
+    category: "Website",
+    description: "A website for an event agency planning private celebrations and corporate events in Ottawa and Gatineau.",
+    sections: [
+      { heading: "Project Overview", content: "FeFa is an event agency serving Ottawa and Gatineau. The website presents its event planning services, from birthdays and proposals to themed parties, workshops and corporate occasions." },
+      { heading: "Service Presentation", content: "The project brings the agency's event offering online, including decor, bar services and event coordination. It gives prospective clients a place to learn about the agency before discussing their event." },
+    ],
+    liveUrl: "https://www.fefaevents.com/",
+    liveLinkLabel: "Visit Live Site",
+    relatedServices: [{ title: "Website Development", href: "/services/website-development" }],
+  },
+  {
+    slug: "help-me-study",
+    title: "Help Me Study App",
+    category: "Mobile App",
+    description: "A study app project introduced through a public product preview and waitlist announcement.",
+    sections: [
+      { heading: "Project Overview", content: "Help Me Study is a study app project presented through a public preview and waitlist announcement. The project forms part of Kredance's mobile app portfolio." },
+      { heading: "Product Preview", content: "The announcement invites prospective users to follow the project and join its waitlist. The linked preview provides the original introduction to the app." },
+    ],
+    liveUrl: "https://www.linkedin.com/feed/update/urn:li:activity:7253804103191924737/",
+    liveLinkLabel: "View Project Announcement",
+    relatedServices: [{ title: "Mobile App Development", href: "/services/mobile-app-development" }],
+  },
+  {
+    slug: "kredance-website",
+    title: "Kredance Website",
+    category: "Website",
+    description: "Kredance's own website, bringing its services, project portfolio and customer inquiry flow together.",
+    sections: [
+      { heading: "Project Overview", content: "Kredance's website introduces the company's website development, mobile app, ecommerce and AI automation services. It brings service information and project examples together so prospective clients can explore the work and start a conversation." },
+      { heading: "From Portfolio to Inquiry", content: "Visitors can browse projects by service category, read project details and contact the team. A dedicated contractor page also offers a website review for businesses exploring improvements to their online presence." },
+    ],
+    liveUrl: "https://www.kredance.com/",
+    liveLinkLabel: "Visit Live Site",
+    relatedServices: [{ title: "Website Development", href: "/services/website-development" }],
+  },
+  {
+    slug: "frequo-app",
+    title: "Frequo App",
+    category: "Mobile App",
+    description: "A fitness app bringing workout, meal and habit tracking together, with voice logging and photo-based meal entry.",
+    sections: [
+      { heading: "Project Overview", content: "Frequo combines exercise, nutrition and habit tracking in a mobile app. The product brings these daily routines into one place so users can record their activity and follow their progress." },
+      { heading: "Everyday Tracking", content: "Users can log workouts and meals by voice, use a photo to record a meal, and track daily habits and streaks. These features make it possible to record activity without switching between separate tracking apps." },
+    ],
+    liveUrl: "https://apps.apple.com/ca/app/frequo/id6759203714",
+    liveLinkLabel: "View on the App Store",
+    relatedServices: [{ title: "Mobile App Development", href: "/services/mobile-app-development" }],
+  },
+  {
+    slug: "white-beauty-space",
+    title: "White Beauty Space Website & SEO",
+    category: "Website",
+    description: "Website redesign and SEO for an Ottawa beauty salon, presenting its services and online booking options.",
+    sections: [
+      { heading: "Project Overview", content: "Kredance's work for White Beauty Space covers a website redesign and SEO. The Ottawa salon's website introduces its beauty services, team and location, with links to online appointment booking." },
+      { heading: "Service Information", content: "Visitors can explore manicure, pedicure and laser hair removal services, read practical information and frequently asked questions, and find the salon's contact and booking details." },
+    ],
+    liveUrl: "https://www.whitebeautyspace.ca/",
+    liveLinkLabel: "Visit Live Site",
+    relatedServices: [
+      { title: "Website Development", href: "/services/website-development" },
+      { title: "Website SEO", href: "/services/website-seo" },
+    ],
+  },
+  {
+    slug: "care-by-vikki",
+    title: "Care By Vikki Website",
+    category: "Ecommerce",
+    description: "An online storefront for beauty and personal care products, with product browsing, gift cards and shopping information.",
+    sections: [
+      { heading: "Project Overview", content: "Care By Vikki is an online shop for beauty and personal care products. The website presents the product catalog alongside brand information, gifts, shipping details and customer contact options." },
+      { heading: "Storefront Experience", content: "Customers can browse skincare and haircare products, view product details, add items to a cart and find gift cards. The site also provides an email signup for product updates and offers." },
+    ],
+    liveUrl: "https://carebyvikki.com/",
+    liveLinkLabel: "Visit Live Site",
+    relatedServices: [{ title: "Ecommerce Shop Development", href: "/services/ecommerce" }],
+  },
+];
