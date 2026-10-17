@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import {
   ArrowRight,
-  ChevronDown,
   Globe,
   Bot,
   Smartphone,
@@ -78,7 +77,7 @@ export function Hero() {
   return (
     <section className="bg-white">
       {/* The browser selects one source for the current viewport. */}
-      <div className="relative w-full h-screen sm:h-auto sm:aspect-[16/8] overflow-hidden">
+      <div className="w-full h-[70svh] sm:h-auto sm:aspect-[16/7] max-h-[720px] overflow-hidden bg-neon-navy">
         <video
           autoPlay
           loop
@@ -86,7 +85,7 @@ export function Hero() {
           playsInline
           preload="metadata"
           poster="/hero-poster.jpg"
-          className="w-full h-full object-cover sm:object-top"
+          className="w-full h-full object-cover"
         >
           <source
             src="/mobile_hero_video.mp4"
@@ -95,106 +94,37 @@ export function Hero() {
           />
           <source src="/hero_video.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-r from-neon-navy/95 via-neon-navy/70 to-neon-navy/30" />
-        <div className="absolute inset-0 flex items-center px-6 pt-20 pb-28 lg:px-12">
-          <div className="mx-auto w-full max-w-7xl text-white">
-            <p className="text-sm tracking-widest uppercase text-white/70">
-              Kredance · Ottawa & beyond
-            </p>
-            <h1 className="mt-5 max-w-3xl text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.1]">
-              Turn your website into your next customer’s first step.
-            </h1>
-            <p className="mt-5 max-w-xl text-lg text-white/80">
-              Websites, online stores, and automation built around your
-              business.
-            </p>
-            <div className="mt-7 flex flex-col sm:flex-row gap-3 items-start">
-              <Link
-                href="/contact?intent=review#inquiry-form"
-                data-placement="hero"
-                className="rounded-full bg-sunset px-6 py-3 font-medium text-neon-navy hover:bg-white"
-              >
-                Get a free website review
-              </Link>
-              <Link
-                href="/contact"
-                data-placement="hero"
-                className="rounded-full border border-white/50 px-6 py-3 font-medium hover:bg-white/10"
-              >
-                Discuss your project
-              </Link>
-            </div>
-            <p className="mt-3 text-sm text-white/70">
-              Three practical improvements. No call required.
-            </p>
-          </div>
-        </div>
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 0.8 }}
-          className="absolute bottom-8 sm:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-        >
-          <span className="text-xs font-medium text-white/80 tracking-widest uppercase">
-            Scroll to explore
-          </span>
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <ChevronDown className="h-5 w-5 text-white/80" />
-          </motion.div>
-        </motion.div>
       </div>
 
       {/* Content below the video */}
-      <div className="mx-auto max-w-7xl px-6 lg:px-8 py-24">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="text-center max-w-4xl mx-auto"
-        >
-          <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-neon-navy leading-[1.1]">
-            We Build Digital
-            <br />
-            Experiences That
-            <br />
-            Drive Growth
-          </h2>
+      <div className="mx-auto max-w-7xl px-6 lg:px-8 py-12 sm:py-16">
+        <div className="text-center max-w-4xl mx-auto">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-neon-navy leading-[1.1]">
+            Websites, apps, and automation for your business.
+          </h1>
 
-          <p className="mt-8 max-w-2xl mx-auto text-lg text-wild-dove leading-relaxed">
-            From AI automation to custom websites, SEO, and eCommerce &mdash;
-            Kredance delivers end-to-end digital solutions that transform how
-            businesses operate and grow.
+          <p className="mt-6 max-w-2xl mx-auto text-lg text-wild-dove leading-relaxed">
+            We design and build the tools your business needs to grow.
           </p>
 
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/contact"
+              data-placement="hero"
               className="group inline-flex items-center gap-2 px-8 py-3.5 bg-neon-navy text-sunset font-medium rounded-full hover:bg-nebulosity transition-all"
             >
-              Start a Project
+              Discuss your project
               <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link
-              href="/services"
+              href="/portfolio"
+              data-placement="hero"
               className="inline-flex items-center gap-2 px-8 py-3.5 border border-neon-navy/20 text-neon-navy/70 font-medium rounded-full hover:bg-neon-navy/5 hover:text-neon-navy transition-all"
             >
-              Explore Services
+              View our work
             </Link>
           </div>
-          <p className="mt-6 text-sm text-nebulosity/70">
-            In the trades?{" "}
-            <Link
-              href="/websites-for-contractors"
-              className="font-medium text-neon-navy underline underline-offset-4"
-            >
-              Explore websites for Ottawa contractors.
-            </Link>
-          </p>
-        </motion.div>
+        </div>
       </div>
 
       {/* What We Do - Capabilities Grid */}
@@ -258,6 +188,34 @@ export function Hero() {
                 </Link>
               </motion.div>
             ))}
+          </div>
+
+          <div className="mt-8 rounded-2xl border border-white/10 p-6 sm:p-8 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+            <div>
+              <h3 className="text-lg font-semibold text-white">
+                Already have a website?
+              </h3>
+              <p className="mt-2 text-sm text-white/70">
+                Get three practical improvements. No call required.
+              </p>
+              <p className="mt-3 text-sm text-white/70">
+                In the trades?{" "}
+                <Link
+                  href="/websites-for-contractors"
+                  className="text-sunset underline underline-offset-4"
+                >
+                  Explore websites for Ottawa contractors.
+                </Link>
+              </p>
+            </div>
+            <Link
+              href="/contact?intent=review&service=website-development#inquiry-form"
+              data-placement="review"
+              className="inline-flex items-center justify-center gap-2 self-start shrink-0 rounded-full bg-sunset px-6 py-3 font-medium text-neon-navy hover:bg-white transition-colors"
+            >
+              Get a free website review
+              <ArrowRight aria-hidden="true" className="h-4 w-4" />
+            </Link>
           </div>
 
           <motion.div
