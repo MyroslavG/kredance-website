@@ -85,7 +85,7 @@ export function Hero() {
           playsInline
           preload="metadata"
           poster="/hero-poster.jpg"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-contain sm:object-cover"
         >
           <source
             src="/mobile_hero_video.mp4"
