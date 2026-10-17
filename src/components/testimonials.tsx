@@ -3,7 +3,51 @@
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 
-const testimonials = [
+interface Testimonial {
+  name: string;
+  role: string;
+  content: string;
+  rating?: number;
+}
+
+// Approval and attribution for the six latest entries: docs/testimonial-sources.md.
+const testimonials: Testimonial[] = [
+  {
+    name: "Volodymyr",
+    role: "Skyline Flow",
+    content:
+      "The site explains our plumbing services clearly and gives customers an easy way to request a quote. Myroslav also took care of the advertising.",
+  },
+  {
+    name: "Olha Hylevych",
+    role: "Queen Cookie",
+    content:
+      "Customers can browse cookie collections or ask for a custom order in one place. The shop feels like my brand.",
+  },
+  {
+    name: "Daryna Khraniuk",
+    role: "FeFa Event Agency",
+    content:
+      "We wanted people to understand the kinds of events we organise. The website brings everything together without making it complicated.",
+  },
+  {
+    name: "Katya Boiko",
+    role: "White Beauty Space",
+    content:
+      "The redesign makes our services easier to explore and booking easy to find. I also appreciated the work on SEO.",
+  },
+  {
+    name: "Viktoria Siran",
+    role: "Care By Vikki",
+    content:
+      "A straightforward shop where people can find products, check the details and place an order. That’s exactly what I needed.",
+  },
+  {
+    name: "Seyfullah Fidan",
+    role: "Fidan Construction",
+    content:
+      "Myroslav handled our website, SEO and Google Ads. It was useful to have someone take care of all three and understand the services we offer.",
+  },
   {
     name: "Robert Ward",
     role: "Sales Director, eBoss Recruitment Software Solutions",
@@ -114,20 +158,23 @@ export function Testimonials() {
               viewport={{ once: true, margin: "-50px" }}
               transition={{
                 duration: 0.5,
-                delay: i * 0.1,
+                delay: Math.min(i * 0.1, 0.3),
                 ease: [0.22, 1, 0.36, 1],
               }}
               className="p-8 rounded-2xl bg-sunset/40 border border-sunset hover:shadow-lg transition-shadow duration-300"
             >
-              <div className="flex gap-1">
-                {Array.from({ length: testimonial.rating }).map((_, j) => (
-                  <Star
-                    key={j}
-                    className="h-4 w-4 fill-neon-navy text-neon-navy"
-                  />
-                ))}
-              </div>
-              <p className="mt-4 text-nebulosity/80 leading-relaxed">
+              {testimonial.rating !== undefined && (
+                <div className="flex gap-1" role="img" aria-label={`${testimonial.rating} out of 5 stars`}>
+                  {Array.from({ length: testimonial.rating }).map((_, j) => (
+                    <Star
+                      key={j}
+                      aria-hidden="true"
+                      className="h-4 w-4 fill-neon-navy text-neon-navy"
+                    />
+                  ))}
+                </div>
+              )}
+              <p className={`${testimonial.rating !== undefined ? "mt-4 " : ""}text-nebulosity/80 leading-relaxed`}>
                 &ldquo;{testimonial.content}&rdquo;
               </p>
               <div className="mt-6 flex items-center gap-3">
