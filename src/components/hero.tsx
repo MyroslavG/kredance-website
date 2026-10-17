@@ -95,6 +95,40 @@ export function Hero() {
           />
           <source src="/hero_video.mp4" type="video/mp4" />
         </video>
+        <div className="absolute inset-0 bg-gradient-to-r from-neon-navy/95 via-neon-navy/70 to-neon-navy/30" />
+        <div className="absolute inset-0 flex items-center px-6 pt-20 pb-28 lg:px-12">
+          <div className="mx-auto w-full max-w-7xl text-white">
+            <p className="text-sm tracking-widest uppercase text-white/70">
+              Kredance · Ottawa & beyond
+            </p>
+            <h1 className="mt-5 max-w-3xl text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.1]">
+              Turn your website into your next customer’s first step.
+            </h1>
+            <p className="mt-5 max-w-xl text-lg text-white/80">
+              Websites, online stores, and automation built around your
+              business.
+            </p>
+            <div className="mt-7 flex flex-col sm:flex-row gap-3 items-start">
+              <Link
+                href="/contact?intent=review#inquiry-form"
+                data-placement="hero"
+                className="rounded-full bg-sunset px-6 py-3 font-medium text-neon-navy hover:bg-white"
+              >
+                Get a free website review
+              </Link>
+              <Link
+                href="/contact"
+                data-placement="hero"
+                className="rounded-full border border-white/50 px-6 py-3 font-medium hover:bg-white/10"
+              >
+                Discuss your project
+              </Link>
+            </div>
+            <p className="mt-3 text-sm text-white/70">
+              Three practical improvements. No call required.
+            </p>
+          </div>
+        </div>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -122,17 +156,18 @@ export function Hero() {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           className="text-center max-w-4xl mx-auto"
         >
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-neon-navy leading-[1.1]">
+          <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-neon-navy leading-[1.1]">
             We Build Digital
             <br />
             Experiences That
             <br />
             Drive Growth
-          </h1>
+          </h2>
 
           <p className="mt-8 max-w-2xl mx-auto text-lg text-wild-dove leading-relaxed">
-            From AI automation to custom websites, SEO, and eCommerce &mdash; Kredance
-            delivers end-to-end digital solutions that transform how businesses operate and grow.
+            From AI automation to custom websites, SEO, and eCommerce &mdash;
+            Kredance delivers end-to-end digital solutions that transform how
+            businesses operate and grow.
           </p>
 
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -151,7 +186,13 @@ export function Hero() {
             </Link>
           </div>
           <p className="mt-6 text-sm text-nebulosity/70">
-            In the trades? <Link href="/websites-for-contractors" className="font-medium text-neon-navy underline underline-offset-4">Explore websites for Ottawa contractors.</Link>
+            In the trades?{" "}
+            <Link
+              href="/websites-for-contractors"
+              className="font-medium text-neon-navy underline underline-offset-4"
+            >
+              Explore websites for Ottawa contractors.
+            </Link>
           </p>
         </motion.div>
       </div>
@@ -175,8 +216,9 @@ export function Hero() {
               Needs to Thrive Online
             </h2>
             <p className="mt-6 max-w-2xl mx-auto text-base text-white/50 leading-relaxed">
-              We combine strategy, design, and technology to deliver solutions that move the needle.
-              Whether you&apos;re launching from scratch or scaling to new heights, we&apos;ve got you covered.
+              We combine strategy, design, and technology to deliver solutions
+              that move the needle. Whether you&apos;re launching from scratch
+              or scaling to new heights, we&apos;ve got you covered.
             </p>
           </motion.div>
 
@@ -195,11 +237,17 @@ export function Hero() {
               >
                 <Link
                   href={cap.href}
+                  data-track="service_click"
+                  data-service={cap.href.split("/").at(-1)}
+                  data-placement="card"
                   aria-label={cap.title}
                   className="group block h-full p-6 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white transition-colors"
                 >
                   <div className="h-10 w-10 rounded-xl bg-sunset/10 flex items-center justify-center mb-4">
-                    <cap.icon aria-hidden="true" className="h-5 w-5 text-sunset/80" />
+                    <cap.icon
+                      aria-hidden="true"
+                      className="h-5 w-5 text-sunset/80"
+                    />
                   </div>
                   <h3 className="text-lg font-semibold text-white mb-2">
                     {cap.title}

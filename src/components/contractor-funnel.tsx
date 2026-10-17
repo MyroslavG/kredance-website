@@ -11,6 +11,7 @@ import Link from "next/link";
 import { ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
 import { captureAttribution } from "@/lib/leads/attribution";
 import { trackFunnel } from "@/lib/leads/analytics";
+import { engagementSession, trackSite } from "@/lib/engagement/client";
 import { CalendlyEmbed } from "@/components/calendly-embed";
 
 export function ContractorPageTracking() {
@@ -63,6 +64,7 @@ export function WebsiteReviewForm() {
     if (!started.current) {
       started.current = true;
       trackFunnel("review_form_started", "review");
+      trackSite("form_start", "website-development", "review");
     }
   }
 
@@ -80,6 +82,8 @@ export function WebsiteReviewForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           submissionId: submissionId.current,
+          sessionId: engagementSession(),
+          service: "website-development",
           name: form.get("name"),
           email: form.get("email"),
           website: form.get("website"),
@@ -100,6 +104,7 @@ export function WebsiteReviewForm() {
       }
       setStatus("sent");
     } catch (cause) {
+      trackSite("form_error", "website-development", "review");
       setError(
         cause instanceof Error && cause.name !== "TimeoutError"
           ? cause.message
@@ -152,6 +157,7 @@ export function WebsiteReviewForm() {
     "mt-2 w-full rounded-xl border border-neon-navy/20 bg-white px-4 py-3 text-base text-nebulosity placeholder:text-nebulosity/45 focus:border-neon-navy focus:outline-2 focus:outline-neon-navy/20 disabled:opacity-60";
   return (
     <form
+      data-clarity-mask="true"
       onSubmit={submit}
       onChange={start}
       className="rounded-3xl border border-neon-navy/10 bg-white p-6 shadow-sm sm:p-9"

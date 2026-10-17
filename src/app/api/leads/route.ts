@@ -16,15 +16,15 @@ export async function POST(request: Request) {
     config: leadConfig,
     save: (config, body) =>
       databaseRpc<SavedLead>(config, "accept_website_lead", body),
-    accepted: (saved) =>
+    accepted: (saved, input) =>
       after(async () => {
         await Promise.allSettled([
           dispatchLeadEmails(saved.id).catch(() =>
             console.error("lead_dispatch_failed", { leadId: saved.id }),
           ),
-          saved.created
-            ? track("review_inquiry_saved", {
-                offer: "contractor-website-review",
+          saved.created && input.sessionId
+            ? track(input.kind === "contact" ? "contact_inquiry_saved" : "review_inquiry_saved", {
+                offer: input.kind,
               }).catch(() => console.error("lead_analytics_failed"))
             : Promise.resolve(),
         ]);
