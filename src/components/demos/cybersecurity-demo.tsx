@@ -40,12 +40,6 @@ function getScoreColor(score: number) {
   return "text-red-500";
 }
 
-function getGaugeColor(score: number) {
-  if (score >= 90) return "from-emerald-400 to-emerald-600";
-  if (score >= 70) return "from-amber-400 to-amber-600";
-  return "from-red-400 to-red-600";
-}
-
 function StatusIcon({ status }: { status: CheckStatus }) {
   switch (status) {
     case "pass":

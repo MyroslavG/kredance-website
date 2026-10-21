@@ -7,7 +7,9 @@
         "http://localhost:4173/",
         "http://localhost:4173/services/website-development",
         "http://localhost:4173/portfolio",
-        "http://localhost:4173/websites-for-contractors"
+        "http://localhost:4173/websites-for-contractors",
+        "http://localhost:4173/guides",
+        "http://localhost:4173/guides/website-enquiry-checklist"
       ],
       "numberOfRuns": 1,
       "settings": {
@@ -30,7 +32,7 @@
           }
         },
         {
-          "matchingUrlPattern": "(services/website-development|portfolio|websites-for-contractors)$",
+          "matchingUrlPattern": "(services/website-development|portfolio|websites-for-contractors|guides|guides/website-enquiry-checklist)$",
           "assertions": {
             "categories:performance": ["error", { "minScore": 0.6 }]
           }

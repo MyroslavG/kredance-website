@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FileText, Bot, Table, Trash2, X, GripVertical, RotateCcw, Check, ArrowRight, Download } from "lucide-react";
+import { FileText, Bot, Table, X, GripVertical, RotateCcw, Check, ArrowRight, Download } from "lucide-react";
 import Link from "next/link";
 
 interface Position {

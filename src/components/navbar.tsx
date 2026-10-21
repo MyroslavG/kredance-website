@@ -20,7 +20,6 @@ const services = [
   { name: "Ecommerce Shop Development", href: "/services/ecommerce" },
   { name: "Google Ads Specialist", href: "/services/google-ads" },
   { name: "Mobile App Development", href: "/services/mobile-app-development" },
-  { name: "News", href: "/services/news" },
   { name: "Small Business IT Package", href: "/services/small-business-it" },
   { name: "Universal Plugin Solutions", href: "/services/universal-plugin-solutions" },
   { name: "Website Development", href: "/services/website-development" },
@@ -30,6 +29,7 @@ const services = [
 const navLinks = [
   { name: "AI Automation", href: "/ai-automation" },
   { name: "Portfolio", href: "/portfolio" },
+  { name: "Guides", href: "/guides" },
   { name: "Testimonials", href: "/testimonials" },
   { name: "Contact", href: "/contact" },
 ];
@@ -142,6 +142,9 @@ export function Navbar() {
             <NavLink href="/portfolio" active={pathname === "/portfolio"} light={useLight}>
               Portfolio
             </NavLink>
+            <NavLink href="/guides" active={pathname === "/guides" || pathname.startsWith("/guides/")} light={useLight}>
+              Guides
+            </NavLink>
             <NavLink href="/testimonials" active={pathname === "/testimonials"} light={useLight}>
               Testimonials
             </NavLink>
@@ -236,7 +239,7 @@ export function Navbar() {
                         <MobileNavLink
                           key={link.name}
                           href={link.href}
-                          active={pathname === link.href}
+                          active={pathname === link.href || (link.href === "/guides" && pathname.startsWith("/guides/"))}
                           onClick={() => setMobileOpen(false)}
                         >
                           {link.name}
