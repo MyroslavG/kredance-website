@@ -1,20 +1,6 @@
-import { portfolioProjects } from "@/lib/portfolio-projects";
 import { InputError, cleanAttribution } from "@/lib/leads/validation";
-import { cleanService, publicEvents, serviceOptions, UUID } from "./shared";
-
-const pages = new Set([
-  "/",
-  "/services",
-  "/portfolio",
-  "/testimonials",
-  "/contact",
-  "/ai-automation",
-  "/websites-for-contractors",
-  "/privacy",
-  "/terms",
-  ...serviceOptions.map(([slug]) => `/services/${slug}`),
-  ...portfolioProjects.map(({ link }) => link),
-]);
+import { cleanService, publicEvents, UUID } from "./shared";
+import { publicAnalyticsPages as pages } from "./pages";
 
 export function parseSiteEvent(value: unknown) {
   if (!value || typeof value !== "object" || Array.isArray(value))

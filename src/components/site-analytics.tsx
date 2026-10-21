@@ -1,13 +1,19 @@
 "use client";
 
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { usePathname } from "next/navigation";
+import { Suspense, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { captureAttribution } from "@/lib/leads/attribution";
 import { redactAnalyticsUrl } from "@/lib/leads/analytics";
 import { clearEngagementSession, trackSite } from "@/lib/engagement/client";
 import { CONSENT_KEY, cleanService } from "@/lib/engagement/shared";
+import {
+  canTrackGoogleAnalytics,
+  isGoogleAnalyticsLoaded,
+  stopGoogleAnalytics,
+  trackGooglePageView,
+} from "@/lib/google-analytics";
 
 declare global {
   interface Window {
@@ -32,7 +38,12 @@ function subscribe(update: () => void) {
 }
 
 export function SiteAnalytics() {
+  return <Suspense fallback={null}><SiteAnalyticsContent /></Suspense>;
+}
+
+function SiteAnalyticsContent() {
   const path = usePathname();
+  const search = useSearchParams().toString();
   const consent = useSyncExternalStore(subscribe, snapshot, () => "pending");
   const [settings, setSettings] = useState(false);
   const lastPath = useRef("");
@@ -46,7 +57,8 @@ export function SiteAnalytics() {
   useEffect(() => {
     if (!privatePage) captureAttribution();
     // A full navigation unloads recording scripts before the owner signs in.
-    if (privatePage && window.clarity) {
+    if (privatePage && (window.clarity || isGoogleAnalyticsLoaded())) {
+      stopGoogleAnalytics();
       window.location.reload();
       return;
     }
@@ -88,6 +100,19 @@ export function SiteAnalytics() {
     return () => document.removeEventListener("click", click);
   }, [allowed, path, privatePage]);
   useEffect(() => {
+    // Hydration briefly uses the server snapshot before reading saved consent.
+    // Another component may already have initialized GA using that saved choice.
+    if (consent === "pending") return;
+    if (!allowed || !canTrackGoogleAnalytics()) {
+      const loaded = isGoogleAnalyticsLoaded();
+      stopGoogleAnalytics();
+      // Unload Google's listeners on revocation or entry into a private/test URL.
+      if (loaded) window.location.reload();
+      return;
+    }
+    trackGooglePageView();
+  }, [allowed, consent, path, search]);
+  useEffect(() => {
     if (!allowed || !/^[a-z0-9]+$/i.test(project) || window.clarity) return;
     if (!["www.kredance.com", "kredance.com"].includes(location.hostname))
       return;
@@ -121,6 +146,7 @@ export function SiteAnalytics() {
     window.dispatchEvent(new Event("kredance-consent"));
     setSettings(false);
     if (value === "denied") {
+      stopGoogleAnalytics();
       clearEngagementSession();
       window.clarity?.("consentv2", {
         analytics_Storage: "denied",
@@ -153,28 +179,26 @@ export function SiteAnalytics() {
       {(consent === "pending" || settings) && (
         <aside
           aria-label="Analytics preferences"
-          className="fixed bottom-4 inset-x-4 z-[60] mx-auto max-w-3xl rounded-2xl border border-slate-200 bg-white p-5 text-slate-900 shadow-xl"
+          className="fixed bottom-4 inset-x-4 z-[60] mx-auto max-w-3xl rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 text-slate-900 shadow-xl"
         >
-          <p className="font-semibold">Help us improve Kredance?</p>
-          <p className="mt-1 text-sm text-slate-600">
-            Optional analytics help us understand visits and form issues.
-            {project &&
-              " Masked session recordings help us see where the site is confusing."}{" "}
-            Your choice won’t affect contacting us.{" "}
+          <p className="font-semibold">Analytics preferences</p>
+          <p className="mt-1 text-xs leading-relaxed sm:text-sm text-slate-600">
+            Optional analytics{project && " and masked session recordings"} help us improve this site.
+            Your choice won’t affect enquiries.{" "}
             <a className="underline" href="/privacy">
               Privacy details
             </a>
           </p>
-          <div className="mt-3 flex flex-wrap gap-3">
+          <div className="mt-3 flex gap-3">
             <button
               onClick={() => choose("granted")}
-              className="rounded-lg bg-neon-navy px-4 py-2 text-sm text-white"
+              className="flex-1 sm:flex-none rounded-lg bg-neon-navy px-3 py-2 text-sm text-white"
             >
               Allow analytics
             </button>
             <button
               onClick={() => choose("denied")}
-              className="rounded-lg border border-slate-300 px-4 py-2 text-sm"
+              className="flex-1 sm:flex-none rounded-lg border border-slate-300 px-3 py-2 text-sm"
             >
               Essential only
             </button>

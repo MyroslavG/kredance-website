@@ -26,6 +26,7 @@ import {
   redactAnalyticsUrl,
 } from "../src/lib/leads/analytics";
 import { createLeadDatabase, testConfig } from "./helpers/lead-database";
+import { register } from "../src/instrumentation";
 
 function input(overrides = {}) {
   return {
@@ -487,6 +488,92 @@ describe("real PostgreSQL lead workflow", () => {
       2,
     );
   });
+  it("drains burst notifications skipped by intake cooldown without resending the first lead", async () => {
+    for (let index = 0; index < 5; index++) {
+      assert.equal(
+        (await handleLeadRequest(
+          request(input({ email: `burst${index}@example.com` })),
+          dependencies,
+        )).status,
+        201,
+      );
+    }
+    const delivered: string[] = [];
+    const send = async (_config: typeof testConfig, job: EmailJob) => {
+      delivered.push(job.lead_id);
+      return null;
+    };
+    assert.deepEqual(
+      await dispatchLeadEmails(accepted[0].id, testConfig, fixture.rpc, send),
+      { claimed: 1, sent: 1 },
+    );
+    assert.deepEqual(
+      await dispatchLeadEmails(accepted[1].id, testConfig, fixture.rpc, send),
+      { claimed: 0, sent: 0 },
+    );
+    let elapsed = 0;
+    const waits: number[] = [];
+    const worker = await dispatchLeadEmails(null, testConfig, fixture.rpc, send, {
+      now: () => elapsed,
+      sleep: async (milliseconds) => {
+        waits.push(milliseconds);
+        elapsed += milliseconds;
+        // Advance only the database cooldown; future retry backoff stays intact.
+        await fixture.db.exec(
+          "update public.lead_email_jobs set last_activity_at = now() - interval '2 seconds' where last_activity_at is not null",
+        );
+      },
+    });
+    assert.deepEqual(worker, { claimed: 4, sent: 4 });
+    assert.equal(new Set(delivered).size, 5);
+    assert.equal(delivered.length, 5);
+    assert.ok(waits.every((milliseconds) => milliseconds > 1100));
+    assert.equal(
+      (await fixture.db.query("select id from public.lead_email_jobs where status <> 'sent'")).rows.length,
+      0,
+    );
+  });
+  it("leaves time to complete a slow delivery before starting another scheduled job", async () => {
+    await handleLeadRequest(request(input()), dependencies);
+    await handleLeadRequest(
+      request(input({ email: "later@example.com" })),
+      dependencies,
+    );
+    let elapsed = 0;
+    const result = await dispatchLeadEmails(
+      null,
+      testConfig,
+      fixture.rpc,
+      async () => {
+        elapsed = 30_000;
+        return null;
+      },
+      { now: () => elapsed, sleep: async () => assert.fail("Do not start more work after the claim deadline") },
+    );
+    assert.deepEqual(result, { claimed: 1, sent: 1 });
+    assert.equal(
+      (await fixture.db.query("select id from public.lead_email_jobs where status = 'pending'")).rows.length,
+      1,
+    );
+  });
+  it("bounds empty scheduled polling when another worker owns the delivery lease", async () => {
+    await handleLeadRequest(request(input()), dependencies);
+    const claimed = await fixture.rpc<EmailJob[]>(testConfig, "claim_lead_emails", {
+      p_lead_id: null,
+      p_limit: 1,
+    });
+    assert.equal(claimed.length, 1);
+    let waits = 0;
+    const result = await dispatchLeadEmails(
+      null,
+      testConfig,
+      fixture.rpc,
+      async () => assert.fail("Never send another worker's leased job"),
+      { now: () => 0, sleep: async () => { waits++; } },
+    );
+    assert.deepEqual(result, { claimed: 0, sent: 0 });
+    assert.equal(waits, 1);
+  });
   it("holds uncertain delivery and permanent errors for review instead of sending again", async () => {
     for (const message of [
       "network timeout",
@@ -754,6 +841,174 @@ describe("EmailJS transport", () => {
       for (const [key, value] of Object.entries(before)) {
         if (value === undefined) delete process.env[key];
         else process.env[key] = value;
+      }
+    }
+  });
+});
+
+describe("restricted retry scheduler setup", () => {
+  let fixture: Awaited<ReturnType<typeof createLeadDatabase>>;
+  const endpoint = "https://www.kredance.com/api/leads/retry";
+  const token = "synthetic-test-secret-never-used-in-production";
+  before(async () => {
+    fixture = await createLeadDatabase();
+    // Test only the RPC's authorization and changes; no extension or network is
+    // available in PGlite. Live Cron + HTTPS behavior is verified after deploy.
+    await fixture.db.exec(`
+      create schema vault; create schema cron; create schema net;
+      create table vault.decrypted_secrets (
+        id uuid primary key default gen_random_uuid(), name text unique,
+        decrypted_secret text, writes integer default 1
+      );
+      create function vault.create_secret(text, text, text) returns uuid language sql as $$
+        insert into vault.decrypted_secrets(decrypted_secret, name) values ($1,$2) returning id;
+      $$;
+      create function vault.update_secret(uuid, text, text, text) returns void language sql as $$
+        update vault.decrypted_secrets set decrypted_secret=$2, name=$3, writes=writes+1 where id=$1;
+      $$;
+      create table cron.job (
+        jobid bigint generated always as identity primary key, jobname text,
+        schedule text, command text, active boolean default true,
+        username text default current_user, writes integer default 1,
+        unique(jobname,username)
+      );
+      create function cron.schedule(text,text,text) returns bigint language sql as $$
+        insert into cron.job(jobname,schedule,command) values ($1,$2,$3) returning jobid;
+      $$;
+      create function cron.alter_job(job_id bigint, schedule text default null,
+        command text default null, database text default null,
+        username text default null, active boolean default null)
+      returns void language sql as $$
+        update cron.job set schedule=$2, command=$3, active=$6, writes=writes+1 where jobid=$1;
+      $$;
+      revoke all on all functions in schema vault, cron from public;
+    `);
+  });
+  beforeEach(async () => {
+    await fixture.db.exec("reset role; truncate vault.decrypted_secrets, cron.job;");
+  });
+  after(async () => { await fixture.db.close(); });
+  async function setup(role: "service_role" | "anon" | "authenticated", url = endpoint, secret = token) {
+    await fixture.db.exec(`set role ${role}`);
+    try {
+      const result = await fixture.db.query<{ result: {configured: boolean; changed: boolean} }>(
+        "select public.configure_lead_email_retries($1,$2) as result", [url, secret],
+      );
+      return result.rows[0].result;
+    } finally { await fixture.db.exec("reset role"); }
+  }
+  it("denies browser roles and restricts the definer core to service_role", async () => {
+    for (const role of ["anon", "authenticated"] as const) {
+      await assert.rejects(setup(role), /permission denied/);
+    }
+    await assert.rejects(
+      fixture.db.query("select kredance_private.configure_lead_email_retries($1,$2)", [endpoint, token]),
+      /retry_setup_forbidden/,
+    );
+    const permissions = await fixture.db.query<{role: string; wrapper: boolean; core: boolean}>(`
+      select role, has_function_privilege(role,'public.configure_lead_email_retries(text,text)','execute') as wrapper,
+        has_function_privilege(role,'kredance_private.configure_lead_email_retries(text,text)','execute') as core
+      from (values ('anon'),('authenticated'),('service_role')) r(role)
+    `);
+    assert.deepEqual(permissions.rows, [
+      {role:"anon",wrapper:false,core:false},
+      {role:"authenticated",wrapper:false,core:false},
+      {role:"service_role",wrapper:true,core:true},
+    ]);
+  });
+  it("rejects other URLs and malformed tokens before changing configuration", async () => {
+    await assert.rejects(setup("service_role", "https://attacker.example/api/leads/retry"), /retry_setup_invalid_configuration/);
+    await assert.rejects(setup("service_role", endpoint, "too-short"), /retry_setup_invalid_configuration/);
+    await assert.rejects(setup("service_role", endpoint, token + "\n"), /retry_setup_invalid_configuration/);
+    const count = await fixture.db.query<{count:number}>("select count(*)::int as count from vault.decrypted_secrets");
+    assert.equal(count.rows[0].count, 0);
+  });
+  it("configures only fixed entries, keeps secrets out of results and cron text, and skips identical writes", async () => {
+    assert.deepEqual(await setup("service_role"), {configured:true,changed:true});
+    assert.deepEqual(await setup("service_role"), {configured:true,changed:false});
+    const entries = await fixture.db.query<{name:string; writes:number}>("select name,writes from vault.decrypted_secrets order by name");
+    assert.deepEqual(entries.rows, [
+      {name:"kredance_lead_retry_token",writes:1}, {name:"kredance_lead_retry_url",writes:1},
+    ]);
+    const jobs = await fixture.db.query<{jobname:string; schedule:string; active:boolean; command:string; writes:number}>("select jobname,schedule,active,command,writes from cron.job");
+    assert.equal(jobs.rows.length, 1);
+    assert.equal(jobs.rows[0].jobname, "kredance-lead-email-retries");
+    assert.equal(jobs.rows[0].schedule, "* * * * *");
+    assert.equal(jobs.rows[0].active, true);
+    assert.equal(jobs.rows[0].writes, 1);
+    assert.ok(!jobs.rows[0].command.includes(token));
+    assert.match(jobs.rows[0].command, /available_at <= now\(\)/);
+    assert.match(jobs.rows[0].command, /lease_until < now\(\)/);
+    await fixture.db.exec("set role service_role");
+    try { await assert.rejects(fixture.db.query("select * from vault.decrypted_secrets"), /permission denied/); }
+    finally { await fixture.db.exec("reset role"); }
+  });
+  it("repairs only its named job and updates only its token when configuration changes", async () => {
+    await setup("service_role");
+    await fixture.db.exec("insert into cron.job(jobname,schedule,command) values('unrelated','0 0 * * *','select 1'); update cron.job set active=false where jobname='kredance-lead-email-retries'");
+    assert.deepEqual(await setup("service_role", endpoint, token + "-updated"), {configured:true,changed:true});
+    assert.deepEqual(await setup("service_role", endpoint, token + "-updated"), {configured:true,changed:false});
+    const jobs = await fixture.db.query<{jobname:string; active:boolean; writes:number}>("select jobname,active,writes from cron.job order by jobname");
+    assert.deepEqual(jobs.rows, [{jobname:"kredance-lead-email-retries",active:true,writes:2},{jobname:"unrelated",active:true,writes:1}]);
+    const entries = await fixture.db.query<{name:string; writes:number}>("select name,writes from vault.decrypted_secrets order by name");
+    assert.deepEqual(entries.rows, [{name:"kredance_lead_retry_token",writes:2},{name:"kredance_lead_retry_url",writes:1}]);
+  });
+});
+
+describe("production retry registration", () => {
+  it("runs only for enabled production servers and keeps secrets out of logs", async () => {
+    const keys = ["NEXT_RUNTIME", "VERCEL_ENV", "LEAD_RETRY_SETUP_ENABLED", "NEXT_PHASE", "SUPABASE_URL", "SUPABASE_SECRET_KEY", "CRON_SECRET"] as const;
+    const previous = Object.fromEntries(keys.map((key) => [key, process.env[key]]));
+    const originalFetch = globalThis.fetch;
+    const originalInfo = console.info;
+    const originalError = console.error;
+    const logs: unknown[][] = [];
+    let requests = 0;
+    let fail = false;
+    const token = "synthetic-registration-secret-not-production";
+    try {
+      Object.assign(process.env, {
+        NEXT_RUNTIME: "nodejs", VERCEL_ENV: "preview", LEAD_RETRY_SETUP_ENABLED: "1",
+        SUPABASE_URL: "https://example.supabase.co", SUPABASE_SECRET_KEY: "sb_secret_synthetic",
+        CRON_SECRET: token,
+      });
+      delete process.env.NEXT_PHASE;
+      console.info = (...args) => { logs.push(args); };
+      console.error = (...args) => { logs.push(args); };
+      globalThis.fetch = async (url, init) => {
+        requests++;
+        assert.equal(url, "https://example.supabase.co/rest/v1/rpc/configure_lead_email_retries");
+        assert.deepEqual(JSON.parse(String(init?.body)), {
+          p_url: "https://www.kredance.com/api/leads/retry", p_token: token,
+        });
+        return fail
+          ? Response.json({ message: token }, { status: 500 })
+          : Response.json({ configured: true, changed: true });
+      };
+      await register(); // Preview deployment must never change production setup.
+      process.env.VERCEL_ENV = "production";
+      process.env.NEXT_PHASE = "phase-production-build";
+      await register();
+      delete process.env.NEXT_PHASE;
+      process.env.NEXT_RUNTIME = "edge";
+      await register();
+      process.env.NEXT_RUNTIME = "nodejs";
+      process.env.LEAD_RETRY_SETUP_ENABLED = "0";
+      await register();
+      assert.equal(requests, 0);
+      process.env.LEAD_RETRY_SETUP_ENABLED = "1";
+      await register();
+      assert.equal(requests, 1);
+      fail = true;
+      await register(); // Failed setup leaves the site available, with a fixed log.
+      assert.deepEqual(logs, [["lead_retry_setup_configured"], ["lead_retry_setup_failed"]]);
+    } finally {
+      globalThis.fetch = originalFetch;
+      console.info = originalInfo;
+      console.error = originalError;
+      for (const key of keys) {
+        if (previous[key] === undefined) delete process.env[key];
+        else process.env[key] = previous[key];
       }
     }
   });

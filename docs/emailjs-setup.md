@@ -17,6 +17,8 @@ Use Vercel's **Config** type for these values. Vercel rejects public-framework p
 
 One notification goes to the existing recipient fixed in the Contact template. Customer confirmation appears on the website after the database transaction commits. No automatic customer email is sent. Replying to the notification uses the visitor's email address.
 
+Contact and contractor inquiries share a durable queue. Intake attempts immediate delivery; the authenticated scheduled worker drains notifications that were skipped because another sender held the lease or a confirmed HTTP 429 deferred the job. The Supabase Cron/Vault activation and HTTP verification steps are in [lead-funnel.md](lead-funnel.md#production-scheduler-rollout). Deploying the route alone does not activate retries.
+
 The queue freezes these template inputs at acceptance:
 
 | Template input | Value |
@@ -44,4 +46,8 @@ The approved deployed-preview test on September 25, 2026 saved one inquiry and o
 
 After the server settings and Vercel variables are configured, submit one controlled inquiry and verify: one saved lead, one owner email, and one saved-inquiry conversion. Check EmailJS Email History and the inbox. Customer confirmation should appear on the page. Review jobs with uncertain delivery before attempting another send.
 
+The worker keeps the existing safety rule: only confirmed HTTP 429 rejections retry automatically, with database backoff and a five-attempt ceiling. Timeouts, unexpected responses, 5xx, permanent rejections, and lost completion writes require review in EmailJS history before resending. A scheduled worker does not override that protection. Public template values are unchanged; no new provider account, sender, recipient, or API token is required.
+
 References: [EmailJS server setup](https://github.com/emailjs-com/emailjs-nodejs), [REST send contract and rate limit](https://www.emailjs.com/docs/rest-api/send/), [Email History](https://www.emailjs.com/docs/rest-api/history/).
+
+Production automatic retries use Supabase Cron/pg_net and the existing `CRON_SECRET`. The production-only `LEAD_RETRY_SETUP_ENABLED=1` hook securely configures the restricted scheduler RPC without exposing or replacing that secret. Apply the extension preparation and setup migration before deployment, and verify both Cron runs and HTTP responses as described in `docs/lead-funnel.md`.

@@ -1,21 +1,21 @@
 import { Hero } from "@/components/hero";
-import { FeaturedLeadProject } from "@/components/featured-lead-project";
+import { HomeCampaignFeature } from "@/components/home-campaign-feature";
 import { createPageMetadata } from "@/lib/metadata";
-import { siteConfig } from "@/lib/site";
 
-const title = "Kredance | AI Automation, Web Development & Digital Marketing";
+const title = "Kredance | Websites & Lead Generation for Ottawa Contractors";
 
 export const metadata = createPageMetadata({
   path: "/",
   title,
-  description: siteConfig.description,
+  description:
+    "Websites for Ottawa contractors and service businesses. Start with a free website review: three practical improvements within one business day, no call required.",
 });
 
 export default function Home() {
   return (
     <div className="flex-1 bg-white">
       <Hero />
-      <FeaturedLeadProject />
+      <HomeCampaignFeature />
     </div>
   );
 }

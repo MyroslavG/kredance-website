@@ -1,30 +1,13 @@
--- Activation step, not part of the data migration. Run only after the final
--- HTTPS endpoint and matching CRON_SECRET are configured. Add the two named
--- secrets through Supabase Vault first; no credentials belong in this file.
+-- Administrator preparation. No token or job is created by this script.
+-- Apply before deploying production with LEAD_RETRY_SETUP_ENABLED=1.
+-- Next.js instrumentation transfers its existing CRON_SECRET directly to the
+-- service-role-only setup RPC; the token never passes through this file.
+begin;
 create extension if not exists pg_cron;
-create extension if not exists pg_net;
+create extension if not exists pg_net with schema extensions;
+commit;
 
-do $$
-begin
-  if not exists (select 1 from vault.decrypted_secrets where name = 'kredance_lead_retry_url' and decrypted_secret ~ '^https://[^/]+/api/leads/retry$')
-    or not exists (select 1 from vault.decrypted_secrets where name = 'kredance_lead_retry_token' and char_length(decrypted_secret) >= 32)
-  then raise exception 'Configure the Kredance retry URL and token in Vault first'; end if;
-end;
-$$;
-
-select cron.schedule(
-  'kredance-lead-email-retries',
-  '*/5 * * * *',
-  $job$
-    select net.http_post(
-      url := (select decrypted_secret from vault.decrypted_secrets where name = 'kredance_lead_retry_url'),
-      headers := jsonb_build_object('Content-Type', 'application/json', 'Authorization',
-        'Bearer ' || (select decrypted_secret from vault.decrypted_secrets where name = 'kredance_lead_retry_token')),
-      body := '{}'::jsonb,
-      timeout_milliseconds := 60000
-    );
-  $job$
-);
-
--- Inspect HTTP response status in net._http_response as well as Cron run history.
--- Pause with: select cron.unschedule('kredance-lead-email-retries');
+-- Apply the configure_lead_email_retries migration, deploy, then verify with
+-- supabase/check-lead-retries.sql. See docs/lead-funnel.md for HTTPS checks.
+-- Disable the setup flag and redeploy before unscheduling for rollback;
+-- otherwise a later cold start will restore the configured schedule.

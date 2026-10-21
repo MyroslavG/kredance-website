@@ -11,7 +11,7 @@ export default function PrivacyPage() {
       <section className="pt-32 pb-24">
         <div className="mx-auto max-w-3xl px-6 lg:px-8">
           <h1 className="text-4xl font-bold text-neon-navy mb-8">Privacy Policy</h1>
-          <p className="text-sm text-wild-dove mb-12">Last updated: October 17, 2026</p>
+          <p className="text-sm text-wild-dove mb-12">Last updated: October 21, 2026</p>
 
           <div className="space-y-8 text-nebulosity/80 leading-relaxed">
             <div>
@@ -60,6 +60,16 @@ export default function PrivacyPage() {
                 Our conversion events describe actions such as starting a form or completing a booking;
                 they do not include your name, email address, website, or message. Query strings are removed
                 from the URLs sent to Vercel Web Analytics.
+              </p>
+              <p className="mt-3">
+                With your permission, Google Analytics measures visits, campaign sources, and completed
+                inquiry submissions on our public production website. It uses analytics cookies to
+                distinguish visits. We send only known public page paths, referring website origins,
+                campaign labels, and fixed action or service labels; we do not send inquiry details,
+                submission identifiers, URL query strings, or fragments. Advertising storage,
+                advertising personalization, and Google Signals are disabled. The owner dashboard,
+                preview sites, and visits labelled as internal or setup tests are excluded. See{" "}
+                <a href="https://policies.google.com/privacy" className="underline" target="_blank" rel="noopener noreferrer">Google’s privacy policy</a>.
               </p>
               <p className="mt-3">With your permission, Microsoft Clarity provides heatmaps and masked session recordings to help us understand how visitors use the site. Inquiry forms are masked and the private dashboard is excluded. Clarity processes usage data for site analytics; advertising storage is disabled in our consent signal. See <a href="https://privacy.microsoft.com/privacystatement" className="underline" target="_blank" rel="noopener noreferrer">Microsoft’s privacy statement</a>. We record saved inquiries and their campaign source to handle your request even if you decline optional analytics.</p>
               <p className="mt-3">Owner sign-in uses an essential, secure session cookie lasting up to eight hours. Sign-in codes expire after ten minutes. We retain inquiry records to manage your request and client relationship; contact us to request deletion. The dashboard’s reporting period filters records and does not delete them.</p>
