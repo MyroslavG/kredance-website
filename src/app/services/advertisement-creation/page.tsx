@@ -75,6 +75,7 @@ export default function AdvertisementCreationPage() {
           },
         ]}
         relatedProjects={[
+          { title: "Prime Metal Roofing — Facebook Lead Generation", href: "/portfolio/prime-metal-roofing", image: "/images/prime-metal-roofing-poster.jpg" },
           { title: "BRP Truck Advertising", href: "/portfolio/brp-truck-advertising", image: "https://www.kredance.com/wp-content/uploads/2024/10/pexels-amar-12983282-495x400.jpg" },
           { title: "ShopKlub Lead Generation", href: "/portfolio/shopklub", image: "https://www.kredance.com/wp-content/uploads/2014/12/logo-e1729615458837.png" },
           { title: "Green-Agro", href: "/portfolio/green-agro", image: "https://www.kredance.com/wp-content/uploads/2024/10/greenagr-e1729533961289-495x400.png" },

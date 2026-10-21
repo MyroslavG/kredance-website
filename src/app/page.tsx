@@ -1,4 +1,5 @@
 import { Hero } from "@/components/hero";
+import { FeaturedLeadProject } from "@/components/featured-lead-project";
 import { createPageMetadata } from "@/lib/metadata";
 import { siteConfig } from "@/lib/site";
 
@@ -14,6 +15,7 @@ export default function Home() {
   return (
     <div className="flex-1 bg-white">
       <Hero />
+      <FeaturedLeadProject />
     </div>
   );
 }
