@@ -10,8 +10,14 @@ interface Testimonial {
   rating?: number;
 }
 
-// Approval and attribution for the six latest entries: docs/testimonial-sources.md.
+// Sources and attribution for recent entries: docs/testimonial-sources.md.
 export const testimonials: Testimonial[] = [
+  {
+    name: "Alex Fedoriuk",
+    role: "Prime Metal Roofing",
+    content:
+      "Myroslav had our Facebook ad campaign set up in just a few hours, and leads started coming in right away.",
+  },
   {
     name: "Volodymyr",
     role: "Skyline Flow",
