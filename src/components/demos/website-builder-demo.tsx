@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence, Reorder } from "framer-motion";
-import { Type, Image, Layout, Menu, ArrowRight, RotateCcw, Eye, Palette } from "lucide-react";
+import { Type, Image, Layout, Menu, ArrowRight, RotateCcw, Eye } from "lucide-react";
 import Link from "next/link";
 
 interface PageBlock {

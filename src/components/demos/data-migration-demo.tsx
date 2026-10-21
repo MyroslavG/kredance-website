@@ -35,22 +35,20 @@ const TOTAL_RECORDS = 24850;
 export function DataMigrationDemo() {
   const [source, setSource] = useState<string | null>(null);
   const [destination, setDestination] = useState<string | null>(null);
-  const [isMigrating, setIsMigrating] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [recordsMigrated, setRecordsMigrated] = useState(0);
-  const [completedSteps, setCompletedSteps] = useState<number[]>([]);
-  const [isComplete, setIsComplete] = useState(false);
   const [packets, setPackets] = useState<number[]>([]);
 
-  const canStart = source && destination && !isMigrating && !isComplete;
+  const isComplete = progress === 100;
+  const isMigrating = hasStarted && !isComplete;
+  const recordsMigrated = Math.floor((progress / 100) * TOTAL_RECORDS);
+  const canStart = Boolean(source && destination) && !hasStarted;
 
   const startMigration = useCallback(() => {
     if (!canStart) return;
-    setIsMigrating(true);
+    setHasStarted(true);
     setProgress(0);
-    setRecordsMigrated(0);
-    setCompletedSteps([]);
-    setIsComplete(false);
+    setPackets([]);
   }, [canStart]);
 
   // Animate progress
@@ -58,42 +56,15 @@ export function DataMigrationDemo() {
     if (!isMigrating) return;
 
     const interval = setInterval(() => {
-      setProgress((prev) => {
-        const next = prev + 2;
-        if (next >= 100) {
-          clearInterval(interval);
-          setIsComplete(true);
-          setIsMigrating(false);
-          return 100;
-        }
-        return next;
-      });
+      setProgress((prev) => Math.min(prev + 2, 100));
     }, 80);
 
     return () => clearInterval(interval);
   }, [isMigrating]);
 
-  // Update records and validation steps based on progress
-  useEffect(() => {
-    setRecordsMigrated(Math.floor((progress / 100) * TOTAL_RECORDS));
-
-    if (progress >= 30 && !completedSteps.includes(0)) {
-      setCompletedSteps((prev) => [...prev, 0]);
-    }
-    if (progress >= 60 && !completedSteps.includes(1)) {
-      setCompletedSteps((prev) => [...prev, 1]);
-    }
-    if (progress >= 90 && !completedSteps.includes(2)) {
-      setCompletedSteps((prev) => [...prev, 2]);
-    }
-  }, [progress, completedSteps]);
-
   // Spawn animated packets
   useEffect(() => {
-    if (!isMigrating) {
-      setPackets([]);
-      return;
-    }
+    if (!isMigrating) return;
 
     const interval = setInterval(() => {
       setPackets((prev) => {
@@ -109,11 +80,8 @@ export function DataMigrationDemo() {
   const reset = useCallback(() => {
     setSource(null);
     setDestination(null);
-    setIsMigrating(false);
+    setHasStarted(false);
     setProgress(0);
-    setRecordsMigrated(0);
-    setCompletedSteps([]);
-    setIsComplete(false);
     setPackets([]);
   }, []);
 
@@ -188,7 +156,7 @@ export function DataMigrationDemo() {
 
               {/* Animated packets */}
               <AnimatePresence>
-                {packets.map((id) => (
+                {(isMigrating ? packets : []).map((id) => (
                   <motion.div
                     key={id}
                     initial={{ x: -30, opacity: 0, scale: 0.5 }}
@@ -270,7 +238,7 @@ export function DataMigrationDemo() {
                 {/* Validation steps */}
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-center gap-3 sm:gap-6">
                   {VALIDATION_STEPS.map((step, i) => {
-                    const isCompleted = completedSteps.includes(i);
+                    const isCompleted = progress >= (i + 1) * 30;
                     return (
                       <motion.div
                         key={step}

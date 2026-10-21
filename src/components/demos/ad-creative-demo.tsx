@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, ArrowRight, RotateCcw, Image, Type, Palette } from "lucide-react";
+import { Sparkles, ArrowRight, RotateCcw } from "lucide-react";
 import Link from "next/link";
 
 interface AdVariant {
@@ -76,7 +76,7 @@ export function AdCreativeDemo() {
     setAbResults(null);
 
     setTimeout(() => {
-      const results: ABResult[] = AD_VARIANTS.map((v, i) => {
+      const results: ABResult[] = AD_VARIANTS.map((v) => {
         const impressions = Math.floor(Math.random() * 3000 + 2000);
         const ctr = Math.random() * 4 + 1.5;
         return {

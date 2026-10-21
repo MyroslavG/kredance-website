@@ -7,7 +7,7 @@ import {
   ArrowRight,
   RotateCcw,
   Type,
-  Image,
+  Image as ImageIcon,
   Square,
   List,
   ToggleLeft,
@@ -40,7 +40,7 @@ interface DroppedComponent {
 const UI_COMPONENTS: UIComponent[] = [
   { id: "header", type: "header", label: "Header", icon: Menu },
   { id: "text", type: "text", label: "Text", icon: Type },
-  { id: "image", type: "image", label: "Image", icon: Image },
+  { id: "image", type: "image", label: "Image", icon: ImageIcon },
   { id: "button", type: "button", label: "Button", icon: Square },
   { id: "list", type: "list", label: "List", icon: List },
   { id: "toggle", type: "toggle", label: "Toggle", icon: ToggleLeft },
@@ -81,7 +81,7 @@ function RenderedComponent({ component, color }: { component: DroppedComponent; 
     case "image":
       return (
         <div className={`w-full h-20 rounded-lg ${color.light} flex items-center justify-center`}>
-          <Image className="h-5 w-5 text-gray-400" />
+          <ImageIcon className="h-5 w-5 text-gray-400" />
         </div>
       );
     case "button":

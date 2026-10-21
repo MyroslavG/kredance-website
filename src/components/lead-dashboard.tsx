@@ -8,6 +8,7 @@ import {
   type FormEvent,
 } from "react";
 import { leadStatuses, serviceLabel } from "@/lib/engagement/shared";
+import { buildCampaignLink } from "@/lib/engagement/campaign";
 
 type Lead = {
   id: string;
@@ -46,6 +47,15 @@ type Report = {
   campaigns: {
     campaign: string;
     source: string;
+    leads: number;
+    qualified: number;
+    won: number;
+    value: number;
+  }[];
+  posts?: {
+    campaign: string;
+    source: string;
+    content: string | null;
     leads: number;
     qualified: number;
     won: number;
@@ -392,6 +402,39 @@ export function LeadDashboard() {
                 />
               </Panel>
             </div>
+            <div className="mt-6">
+              <Panel title="Post results">
+                <p className="mb-4 text-sm text-slate-600">
+                  Use a distinct post label in each link to compare inquiries
+                  from individual posts. Showing up to 100 groups for this period.
+                </p>
+                {report.posts ? (
+                  <Rows
+                    headers={[
+                      "Post label",
+                      "Campaign / source",
+                      "Leads",
+                      "Qualified",
+                      "Won",
+                      "Value CAD",
+                    ]}
+                    rows={report.posts.map((p) => [
+                      p.content ?? "No post label",
+                      `${p.campaign} / ${p.source}`,
+                      p.leads,
+                      p.qualified,
+                      p.won,
+                      money(p.value),
+                    ])}
+                  />
+                ) : (
+                  <p className="text-sm text-slate-500">
+                    Post reporting is not available yet. Campaign results remain
+                    available above.
+                  </p>
+                )}
+              </Panel>
+            </div>
             <section className="mt-10">
               <h2 className="text-2xl font-semibold">Follow up with leads</h2>
               <div className="mt-4 flex flex-wrap gap-3">
@@ -642,6 +685,7 @@ function LeadEditor({
             lead.attribution.referrerHost ||
             "direct / unknown"}{" "}
           · Campaign {lead.attribution.utm?.utm_campaign || "untagged"}
+          {" "}· Post {lead.attribution.utm?.utm_content || "No post label"}
         </p>
         <form onSubmit={submit} className="mt-6 space-y-4">
           <div className="grid grid-cols-2 gap-4">
@@ -730,21 +774,15 @@ function CampaignBuilder() {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
     setError("");
+    setUrl("");
     try {
-      const target = new URL(String(form.get("destination")));
-      if (target.origin !== "https://www.kredance.com")
-        throw new Error("Use a https://www.kredance.com page.");
-      target.search = "";
-      target.hash = "";
-      for (const key of ["source", "medium", "campaign"]) {
-        const value = String(form.get(key)).trim();
-        if (!/^[a-zA-Z0-9 _.-]{1,100}$/.test(value))
-          throw new Error(
-            "Use short campaign labels with letters, numbers, spaces, dots, dashes, or underscores.",
-          );
-        target.searchParams.set(`utm_${key}`, value);
-      }
-      setUrl(target.toString());
+      setUrl(buildCampaignLink({
+        destination: String(form.get("destination") || ""),
+        source: String(form.get("source") || ""),
+        medium: String(form.get("medium") || ""),
+        campaign: String(form.get("campaign") || ""),
+        content: String(form.get("content") || ""),
+      }));
     } catch (cause) {
       setError((cause as Error).message);
     }
@@ -752,10 +790,18 @@ function CampaignBuilder() {
   return (
     <Panel title="Create a campaign link">
       <p className="mb-4 text-sm text-slate-600">
-        Use a separate link for LinkedIn, Google, email, or a specific campaign.
-        Never put a person’s name or email in tracking labels.
+        Use a separate link for each channel and campaign. Add a post label to
+        compare individual posts. Service, review, and page-section links are
+        preserved. Never put a person’s name or email in tracking labels.
       </p>
-      <form onSubmit={create} className="grid gap-4 sm:grid-cols-2">
+      <form
+        onSubmit={create}
+        onChange={() => {
+          setUrl("");
+          setError("");
+        }}
+        className="grid gap-4 sm:grid-cols-2"
+      >
         <label className="text-sm">
           Destination page
           <input
@@ -784,6 +830,18 @@ function CampaignBuilder() {
             />
           </label>
         ))}
+        <label className="text-sm">
+          Post label (optional)
+          <input
+            name="content"
+            placeholder="roofing-video-post-1"
+            maxLength={100}
+            className={field}
+          />
+          <span className="mt-1 block text-xs text-slate-500">
+            Saved as utm_content and shown in Post results.
+          </span>
+        </label>
         <button className={`${button} justify-self-start`}>
           Generate link
         </button>

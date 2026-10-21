@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, TrendingUp, ArrowRight, BarChart3, Target, DollarSign, Eye, MousePointer } from "lucide-react";
+import { TrendingUp, ArrowRight, Target, DollarSign, Eye, MousePointer } from "lucide-react";
 import Link from "next/link";
 
 interface Keyword {

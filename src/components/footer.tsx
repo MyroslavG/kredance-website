@@ -67,8 +67,9 @@ export function Footer() {
             </Link>
           </div>
 
-          {/* Legal links */}
+          {/* Resources and legal links */}
           <div className="flex items-center justify-end gap-3 text-[11px] text-nebulosity/70 sm:flex-1">
+            <Link href="/guides" className="hover:underline">Guides</Link>
             <button onClick={() => window.dispatchEvent(new Event("kredance-privacy-settings"))} className="hover:underline">Privacy settings</button>
             <Link href="/privacy" className="hover:text-nebulosity/70 transition-colors">
               Privacy

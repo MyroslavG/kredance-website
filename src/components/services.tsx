@@ -14,7 +14,6 @@ import {
   ShoppingCart,
   BarChart3,
   Smartphone,
-  Newspaper,
   Package,
   Plug,
   Globe,
@@ -87,12 +86,6 @@ const services = [
     name: "Mobile App Development",
     href: "/services/mobile-app-development",
     description: "Native and cross-platform mobile apps that deliver exceptional user experiences.",
-  },
-  {
-    icon: Newspaper,
-    name: "News",
-    href: "/services/news",
-    description: "Stay updated with the latest in tech, AI, and digital marketing insights.",
   },
   {
     icon: Package,
@@ -179,6 +172,10 @@ export function Services() {
               </Link>
             </motion.div>
           ))}
+        </div>
+        <div className="mt-12 border-t border-nebulosity/10 pt-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div><h2 className="text-lg font-medium text-nebulosity">Still shaping the brief?</h2><p className="mt-2 text-sm text-wild-dove">Start with practical guides to planning a website or a connected campaign.</p></div>
+          <Link href="/guides" className="inline-flex items-center gap-2 text-sm font-medium text-nebulosity hover:underline underline-offset-4">Explore the guides <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
         </div>
       </div>
     </section>
