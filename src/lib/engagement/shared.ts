@@ -3,6 +3,7 @@ export const serviceOptions = [
   ["website-seo", "Website SEO"],
   ["ecommerce", "Ecommerce"],
   ["advertisement-creation", "Advertising"],
+  ["facebook-lead-generation", "Facebook Lead Generation"],
   ["google-ads", "Google Ads"],
   ["ai-automation", "AI Automation"],
   ["ai-integration", "AI Integration"],

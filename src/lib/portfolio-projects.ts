@@ -5,6 +5,10 @@ export interface PortfolioProject {
   category: string;
   description: string;
   link: string;
+  image?: {
+    src: string;
+    alt: string;
+  };
 }
 
 const existingProjects: PortfolioProject[] = [
@@ -221,6 +225,16 @@ const allProjects: PortfolioProject[] = [
 const featuredLinks = new Set(linkedinOrder.map((slug) => `/portfolio/${slug}`));
 
 export const portfolioProjects: PortfolioProject[] = [
+  {
+    title: "Prime Metal Roofing",
+    category: "Advertising",
+    description: "A Facebook video ad, a higher-intent instant form, and a tested Make-to-Telegram handoff for an Ontario roofing business.",
+    link: "/portfolio/prime-metal-roofing",
+    image: {
+      src: "/images/prime-metal-roofing-poster.jpg",
+      alt: "A frame from the Prime Metal Roofing Facebook video ad",
+    },
+  },
   ...linkedinOrder.map((slug) => {
     const project = allProjects.find((item) => item.link === `/portfolio/${slug}`);
     if (!project) throw new Error(`Missing portfolio project: ${slug}`);

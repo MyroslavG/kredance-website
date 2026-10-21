@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const services = [
   { name: "Websites for Contractors", href: "/websites-for-contractors" },
+  { name: "Facebook Lead Generation", href: "/services/facebook-lead-generation" },
   { name: "Advertisement Creation", href: "/services/advertisement-creation" },
   { name: "AI Automation", href: "/services/ai-automation" },
   { name: "AI Integration", href: "/services/ai-integration" },

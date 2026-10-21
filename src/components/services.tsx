@@ -24,6 +24,12 @@ import {
 const services = [
   {
     icon: Megaphone,
+    name: "Facebook Lead Generation",
+    href: "/services/facebook-lead-generation",
+    description: "Video ads, thoughtful lead forms, and automated notifications that connect enquiries to your team.",
+  },
+  {
+    icon: Megaphone,
     name: "Advertisement Creation",
     href: "/services/advertisement-creation",
     description: "Eye-catching ad campaigns across all platforms that convert viewers into customers.",

@@ -4,9 +4,10 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import type { PortfolioProject } from "@/lib/portfolio-projects";
 
-const categories = ["All", "Website", "Ecommerce", "Mobile App", "AI / Plugins", "Integration", "Design", "Cybersecurity", "Data Mining"];
+const categories = ["All", "Advertising", "Website", "Ecommerce", "Mobile App", "AI / Plugins", "Integration", "Design", "Cybersecurity", "Data Mining"];
 
 export function Portfolio({ projects }: { projects: PortfolioProject[] }) {
   const [activeCategory, setActiveCategory] = useState("All");
@@ -29,7 +30,7 @@ export function Portfolio({ projects }: { projects: PortfolioProject[] }) {
             Featured <span className="text-neon-navy">Work</span>
           </h1>
           <p className="mt-6 text-lg text-nebulosity/70 leading-relaxed">
-            Websites, stores, mobile apps and custom software from the Kredance portfolio.
+            Advertising, websites, apps, and automation from the Kredance portfolio.
           </p>
         </motion.div>
 
@@ -71,6 +72,17 @@ export function Portfolio({ projects }: { projects: PortfolioProject[] }) {
                   href={project.link}
                   className="group flex h-full flex-col rounded-2xl border border-neon-navy/10 p-7 transition-colors hover:border-neon-navy/30 hover:bg-sunset/20 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-neon-navy"
                 >
+                  {project.image && (
+                    <div className="relative mb-6 h-64 overflow-hidden rounded-xl bg-neon-navy">
+                      <Image
+                        src={project.image.src}
+                        alt={project.image.alt}
+                        fill
+                        sizes="(min-width: 1024px) 340px, (min-width: 768px) 45vw, 90vw"
+                        className="object-contain"
+                      />
+                    </div>
+                  )}
                   <span className="text-xs font-medium text-nebulosity/70 uppercase tracking-wider">
                     {project.category}
                   </span>
