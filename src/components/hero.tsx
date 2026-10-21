@@ -7,18 +7,18 @@ export function Hero() {
       <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-20">
         <div>
           <p className="hidden text-xs font-medium uppercase tracking-[0.18em] text-sunset/70 sm:block">
-            Local businesses. A clearer next step.
+            Design × Technology
           </p>
           <h1 className="max-w-2xl text-[clamp(2.5rem,10.7vw,4.5rem)] font-semibold leading-[1.07] tracking-tight sm:mt-6 sm:text-6xl xl:text-7xl">
-            Websites built for{" "}
-            <span className="text-[#c4cba7]">Ottawa contractors.</span>
+            Big ideas.{" "}
+            <span className="block text-[#c4cba7]">Built to work.</span>
           </h1>
           <p className="mt-6 max-w-lg text-lg leading-relaxed text-sunset/80">
-            Show your work and make it easy for homeowners to request a quote.
-            Start with a review of your current website.
+            We design websites, create campaigns, and build automation around
+            your ideas and your business.
           </p>
           <Link
-            href="/websites-for-contractors#website-review"
+            href="/contact?intent=review#inquiry-form"
             data-track="service_click"
             data-service="website-development"
             data-placement="hero"
@@ -36,13 +36,12 @@ export function Hero() {
             No call required.
           </p>
           <Link
-            href="/websites-for-contractors"
+            href="/services"
             data-track="service_click"
-            data-service="website-development"
             data-placement="hero"
             className="mt-7 inline-flex items-center gap-2 text-sm text-sunset/80 underline underline-offset-4 transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sunset"
           >
-            Explore the contractor website package
+            Explore what we can create
             <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
           </Link>
         </div>

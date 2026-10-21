@@ -17,7 +17,7 @@ export function HomeCampaignFeature() {
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-neon-navy/75">
               For Prime Metal Roofing, we connected a Facebook video ad to an
               enquiry form and automatic Telegram notifications. We can scope a
-              campaign around your service, area, and team.
+              campaign around your audience, offer, and goals.
             </p>
             <Link
               href="/services/facebook-lead-generation"
