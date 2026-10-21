@@ -51,6 +51,9 @@
 .deliverableList li { display: flex; align-items: flex-start; gap: 12px; padding-top: 16px; font-size: 14px; line-height: 1.5; }
 .deliverableList svg { flex-shrink: 0; margin-top: 2px; color: #607343; }
 .smallNote { margin-top: 25px; font-size: 12px; line-height: 1.7; color: var(--muted); }
+.clientFeedback { margin-top: 25px; border-top: 1px solid #dde0d6; padding-top: 22px; }
+.clientFeedback blockquote { font-size: 16px; line-height: 1.7; }
+.clientFeedback figcaption { margin-top: 12px; font-size: 12px; color: var(--muted); }
 .scope { display: grid; grid-template-columns: .85fr 1.15fr; gap: 100px; }
 .scopeIntro p:last-child { margin-top: 24px; }
 .scopeRows { border-top: 1px solid #d9dbd4; }

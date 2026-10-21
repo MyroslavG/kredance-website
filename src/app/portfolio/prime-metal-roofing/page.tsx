@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowRight, ChevronRight } from "lucide-react";
 import { createPageMetadata } from "@/lib/metadata";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-json-ld";
-import { CampaignVideo } from "@/components/lead-generation";
+import { CampaignVideo, leadGenerationContact } from "@/components/lead-generation";
 import styles from "@/components/lead-generation.module.css";
 
 const baseMetadata = createPageMetadata({
@@ -62,9 +62,9 @@ export default function PrimeMetalRoofingPage() {
         <div className={`${styles.container} ${styles.projectNext}`}>
           <div>
             <h2>Want this for your business?</h2>
-            <p className={styles.bodyText}>See how we connect Facebook ads to your next customer conversation.</p>
+            <p className={styles.bodyText}>Tell us what you offer and who you want to reach. We’ll help define the next step.</p>
           </div>
-          <Link href="/services/facebook-lead-generation" className={styles.projectButton}>Explore this service <ArrowRight size={17} aria-hidden="true" /></Link>
+          <Link href={leadGenerationContact} className={styles.projectButton}>Discuss a campaign like this <ArrowRight size={17} aria-hidden="true" /></Link>
         </div>
       </section>
     </div>

@@ -32,7 +32,7 @@ export function CampaignVideo() {
 const steps = [
   { number: "01", icon: Film, title: "An ad that shows your work", text: "Project footage, a clear offer, and a reason to get in touch. Formatted for the placements your customers use.", label: "VIDEO CREATIVE" },
   { number: "02", icon: ClipboardList, title: "An enquiry that has context", text: "A native Facebook form collects contact and project details, with a review step before the customer submits.", label: "INSTANT FORM" },
-  { number: "03", icon: Send, title: "A lead your team can act on", text: "The submitted details arrive in your team’s Telegram group, ready for a conversation about the project.", label: "AUTOMATED HANDOFF" },
+  { number: "03", icon: Send, title: "A lead your team can act on", text: "The submitted details arrive through the notification workflow agreed for your campaign, ready for your team to follow up.", label: "AUTOMATED HANDOFF" },
 ];
 
 export function LeadFlow() {
@@ -56,8 +56,8 @@ export function LeadGenerationCta() {
       <div className={styles.container}>
         <p className={styles.eyebrow}>LET’S BUILD YOUR NEXT CAMPAIGN</p>
         <div className={styles.ctaRow}>
-          <div><h2>You do the work.<br />Let’s get it seen.</h2><p>Tell us what you offer, where you work, and how you handle enquiries. We’ll map out the next step.</p></div>
-          <Link href={leadGenerationContact} className={styles.primaryButton}>Talk about your campaign <ArrowRight size={18} aria-hidden="true" /></Link>
+          <div><h2>You do the work.<br />Let’s get it seen.</h2><p>Tell us what you offer, who you want to reach, and how you handle enquiries. We’ll help define the scope and next step.</p></div>
+          <Link href={leadGenerationContact} className={styles.primaryButton}>Discuss my campaign <ArrowRight size={18} aria-hidden="true" /></Link>
         </div>
         <div className={styles.ctaNotes}><span><Check size={15} aria-hidden="true" /> Scope agreed before launch</span><span><Check size={15} aria-hidden="true" /> Ad spend separate from service fees</span></div>
       </div>

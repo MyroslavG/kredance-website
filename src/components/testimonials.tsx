@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { Star } from "lucide-react";
 
 interface Testimonial {
@@ -8,6 +9,7 @@ interface Testimonial {
   role: string;
   content: string;
   rating?: number;
+  projectHref?: `/portfolio/${string}`;
 }
 
 // Sources and attribution for recent entries: docs/testimonial-sources.md.
@@ -15,42 +17,49 @@ export const testimonials: Testimonial[] = [
   {
     name: "Alex Fedoriuk",
     role: "Prime Metal Roofing",
+    projectHref: "/portfolio/prime-metal-roofing",
     content:
       "Myroslav had our Facebook ad campaign set up in just a few hours, and leads started coming in right away.",
   },
   {
     name: "Volodymyr",
     role: "Skyline Flow",
+    projectHref: "/portfolio/skyline-flow",
     content:
       "The site explains our plumbing services clearly and gives customers an easy way to request a quote. Myroslav also took care of the advertising.",
   },
   {
     name: "Olha Hylevych",
     role: "Queen Cookie",
+    projectHref: "/portfolio/queen-cookie",
     content:
       "Customers can browse cookie collections or ask for a custom order in one place. The shop feels like my brand.",
   },
   {
     name: "Daryna Khraniuk",
     role: "FeFa Event Agency",
+    projectHref: "/portfolio/fefa-events",
     content:
       "We wanted people to understand the kinds of events we organise. The website brings everything together without making it complicated.",
   },
   {
     name: "Katya Boiko",
     role: "White Beauty Space",
+    projectHref: "/portfolio/white-beauty-space",
     content:
       "The redesign makes our services easier to explore and booking easy to find. I also appreciated the work on SEO.",
   },
   {
     name: "Viktoria Siran",
     role: "Care By Vikki",
+    projectHref: "/portfolio/care-by-vikki",
     content:
       "A straightforward shop where people can find products, check the details and place an order. That’s exactly what I needed.",
   },
   {
     name: "Seyfullah Fidan",
     role: "Fidan Construction",
+    projectHref: "/portfolio/fidan-construction",
     content:
       "Myroslav handled our website, SEO and Google Ads. It was useful to have someone take care of all three and understand the services we offer.",
   },
@@ -197,6 +206,15 @@ export function Testimonials() {
                     {testimonial.name}
                   </div>
                   <div className="text-xs text-wild-dove">{testimonial.role}</div>
+                  {testimonial.projectHref && (
+                    <Link
+                      href={testimonial.projectHref}
+                      className="mt-2 inline-block text-sm font-medium text-neon-navy underline underline-offset-4 hover:text-nebulosity focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-neon-navy"
+                    >
+                      View the project
+                      <span className="sr-only"> for {testimonial.role}</span>
+                    </Link>
+                  )}
                 </div>
               </div>
             </motion.div>
