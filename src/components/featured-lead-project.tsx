@@ -39,7 +39,7 @@ export function FeaturedLeadProject() {
                 ["03", "Connect the team", "Make → Telegram automation"],
               ].map(([number, title, detail]) => (
                 <li key={number} className="flex items-baseline gap-4 py-4">
-                  <span aria-hidden="true" className="text-xs tabular-nums text-neon-navy/55">
+                  <span aria-hidden="true" className="text-xs tabular-nums text-neon-navy/70">
                     {number}
                   </span>
                   <div className="flex flex-1 flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
@@ -72,7 +72,7 @@ export function FeaturedLeadProject() {
 
           <Link
             href="/portfolio/prime-metal-roofing#the-ad"
-            aria-label="Watch the Prime Metal Roofing video ad in the case study"
+            aria-label="See the creative in action: watch the Prime Metal Roofing video ad in the case study"
             className="group block overflow-hidden rounded-2xl bg-neon-navy focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-neon-navy"
           >
             <div className="relative h-[420px] sm:h-[500px]">
