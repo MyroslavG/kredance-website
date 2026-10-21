@@ -4,9 +4,9 @@ import { WebsiteBuilderDemo } from "@/components/demos/website-builder-demo";
 
 export const metadata = createPageMetadata({
   path: "/services/website-development",
-  title: "Website Development | Kredance",
+  title: "Website Design & Development | Kredance",
   description:
-    "Custom website development with React, Next.js, and modern frameworks. Kredance builds fast, responsive, and conversion-optimized websites for businesses of every size.",
+    "Website design and development around your business, content, and customer journey. Discuss a new website or get three practical improvements for your current site.",
 });
 
 export default function WebsiteDevelopmentPage() {
@@ -14,69 +14,74 @@ export default function WebsiteDevelopmentPage() {
     <div className="flex-1 bg-white">
       <ServiceDetail
         title="Website Development"
-        subtitle="Modern Sites Built for Speed, Scale, and Conversion"
-        description="Your website is the foundation of your digital presence. Kredance builds custom, high-performance websites using React, Next.js, and modern frameworks - engineered for lightning-fast load times, flawless responsiveness, and the flexibility to grow with your business."
+        subtitle="Designed around your business. Built for your customers."
+        description="We plan, design, and build a website around your content and the action you want visitors to take. Pages, integrations, and launch support are agreed before work begins."
+        primaryCtaLabel="Discuss my website"
+        secondaryCta={{
+          label: "Get a free website review",
+          href: "/contact?service=website-development&intent=review#inquiry-form",
+        }}
         features={[
           {
-            title: "React & Next.js Development",
+            title: "Pages with a Clear Purpose",
             description:
-              "Component-driven architecture with server-side rendering, static generation, and API routes for blazing-fast sites that search engines love.",
+              "We organize your services, work, and contact information into pages that help visitors understand your business and find their next step.",
           },
           {
             title: "Responsive Design",
             description:
-              "Every layout is crafted mobile-first and tested across devices, screen sizes, and browsers to deliver a pixel-perfect experience everywhere.",
+              "Layouts, navigation, and forms designed for phones and larger screens, with checks across common screen sizes and browsers.",
           },
           {
             title: "Performance Optimization",
             description:
-              "Code splitting, image optimization, lazy loading, and CDN configuration to achieve top Core Web Vitals scores and sub-second load times.",
+              "We optimize images, loading, and rendering, then check performance before launch to identify issues that could slow visitors down.",
           },
           {
-            title: "CMS Integration",
+            title: "Content You Can Update",
             description:
-              "Headless CMS setups with Sanity, Contentful, Strapi, or WordPress so your team can update content without touching code.",
+              "When you need to manage content, we include a suitable editing system in the scope and show your team how to update the agreed pages.",
           },
           {
-            title: "Custom Functionality",
+            title: "Forms & Useful Integrations",
             description:
-              "From interactive dashboards and client portals to booking systems and real-time data visualizations - we build exactly what your business needs.",
+              "Enquiry forms, booking tools, or other integrations can be included around your workflow. We agree on the connections and test them before handoff.",
           },
           {
             title: "Accessibility & Standards",
             description:
-              "WCAG-compliant, semantic HTML, and best-practice SEO markup baked in from day one so your site is usable and discoverable by everyone.",
+              "We build with structured headings, labelled forms, and keyboard navigation, and check the agreed customer journeys for accessibility issues.",
           },
         ]}
         process={[
           {
             step: "1",
-            title: "Strategy & Planning",
+            title: "Agree on the Scope",
             description:
-              "We define your goals, map user journeys, and create a technical blueprint including stack selection and information architecture.",
+              "We define the goals, pages, content, integrations, timeline, and revisions before work begins, so you know what is included.",
           },
           {
             step: "2",
-            title: "Design & Prototyping",
+            title: "Review the Design",
             description:
-              "High-fidelity designs in Figma with interactive prototypes, giving you a clear picture of the final product before development begins.",
+              "You review the proposed layout and key screens before we build, with a clear opportunity to give feedback on the direction.",
           },
           {
             step: "3",
-            title: "Development & QA",
+            title: "Build & Test",
             description:
-              "Iterative sprints with regular deployments to a staging environment, full cross-browser testing, and performance audits at every milestone.",
+              "We build the site and share a preview. Before launch, we check mobile layouts, forms, links, and the integrations included in your project.",
           },
           {
             step: "4",
-            title: "Launch & Optimization",
+            title: "Launch & Handoff",
             description:
-              "Zero-downtime deployment, analytics setup, and post-launch performance monitoring to ensure everything runs flawlessly from day one.",
+              "We publish the site, verify the key customer journeys, and walk you through managing it. Ongoing support and improvements are agreed as part of the scope.",
           },
         ]}
         relatedProjects={[
-          { title: "CFMoto Kyiv", href: "/portfolio/cfmoto-kyiv", image: "https://www.kredance.com/wp-content/uploads/2026/02/cfmoto-495x400.jpg" },
-          { title: "DzvinSki", href: "/portfolio/dzvinski", image: "https://www.kredance.com/wp-content/uploads/2026/01/bereg-495x400.png" },
+          { title: "Skyline Flow Website & Ads", href: "/portfolio/skyline-flow" },
+          { title: "White Beauty Space Website & SEO", href: "/portfolio/white-beauty-space" },
           { title: "Neon Vibez Website", href: "/portfolio/neon-vibez", image: "https://www.kredance.com/wp-content/uploads/2026/01/Neon-Vibez-Logo-411x400.png" },
           { title: "Tamar Film Website", href: "/portfolio/tamar-film-website", image: "https://www.kredance.com/wp-content/uploads/2025/12/tamarfilm_logo-e1766688086840-495x400.jpg" },
           { title: "Fidan Construction", href: "/portfolio/fidan-construction", image: "https://www.kredance.com/wp-content/uploads/2025/03/fidan1-495x400.png" },

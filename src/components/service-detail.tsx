@@ -23,7 +23,7 @@ interface ProcessStep {
 interface RelatedProject {
   title: string;
   href: string;
-  image: string;
+  image?: string;
 }
 
 interface ServiceDetailProps {
@@ -34,6 +34,8 @@ interface ServiceDetailProps {
   process: ProcessStep[];
   relatedProjects?: RelatedProject[];
   demo?: React.ReactNode;
+  primaryCtaLabel?: string;
+  secondaryCta?: { label: string; href: string };
 }
 
 export function ServiceDetail({
@@ -44,6 +46,8 @@ export function ServiceDetail({
   process,
   relatedProjects,
   demo,
+  primaryCtaLabel,
+  secondaryCta,
 }: ServiceDetailProps) {
   const service = cleanService(usePathname().split("/").at(-1));
   const contactHref = `/contact?service=${service}#inquiry-form`;
@@ -121,14 +125,14 @@ export function ServiceDetail({
                 data-placement="hero"
                 className="group inline-flex items-center gap-2 px-8 py-3.5 bg-sunset text-neon-navy font-medium rounded-full hover:bg-white transition-all"
               >
-                Get Started
+                {primaryCtaLabel ?? "Get Started"}
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
-                href="/services"
+                href={secondaryCta?.href ?? "/services"}
                 className="inline-flex items-center gap-2 px-8 py-3.5 border border-white/10 text-white/60 font-medium rounded-full hover:bg-white/5 hover:text-white transition-all"
               >
-                Explore Services
+                {secondaryCta?.label ?? "Explore Services"}
               </Link>
             </motion.div>
           </motion.div>
@@ -146,7 +150,11 @@ export function ServiceDetail({
       )}
 
       {/* Features — interactive selectable cards */}
-      <FeaturesSection features={features} contactHref={contactHref} />
+      <FeaturesSection
+        features={features}
+        contactHref={contactHref}
+        ctaLabel={primaryCtaLabel}
+      />
 
       {/* Process — timeline style */}
       <section className="py-24 bg-sunset/30 relative overflow-hidden">
@@ -321,17 +329,17 @@ export function ServiceDetail({
                   data-placement="cta"
                   className="group inline-flex items-center gap-2 px-8 py-3.5 bg-sunset text-neon-navy font-medium rounded-full hover:bg-white transition-all"
                 >
-                  Start a Project
+                  {primaryCtaLabel ?? "Start a Project"}
                   <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <Link
-                  href="/services"
+                  href={secondaryCta?.href ?? "/services"}
                   className="inline-flex items-center gap-2 px-8 py-3.5 border border-white/10 text-white/60 font-medium rounded-full hover:bg-white/5 hover:text-white transition-all"
                 >
-                  View All Services
+                  {secondaryCta?.label ?? "View All Services"}
                 </Link>
               </div>
-              {["website-development", "website-seo", "ecommerce"].includes(
+              {!secondaryCta && ["website-development", "website-seo", "ecommerce"].includes(
                 service,
               ) && (
                 <Link
@@ -353,9 +361,11 @@ export function ServiceDetail({
 function FeaturesSection({
   features,
   contactHref,
+  ctaLabel,
 }: {
   features: Feature[];
   contactHref: string;
+  ctaLabel?: string;
 }) {
   const [active, setActive] = useState(0);
 
@@ -446,7 +456,7 @@ function FeaturesSection({
                     data-placement="cta"
                     className="group inline-flex items-center gap-2 text-sm font-medium text-neon-navy hover:text-nebulosity transition-colors"
                   >
-                    Discuss this with us
+                    {ctaLabel ?? "Discuss this with us"}
                     <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </div>

@@ -17,18 +17,18 @@ export const metadata = {
 };
 
 const scope = [
-  ["A campaign with a clear offer", "We shape the message around your service, your area, and the kind of project you want to hear about. Then we set up the audience, placements, and agreed campaign budget."],
+  ["A campaign with a clear offer", "We shape the message around your service, your audience, and the kind of enquiry you want to receive. Then we set up the audience, placements, and agreed campaign budget."],
   ["Creative made for the feed", "We turn your project footage and brand assets into a video ad, with copy and a direct call to action. Placement-specific versions keep the work properly framed."],
   ["A form that asks the useful questions", "We build the enquiry form around what your team needs to follow up: contact details, location, and relevant project information, with clear privacy information."],
   ["A handoff tested before launch", "We connect the form to your team’s notification workflow and test the journey with sample submissions. You know where enquiries arrive and who picks them up."],
 ];
 const faqs = [
-  ["Who is this service for?", "Businesses that sell through a conversation or an estimate, such as roofers, contractors, installers, and other local service providers. We start with your offer, service area, and capacity to respond to new enquiries."],
+  ["Who is this service for?", "Businesses that sell through a conversation, consultation, or estimate. Whether your customers are nearby or further afield, we start with your offer, audience, and capacity to respond to new enquiries."],
   ["Do we need a website or a landing page?", "Customers can submit an enquiry directly in a Facebook Instant Form. You still need an accessible privacy policy and accurate business information. A dedicated landing page can be scoped separately if it fits your campaign."],
-  ["What do you need from us?", "Your service details, target area, logo, usable photos or video, and access to the relevant Meta business assets. We also agree on the offer, the ad budget, and who will respond to enquiries before launch."],
+  ["What do you need from us?", "Your service details, target audience, logo, usable photos or video, and access to the relevant Meta business assets. We agree on the offer, ad budget, launch timeline, and who will respond to enquiries before work begins."],
   ["Do all leads have to go to Telegram?", "Telegram is the delivery destination in the Prime Metal Roofing project. If your team uses a different inbox or CRM, we can assess the integration and include it in the scope before work begins."],
   ["How do pricing and ad spend work?", "We quote the setup based on the creative, campaign, and integrations you need. Advertising spend is paid separately through your Meta ad account. Ongoing management, creative refreshes, and additional integrations can be scoped separately."],
-  ["Can you guarantee a number of leads?", "No. Campaign performance depends on the offer, area, competition, budget, and follow-up. We build and test the campaign and enquiry flow; results are measured after launch using actual campaign data."],
+  ["Can you guarantee a number of leads?", "No. Campaign performance depends on the offer, audience, competition, budget, and follow-up. We build and test the campaign and enquiry flow; results are measured after launch using actual campaign data."],
 ];
 
 export default function FacebookLeadGenerationPage() {
@@ -44,9 +44,8 @@ export default function FacebookLeadGenerationPage() {
             <div>
               <p className={styles.eyebrow}>FACEBOOK LEAD GENERATION</p>
               <h1>Your next<br />customer<br />is <em>scrolling.</em></h1>
-              <p className={styles.intro}>Show them your work. Make it easy to enquire. Get the details straight to your team.</p>
-              <p className={styles.intro}>We connect video ads, Facebook forms, and automated follow-up notifications into one complete lead flow.</p>
-              <div className={styles.actions}><Link href={leadGenerationContact} className={styles.primaryButton}>Build my lead flow <ArrowRight size={17} aria-hidden="true" /></Link><a href="#how-it-works" className={styles.textLink}>See how it works <ArrowDown size={16} aria-hidden="true" /></a></div>
+              <p className={styles.intro}>We build your Facebook campaign, from video creative and the enquiry form to tested notifications for your team.</p>
+              <div className={styles.actions}><Link href={leadGenerationContact} className={styles.primaryButton}>Discuss my campaign <ArrowRight size={17} aria-hidden="true" /></Link><a href="#how-it-works" className={styles.textLink}>See how it works <ArrowDown size={16} aria-hidden="true" /></a></div>
             </div>
             <CampaignVideo />
           </div>
@@ -67,7 +66,10 @@ export default function FacebookLeadGenerationPage() {
           <div className={styles.casePanel}>
             <div className={styles.casePanelHeader}><span className={styles.caseMonogram} aria-hidden="true">PMR</span><div><h3>Prime Metal Roofing</h3><p>Roofing · Ontario · Facebook</p></div></div>
             <ul className={styles.deliverableList}>{["Video creative adapted for Facebook placements", "Higher-intent form with contact and property details", "Make automation delivering enquiries to Telegram", "End-to-end handoff verified with test submissions"].map(item => <li key={item}><Check size={16} aria-hidden="true" />{item}</li>)}</ul>
-            <p className={styles.smallNote}>A showcase of the campaign and system delivered. Campaign performance is measured separately after launch.</p>
+            <figure className={styles.clientFeedback}>
+              <blockquote>“Myroslav had our Facebook ad campaign set up in just a few hours, and leads started coming in right away.”</blockquote>
+              <figcaption>Alex Fedoriuk · Prime Metal Roofing</figcaption>
+            </figure>
           </div>
         </div>
       </section>
