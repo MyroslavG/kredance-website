@@ -7,10 +7,6 @@ export const leadGenerationContact = "/contact?service=facebook-lead-generation#
 export function CampaignVideo() {
   return (
     <figure className={styles.videoFigure}>
-      <div className={styles.videoTopline}>
-        <span><span className={styles.dot} /> THE WORK</span>
-        <span>01 / PRIME METAL ROOFING</span>
-      </div>
       <video
         className={styles.video}
         controls
@@ -26,7 +22,7 @@ export function CampaignVideo() {
         <track kind="captions" src="/videos/prime-metal-roofing-ad.en.vtt" srcLang="en" label="English" />
         Your browser does not support embedded video. <a href="/videos/prime-metal-roofing-ad.mp4">Watch the advertisement</a>.
       </video>
-      <figcaption id="campaign-video-description" className={styles.videoCaption}>
+      <figcaption id="campaign-video-description" className="sr-only">
         Prime Metal Roofing: “Need a new metal roof?” Watch the project footage and invitation to request a free detailed estimate. English captions available.
       </figcaption>
     </figure>
