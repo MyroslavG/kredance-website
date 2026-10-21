@@ -36,6 +36,7 @@ type ConfigField =
   | "NEXT_PUBLIC_EMAILJS_PUBLIC_KEY"
   | "NEXT_PUBLIC_EMAILJS_TEMPLATE_ID"
   | "EMAILJS_PRIVATE_KEY"
+  | "CRON_SECRET"
   | "LEAD_HASH_SECRET";
 
 export class ConfigurationError extends Error {
@@ -115,7 +116,7 @@ export function leadFailureDetails(error: unknown) {
 }
 
 export async function databaseRpc<T>(
-  config: LeadConfig,
+  config: Pick<LeadConfig, "supabaseUrl" | "supabaseKey">,
   name: string,
   body: unknown,
 ): Promise<T> {
@@ -339,23 +340,48 @@ export async function sendEmail(
   return null;
 }
 
+type DispatchRuntime = {
+  now: () => number;
+  sleep: (milliseconds: number) => Promise<void>;
+};
+
+const dispatchRuntime: DispatchRuntime = {
+  now: () => performance.now(),
+  sleep: (milliseconds) =>
+    new Promise((resolve) => setTimeout(resolve, milliseconds)),
+};
+
 export async function dispatchLeadEmails(
   leadId: string | null = null,
   config = leadConfig(),
-  rpc = databaseRpc,
+  rpc: <T>(config: LeadConfig, name: string, body: unknown) => Promise<T> = databaseRpc,
   send = sendEmail,
+  runtime = dispatchRuntime,
 ) {
   let claimed = 0;
   let sent = 0;
-  // Claim one at a time. The database serializes workers and enforces cooldown.
-  const limit = leadId ? 1 : 2;
-  for (let index = 0; index < limit; index++) {
+  let retriedInitialCooldown = false;
+  // A new claim can take up to 24s (claim, send, finish: 8s each). Stop
+  // starting work after 30s so a claimed job can finish inside the 60s route.
+  const claimDeadline = runtime.now() + 30_000;
+  const limit = leadId ? 1 : 10;
+  while (claimed < limit && runtime.now() < claimDeadline) {
     const jobs = await rpc<EmailJob[]>(config, "claim_lead_emails", {
       p_lead_id: leadId,
       p_limit: 1,
     });
     const job = jobs[0];
-    if (!job) break;
+    if (!job) {
+      // The scheduled worker may start just after an intake worker completes.
+      // One bounded retry crosses the database's 1.1s cooldown. Active workers
+      // and jobs whose backoff is not due remain for the next scheduled run.
+      if (!leadId && claimed === 0 && !retriedInitialCooldown) {
+        retriedInitialCooldown = true;
+        await runtime.sleep(1200);
+        continue;
+      }
+      break;
+    }
     claimed++;
     let providerId: string | null = null;
     let failure: string | null = null;
@@ -384,8 +410,8 @@ export async function dispatchLeadEmails(
         jobId: job.id,
         reason: failure,
       });
-    if (index + 1 < limit)
-      await new Promise((resolve) => setTimeout(resolve, 1150));
+    if (claimed < limit && runtime.now() < claimDeadline)
+      await runtime.sleep(1200);
   }
   return { claimed, sent };
 }

@@ -1,4 +1,4 @@
-import { cleanService, UUID } from "../engagement/shared";
+import { cleanService, serviceLabel, UUID } from "../engagement/shared";
 
 export const CONTRACTOR_PATH = "/websites-for-contractors";
 export const BOOKING_URL = "https://calendly.com/kredance/30min";
@@ -138,7 +138,9 @@ export function parseLead(value: unknown): LeadInput {
   const service = cleanService(raw.service);
   const subject =
     kind === "contact"
-      ? field(raw.subject, "Subject", 2, 150)
+      ? raw.subject == null || raw.subject === ""
+        ? service ? `${serviceLabel(service)} inquiry` : "Project inquiry"
+        : field(raw.subject, "Subject", 2, 150)
       : "Website review";
   if (/[\r\n\x00-\x1f]/.test(subject))
     throw new InputError("Enter a valid subject.");
@@ -166,7 +168,13 @@ export function parseLead(value: unknown): LeadInput {
       );
     }
   }
-  const problem = field(raw.problem, "Main problem", 10, 2000);
+  const noReviewDetails =
+    kind !== "contact" &&
+    (raw.problem == null ||
+      (typeof raw.problem === "string" && !raw.problem.trim()));
+  const problem = noReviewDetails
+    ? "General website review requested; no additional details provided."
+    : field(raw.problem, kind === "contact" ? "Project details" : "Review notes", 10, 2000);
   return {
     submissionId,
     name,

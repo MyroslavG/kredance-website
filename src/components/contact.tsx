@@ -7,9 +7,10 @@ import { CalendlyEmbed } from "@/components/calendly-embed";
 import { captureAttribution } from "@/lib/leads/attribution";
 import { engagementSession, trackSite } from "@/lib/engagement/client";
 import { cleanService, serviceOptions } from "@/lib/engagement/shared";
+import { trackFunnel } from "@/lib/leads/analytics";
 
 const inputClass =
-  "mt-2 w-full rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-white placeholder:text-white/40 focus:outline-2 focus:outline-sunset";
+  "mt-2 w-full rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-base text-white placeholder:text-white/40 focus:outline-2 focus:outline-sunset";
 
 export function Contact() {
   return (
@@ -61,7 +62,6 @@ function ContactForm({
           sessionId: engagementSession(),
           kind: review ? "website_review" : "contact",
           service: form.get("service"),
-          subject: form.get("subject"),
           name: form.get("name"),
           email: form.get("email"),
           website: form.get("website"),
@@ -79,6 +79,10 @@ function ContactForm({
         );
       }
       setStatus("sent");
+      trackFunnel("lead_submitted", "contact", {
+        submissionId: submissionId.current,
+        service: String(form.get("service") || ""),
+      });
     } catch (cause) {
       trackSite("form_error", String(form.get("service") || ""), "contact");
       setError(
@@ -97,7 +101,7 @@ function ContactForm({
         id="inquiry-form"
         className="bg-nebulosity px-6 pt-32 pb-24 scroll-mt-24"
       >
-        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2">
+        <div className="mx-auto grid max-w-6xl gap-8 lg:gap-x-16 lg:grid-cols-2">
           <div className="text-sunset">
             <p className="text-sm uppercase tracking-widest text-sunset/60">
               Let’s talk
@@ -109,49 +113,8 @@ function ContactForm({
             </h1>
             <p className="mt-6 text-lg text-sunset/70">
               {review
-                ? "Share your website and what you want it to do better. We’ll send three practical improvements within one business day. No call required."
+                ? "Share your website. We’ll send three practical improvements within one business day. No call required."
                 : "Tell us a little about your project. We’ll reply within one business day with a useful next step."}
-            </p>
-            <div className="mt-10 space-y-4">
-              <p>
-                <span className="block text-sm text-sunset/60">Email</span>
-                <a
-                  href="mailto:myroslav@kredance.com"
-                  className="underline underline-offset-4"
-                >
-                  myroslav@kredance.com
-                </a>
-              </p>
-              <p>
-                <span className="block text-sm text-sunset/60">Phone</span>
-                <a
-                  href="tel:+14384973894"
-                  className="underline underline-offset-4"
-                >
-                  +1 (438) 497-3894
-                </a>
-              </p>
-              <p className="text-sunset/70">Ottawa, ON</p>
-            </div>
-            <a
-              href="#book-a-call"
-              className="mt-8 inline-block rounded-full border border-white/30 px-6 py-3"
-            >
-              Prefer a call? Choose a time
-            </a>
-            <p className="mt-5 text-sm text-sunset/70">
-              {review ? (
-                <Link href="/contact#inquiry-form" className="underline">
-                  Have a new project instead?
-                </Link>
-              ) : (
-                <Link
-                  href="/contact?intent=review#inquiry-form"
-                  className="underline"
-                >
-                  Already have a website? Request a free review.
-                </Link>
-              )}
             </p>
           </div>
           {status === "sent" ? (
@@ -210,7 +173,9 @@ function ContactForm({
                     />
                   </label>
                 </div>
-                <label className="block text-sm">
+                {review ? (
+                  <input type="hidden" name="service" value={initialService || "website-development"} />
+                ) : <label className="block text-sm">
                   Service
                   <select
                     key={initialService}
@@ -225,20 +190,7 @@ function ContactForm({
                       </option>
                     ))}
                   </select>
-                </label>
-                {!review && (
-                  <label className="block text-sm">
-                    Subject
-                    <input
-                      className={inputClass}
-                      name="subject"
-                      required
-                      minLength={2}
-                      maxLength={150}
-                      placeholder="A new website for my business"
-                    />
-                  </label>
-                )}
+                </label>}
                 <label className="block text-sm">
                   Website {review ? "" : "(optional)"}
                   <input
@@ -254,13 +206,13 @@ function ContactForm({
                 </label>
                 <label className="block text-sm">
                   {review
-                    ? "What would you like your website to do better?"
+                    ? "Anything you’d like us to look at? (optional)"
                     : "Tell us about your project"}
                   <textarea
                     className={inputClass}
                     name="message"
                     rows={4}
-                    required
+                    required={!review}
                     minLength={10}
                     maxLength={2000}
                     placeholder={
@@ -304,6 +256,20 @@ function ContactForm({
               </p>
             </form>
           )}
+          <div className="lg:col-span-2 border-t border-white/15 pt-6 text-sm text-sunset/75">
+            <div className="flex flex-wrap gap-x-6 gap-y-3">
+              <a href="mailto:myroslav@kredance.com" className="underline underline-offset-4">myroslav@kredance.com</a>
+              <a href="tel:+14384973894" className="underline underline-offset-4">+1 (438) 497-3894</a>
+              <a href="#book-a-call" className="underline underline-offset-4">Prefer a call? Choose a time</a>
+            </div>
+            <p className="mt-4">
+              {review ? (
+                <Link href="/contact#inquiry-form" className="underline underline-offset-4">Have a new project instead?</Link>
+              ) : (
+                <Link href="/contact?intent=review#inquiry-form" className="underline underline-offset-4">Already have a website? Request a free review.</Link>
+              )}
+            </p>
+          </div>
         </div>
       </section>
       <section

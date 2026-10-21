@@ -18,10 +18,17 @@ export function ContractorPageTracking() {
   const tracked = useRef(false);
   useEffect(() => {
     captureAttribution();
-    if (!tracked.current) {
-      trackFunnel("contractor_page_viewed", "contractor");
-      tracked.current = true;
-    }
+    const trackVisit = () => {
+      if (!tracked.current)
+        tracked.current = trackFunnel("contractor_page_viewed", "contractor");
+    };
+    trackVisit();
+    window.addEventListener("kredance-consent", trackVisit);
+    window.addEventListener("storage", trackVisit);
+    return () => {
+      window.removeEventListener("kredance-consent", trackVisit);
+      window.removeEventListener("storage", trackVisit);
+    };
   }, []);
   return null;
 }
@@ -62,8 +69,7 @@ export function WebsiteReviewForm() {
 
   function start() {
     if (!started.current) {
-      started.current = true;
-      trackFunnel("review_form_started", "review");
+      started.current = trackFunnel("review_form_started", "review");
       trackSite("form_start", "website-development", "review");
     }
   }
@@ -102,6 +108,10 @@ export function WebsiteReviewForm() {
           result.error || "We couldn't save your request. Please try again.",
         );
       }
+      trackFunnel("lead_submitted", "review", {
+        submissionId: submissionId.current,
+        service: "website-development",
+      });
       setStatus("sent");
     } catch (cause) {
       trackSite("form_error", "website-development", "review");
@@ -220,12 +230,11 @@ export function WebsiteReviewForm() {
         </div>
         <div>
           <label htmlFor="review-problem" className="text-sm font-medium">
-            What would you like your website to do better?
+            What would you like your website to do better? (optional)
           </label>
           <textarea
             id="review-problem"
             name="problem"
-            required
             minLength={10}
             maxLength={2000}
             rows={4}

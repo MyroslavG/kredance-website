@@ -8,7 +8,7 @@
     "check:seo": "node scripts/check-seo.mjs",
     "check:lighthouse": "lhci autorun --config=./lighthouserc.json",
     "ci:seo": "npm run build && npm run check:seo",
-    "test": "tsx --test tests/leads.test.ts tests/engagement.test.ts",
+    "test": "tsx --test tests/*.test.ts",
     "preview:leads": "tsx scripts/preview-leads.ts",
     "start": "next start",
     "lint": "eslint"

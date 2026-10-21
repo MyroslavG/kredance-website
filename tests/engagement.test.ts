@@ -63,6 +63,18 @@ describe("engagement input and endpoint protection", () => {
       /Ecommerce/,
     );
   });
+  it("accepts simpler forms while retaining meaningful contact details and validation", () => {
+    const contact = parseLead({ ...inquiry(), subject: undefined });
+    assert.equal(contact.subject, "Ecommerce inquiry");
+    assert.equal(parseLead({ ...inquiry(), subject: "", service: "" }).subject, "Project inquiry");
+    assert.throws(() => parseLead({ ...inquiry(), subject: undefined, problem: "" }));
+    for (const kind of ["website_review", "contractor_review"]) {
+      const review = parseLead({ ...inquiry(), kind, website: "example.com", problem: " " });
+      assert.match(review.problem, /no additional details provided/);
+      assert.equal(review.subject, "Website review");
+      assert.throws(() => parseLead({ ...inquiry(), kind, website: "example.com", problem: "x".repeat(2001) }));
+    }
+  });
   it("denies anonymous dashboard reads and cross-origin mutations", async () => {
     const response = await GET(
       new Request("https://www.kredance.com/api/dashboard"),
@@ -336,6 +348,34 @@ describe("private lead dashboard database", () => {
     );
     assert.equal(hidden.leadTotal, 0);
     assert.deepEqual(hidden.events, []);
+  });
+  it("persists reviews without notes and contact inquiries without a subject", async () => {
+    for (const [index, changes] of [
+      { kind: "contact", subject: undefined },
+      { kind: "website_review", website: "example.com", problem: "" },
+      { kind: "contractor_review", website: "example.com", problem: undefined },
+    ].entries()) {
+      const body = { ...inquiry(), ...changes, email: `form-${index}@example.com` };
+      const response = await handleLeadRequest(new Request("https://www.kredance.com/api/leads", {
+        method: "POST",
+        headers: { origin: "https://www.kredance.com", "content-type": "application/json" },
+        body: JSON.stringify(body),
+      }), {
+        config: () => testConfig,
+        save: (_config: typeof testConfig, data: Record<string, unknown>) =>
+          rpc<{ id: string; created: boolean }>("accept_website_lead", data),
+        accepted: () => {},
+      });
+      assert.equal(response.status, 201);
+    }
+    const rows = (await fixture.db.query<{ subject: string; problem: string }>(
+      "select subject, problem from public.website_leads order by created_at",
+    )).rows;
+    assert.equal(rows.length, 3);
+    assert.equal(rows[0].subject, "Ecommerce inquiry");
+    assert.match(rows[1].problem, /no additional details provided/);
+    assert.match(rows[2].problem, /no additional details provided/);
+    assert.equal((await fixture.db.query("select id from public.lead_email_jobs")).rows.length, 3);
   });
   it("records events idempotently and rejects forged saved-lead events", async () => {
     const parsed = parseSiteEvent(event());
