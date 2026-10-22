@@ -27,7 +27,7 @@ export default function GuidesPage() {
         <div className={styles.container}>
           <p className={styles.eyebrow}>Kredance / Guides</p>
           <div className={styles.hubHeading}><h1>A clearer plan.<br />A better project.</h1><p>Practical ways to shape your website, campaign, and the work behind it. Start with the decisions that matter before you build.</p></div>
-          <div className={styles.heroFoot}><span>For people with something to build.</span><span>Websites · Creative · Automation</span></div>
+          <div className={styles.heroFoot}><span>For people with something to build.</span><span>Websites · Advertising</span></div>
         </div>
       </header>
       <section className={`${styles.container} ${styles.guideCollection}`} aria-labelledby="guide-list-title">
