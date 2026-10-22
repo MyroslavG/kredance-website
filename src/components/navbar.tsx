@@ -1,37 +1,31 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useId, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, ChevronDown } from "lucide-react";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { motion, AnimatePresence } from "framer-motion";
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { motion } from "framer-motion";
 
 const services = [
-  { name: "Websites for Contractors", href: "/websites-for-contractors" },
   { name: "Facebook Lead Generation", href: "/services/facebook-lead-generation" },
-  { name: "Advertisement Creation", href: "/services/advertisement-creation" },
-  { name: "AI Automation", href: "/services/ai-automation" },
-  { name: "AI Integration", href: "/services/ai-integration" },
-  { name: "Cybersecurity Services", href: "/services/cybersecurity" },
-  { name: "Data Migration", href: "/services/data-migration" },
-  { name: "Data Mining & Scraping", href: "/services/data-mining" },
-  { name: "Design", href: "/services/design" },
-  { name: "Ecommerce Shop Development", href: "/services/ecommerce" },
-  { name: "Google Ads Specialist", href: "/services/google-ads" },
-  { name: "Mobile App Development", href: "/services/mobile-app-development" },
-  { name: "Small Business IT Package", href: "/services/small-business-it" },
-  { name: "Universal Plugin Solutions", href: "/services/universal-plugin-solutions" },
-  { name: "Website Development", href: "/services/website-development" },
+  { name: "Google Ads", href: "/services/google-ads" },
   { name: "Website SEO", href: "/services/website-seo" },
+  { name: "Ecommerce", href: "/services/ecommerce" },
+  { name: "Automation", href: "/ai-automation" },
 ];
 
 const navLinks = [
-  { name: "AI Automation", href: "/ai-automation" },
+  { name: "Websites", href: "/services/website-development" },
+  { name: "Advertising", href: "/services/advertisement-creation" },
   { name: "Portfolio", href: "/portfolio" },
   { name: "Guides", href: "/guides" },
-  { name: "Testimonials", href: "/testimonials" },
   { name: "Contact", href: "/contact" },
+];
+
+const moreLinks = [
+  { name: "All Services", href: "/services" },
+  { name: "Testimonials", href: "/testimonials" },
 ];
 
 const darkPages = ["/", "/contact", "/ai-automation", "/insights", "/websites-for-contractors"];
@@ -41,7 +35,16 @@ export function Navbar() {
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const desktopMenuRef = useRef<HTMLDivElement>(null);
+  const desktopTriggerRef = useRef<HTMLButtonElement>(null);
+  const menuId = useId();
   const pathname = usePathname();
+  const activeLink = (href: string) => pathname === href ||
+    ((href === "/guides" || href === "/portfolio") && pathname.startsWith(`${href}/`));
+  const closeMobile = () => {
+    setMobileOpen(false);
+    setMobileServicesOpen(false);
+  };
 
   const isDarkPage =
     darkPages.includes(pathname) ||
@@ -59,8 +62,20 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (!servicesOpen) return;
+    const closeOutside = (event: PointerEvent) => {
+      if (!desktopMenuRef.current?.contains(event.target as Node)) {
+        setServicesOpen(false);
+      }
+    };
+    document.addEventListener("pointerdown", closeOutside);
+    return () => document.removeEventListener("pointerdown", closeOutside);
+  }, [servicesOpen]);
+
   return (
     <motion.nav
+      aria-label="Main navigation"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
@@ -75,7 +90,7 @@ export function Navbar() {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="group">
+          <Link href="/" aria-label="Kredance home" className="group" onClick={() => setServicesOpen(false)}>
             <img
               src={logoSrc}
               alt="Kredance"
@@ -87,83 +102,95 @@ export function Navbar() {
 
           {/* Desktop Nav */}
           <div className="hidden lg:flex items-center gap-1">
-            <NavLink href="/ai-automation" active={pathname === "/ai-automation"} light={useLight}>
-              AI Automation
-            </NavLink>
-
-            {/* Services Dropdown */}
+            {navLinks.map((link) => (
+              <NavLink
+                key={link.href}
+                href={link.href}
+                active={activeLink(link.href)}
+                light={useLight}
+                onClick={() => setServicesOpen(false)}
+              >
+                {link.name}
+              </NavLink>
+            ))}
             <div
+              ref={desktopMenuRef}
               className="relative"
-              onMouseEnter={() => setServicesOpen(true)}
-              onMouseLeave={() => setServicesOpen(false)}
+              onBlur={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget)) {
+                  setServicesOpen(false);
+                }
+              }}
+              onKeyDown={(event) => {
+                if (event.key === "Escape" && servicesOpen) {
+                  event.preventDefault();
+                  setServicesOpen(false);
+                  desktopTriggerRef.current?.focus();
+                }
+              }}
             >
-              <Link
-                href="/services"
-                className={`flex items-center gap-1 px-4 py-2 text-sm font-medium transition-colors rounded-full ${
-                  pathname === "/services"
-                    ? "bg-neon-navy text-sunset"
-                    : useLight
+              <button
+                ref={desktopTriggerRef}
+                type="button"
+                aria-expanded={servicesOpen}
+                aria-controls={`${menuId}-desktop`}
+                onClick={() => setServicesOpen((open) => !open)}
+                className={`flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors rounded-full ${
+                  useLight
                     ? "text-white hover:bg-white/10"
                     : "text-nebulosity/70 hover:text-nebulosity hover:bg-nebulosity/5"
                 }`}
               >
-                Services
+                More
                 <ChevronDown
+                  aria-hidden="true"
                   className={`h-3.5 w-3.5 transition-transform duration-200 ${
                     servicesOpen ? "rotate-180" : ""
                   }`}
                 />
-              </Link>
-              <AnimatePresence>
-                {servicesOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 8, scale: 0.96 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 8, scale: 0.96 }}
-                    transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                    className="absolute top-full left-1/2 -translate-x-1/2 pt-2"
-                  >
-                    <div className="w-[520px] rounded-2xl bg-white/95 backdrop-blur-xl shadow-xl shadow-black/5 border border-black/5 p-4 grid grid-cols-2 gap-1">
-                      {services.map((service) => (
+              </button>
+                <div
+                  id={`${menuId}-desktop`}
+                  hidden={!servicesOpen}
+                  className="absolute top-full right-0 pt-2"
+                >
+                  <div className="w-64 max-h-[calc(100dvh-5rem)] overflow-y-auto rounded-2xl bg-white/95 backdrop-blur-xl shadow-xl shadow-black/5 border border-black/5 p-2">
+                    <div className="flex flex-col gap-0.5">
+                      {[...moreLinks, ...services].map((link) => (
                         <Link
-                          key={service.name}
-                          href={service.href}
-                          className="px-3 py-2 text-sm text-nebulosity/70 hover:text-nebulosity hover:bg-neon-navy/5 rounded-lg transition-all"
+                          key={link.href}
+                          href={link.href}
+                          aria-current={pathname === link.href ? "page" : undefined}
+                          onClick={() => setServicesOpen(false)}
+                          className="px-3 py-2 text-sm text-nebulosity/70 hover:text-nebulosity hover:bg-neon-navy/5 rounded-lg transition-colors"
                         >
-                          {service.name}
+                          {link.name}
                         </Link>
                       ))}
                     </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                  </div>
+                </div>
             </div>
-
-            <NavLink href="/portfolio" active={pathname === "/portfolio"} light={useLight}>
-              Portfolio
-            </NavLink>
-            <NavLink href="/guides" active={pathname === "/guides" || pathname.startsWith("/guides/")} light={useLight}>
-              Guides
-            </NavLink>
-            <NavLink href="/testimonials" active={pathname === "/testimonials"} light={useLight}>
-              Testimonials
-            </NavLink>
-            <NavLink href="/contact" active={pathname === "/contact"} light={useLight}>
-              Contact
-            </NavLink>
           </div>
 
           {/* Mobile Menu */}
           <div className="lg:hidden">
-            <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+            <Sheet
+              open={mobileOpen}
+              onOpenChange={(open) => {
+                setMobileOpen(open);
+                if (!open) setMobileServicesOpen(false);
+              }}
+            >
               <SheetTrigger
-                render={<button aria-label="Open menu" className="p-2 rounded-full hover:bg-nebulosity/5 transition-colors" />}
+                render={<button type="button" aria-label="Open menu" className="p-2 rounded-full hover:bg-nebulosity/5 transition-colors" />}
               >
-                <Menu className={`h-5 w-5 ${useLight ? "text-white" : "text-nebulosity"}`} />
+                <Menu aria-hidden="true" className={`h-5 w-5 ${useLight ? "text-white" : "text-nebulosity"}`} />
               </SheetTrigger>
-              <SheetContent side="right" className="w-80 bg-white border-l border-black/5 p-0">
-                <div className="flex flex-col h-full">
+              <SheetContent side="right" className="w-80 max-w-full bg-white border-l border-black/5 p-0">
+                <div className="flex flex-col h-full min-h-0">
                   <div className="p-6 border-b border-black/5">
+                    <SheetTitle className="sr-only">Navigation</SheetTitle>
                     <img
                       src="/black_no_bg.png"
                       alt="Kredance"
@@ -173,84 +200,62 @@ export function Navbar() {
                   </div>
                   <div className="flex-1 overflow-y-auto p-4">
                     <div className="flex flex-col gap-1">
-                      {navLinks.slice(0, 1).map((link) => (
+                      {navLinks.map((link) => (
                         <MobileNavLink
-                          key={link.name}
+                          key={link.href}
                           href={link.href}
-                          active={pathname === link.href}
-                          onClick={() => setMobileOpen(false)}
+                          active={activeLink(link.href)}
+                          onClick={closeMobile}
                         >
                           {link.name}
                         </MobileNavLink>
                       ))}
 
-                      {/* Mobile Services Accordion */}
                       <div>
                         <button
-                          onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
-                          className={`flex items-center justify-between w-full px-4 py-3 text-sm font-medium rounded-xl transition-colors ${
-                            pathname === "/services"
-                              ? "text-nebulosity bg-nebulosity/5"
-                              : "text-nebulosity/70 hover:text-nebulosity hover:bg-nebulosity/5"
-                          }`}
+                          type="button"
+                          aria-expanded={mobileServicesOpen}
+                          aria-controls={`${menuId}-mobile`}
+                          onClick={() => setMobileServicesOpen((open) => !open)}
+                          className="flex items-center justify-between w-full px-4 py-3 text-sm font-medium rounded-xl text-nebulosity/70 hover:text-nebulosity hover:bg-nebulosity/5 transition-colors"
                         >
-                          <Link
-                            href="/services"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setMobileOpen(false);
-                            }}
-                          >
-                            Services
-                          </Link>
+                          More
                           <ChevronDown
+                            aria-hidden="true"
                             className={`h-4 w-4 transition-transform duration-200 ${
                               mobileServicesOpen ? "rotate-180" : ""
                             }`}
                           />
                         </button>
-                        <AnimatePresence>
-                          {mobileServicesOpen && (
-                            <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: "auto", opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              transition={{ duration: 0.2 }}
-                              className="overflow-hidden"
-                            >
-                              <div className="pl-4 flex flex-col gap-0.5">
-                                {services.map((service) => (
-                                  <Link
-                                    key={service.name}
-                                    href={service.href}
-                                    onClick={() => setMobileOpen(false)}
-                                    className="px-4 py-2 text-sm text-nebulosity/60 hover:text-nebulosity hover:bg-neon-navy/5 rounded-lg transition-colors"
-                                  >
-                                    {service.name}
-                                  </Link>
-                                ))}
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
+                        {mobileServicesOpen && (
+                          <motion.div
+                            id={`${menuId}-mobile`}
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            transition={{ duration: 0.2 }}
+                            className="overflow-hidden"
+                          >
+                            <div className="pl-4 flex flex-col gap-0.5">
+                              {[...moreLinks, ...services].map((link) => (
+                                <MobileNavLink
+                                  key={link.href}
+                                  href={link.href}
+                                  active={pathname === link.href}
+                                  onClick={closeMobile}
+                                >
+                                  {link.name}
+                                </MobileNavLink>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
                       </div>
-
-                      {navLinks.slice(1).map((link) => (
-                        <MobileNavLink
-                          key={link.name}
-                          href={link.href}
-                          active={pathname === link.href || (link.href === "/guides" && pathname.startsWith("/guides/"))}
-                          onClick={() => setMobileOpen(false)}
-                        >
-                          {link.name}
-                        </MobileNavLink>
-                      ))}
                     </div>
                   </div>
                   <div className="p-4 border-t border-black/5">
                     <Link
                       href="/contact"
-                      onClick={() => setMobileOpen(false)}
+                      onClick={closeMobile}
                       className="block w-full text-center px-5 py-3 text-sm font-medium bg-neon-navy text-sunset rounded-full hover:bg-neon-navy/90 transition-colors"
                     >
                       Get in Touch
@@ -271,16 +276,20 @@ function NavLink({
   children,
   active,
   light,
+  onClick,
 }: {
   href: string;
   children: React.ReactNode;
   active: boolean;
   light: boolean;
+  onClick: () => void;
 }) {
   return (
     <Link
       href={href}
-      className={`px-4 py-2 text-sm font-medium transition-colors rounded-full ${
+      onClick={onClick}
+      aria-current={active ? "page" : undefined}
+      className={`whitespace-nowrap px-3 py-2 text-sm font-medium transition-colors rounded-full ${
         active
           ? light
             ? "bg-white/20 text-white"
@@ -310,6 +319,7 @@ function MobileNavLink({
     <Link
       href={href}
       onClick={onClick}
+      aria-current={active ? "page" : undefined}
       className={`px-4 py-3 text-sm font-medium rounded-xl transition-colors ${
         active
           ? "text-nebulosity bg-nebulosity/5"

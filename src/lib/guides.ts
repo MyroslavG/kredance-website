@@ -15,7 +15,7 @@ export const guides = [
     path: "/guides/facebook-lead-handoff-checklist",
     title: "From Facebook ad to enquiry: a handoff checklist",
     description: "Plan the journey from Facebook creative to a useful enquiry and a clear team handoff, with a checklist based on our Prime Metal Roofing project.",
-    category: "Campaigns & automation",
+    category: "Advertising",
     summary: "Connect the promise in your ad to the questions in your form and the person who will follow up.",
     outcome: "Leave with a campaign handoff checklist.",
     published: "2026-10-21",

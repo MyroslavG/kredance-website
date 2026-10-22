@@ -4,7 +4,7 @@ import { Services } from "@/components/services";
 export const metadata = createPageMetadata({
   path: "/services",
   title: "Services | Kredance",
-  description: "Explore our full suite of digital services - from AI automation and web development to SEO, eCommerce, and cybersecurity.",
+  description: "Explore websites and advertising from Kredance, with SEO, eCommerce, design, and automation to support your project.",
 });
 
 export default function ServicesPage() {

@@ -2,7 +2,7 @@ export const siteConfig = {
   name: "Kredance",
   url: "https://www.kredance.com",
   description:
-    "Kredance is a full-service digital agency specializing in AI automation, custom websites, SEO, eCommerce, and digital marketing solutions.",
+    "Kredance designs websites and creates advertising to help your business get noticed and generate enquiries, with SEO, eCommerce, and automation to support your next step.",
   email: "myroslav@kredance.com",
   socialLinks: [
     "https://www.linkedin.com/company/kredanceco",

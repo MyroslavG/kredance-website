@@ -22,16 +22,52 @@ import {
 
 const services = [
   {
+    icon: Globe,
+    name: "Websites",
+    href: "/services/website-development",
+    description: "Distinctive websites that explain what you do and make it easy to get in touch.",
+  },
+  {
+    icon: Megaphone,
+    name: "Advertising",
+    href: "/services/advertisement-creation",
+    description: "Ad creative and campaigns built around your offer, audience, and next enquiry.",
+  },
+  {
     icon: Megaphone,
     name: "Facebook Lead Generation",
     href: "/services/facebook-lead-generation",
     description: "Video ads, thoughtful lead forms, and automated notifications that connect enquiries to your team.",
   },
   {
-    icon: Megaphone,
-    name: "Advertisement Creation",
-    href: "/services/advertisement-creation",
-    description: "Eye-catching ad campaigns across all platforms that convert viewers into customers.",
+    icon: BarChart3,
+    name: "Google Ads Specialist",
+    href: "/services/google-ads",
+    description: "Search campaigns that connect your services with people already looking for them.",
+  },
+  {
+    icon: TrendingUp,
+    name: "Website SEO",
+    href: "/services/website-seo",
+    description: "Data-driven SEO strategies that improve rankings and drive organic traffic.",
+  },
+  {
+    icon: ShoppingCart,
+    name: "Ecommerce Shop Development",
+    href: "/services/ecommerce",
+    description: "High-converting online stores built for scale, speed, and seamless checkout.",
+  },
+  {
+    icon: Palette,
+    name: "Design",
+    href: "/services/design",
+    description: "Beautiful, functional design systems that elevate your brand across every touchpoint.",
+  },
+  {
+    icon: Smartphone,
+    name: "Mobile App Development",
+    href: "/services/mobile-app-development",
+    description: "Native and cross-platform mobile apps that deliver exceptional user experiences.",
   },
   {
     icon: Bot,
@@ -64,30 +100,6 @@ const services = [
     description: "Extract valuable insights from the web with compliant, scalable data collection.",
   },
   {
-    icon: Palette,
-    name: "Design",
-    href: "/services/design",
-    description: "Beautiful, functional design systems that elevate your brand across every touchpoint.",
-  },
-  {
-    icon: ShoppingCart,
-    name: "Ecommerce Shop Development",
-    href: "/services/ecommerce",
-    description: "High-converting online stores built for scale, speed, and seamless checkout.",
-  },
-  {
-    icon: BarChart3,
-    name: "Google Ads Specialist",
-    href: "/services/google-ads",
-    description: "Maximize ROI with expertly managed Google Ads campaigns and optimization.",
-  },
-  {
-    icon: Smartphone,
-    name: "Mobile App Development",
-    href: "/services/mobile-app-development",
-    description: "Native and cross-platform mobile apps that deliver exceptional user experiences.",
-  },
-  {
     icon: Package,
     name: "Small Business IT Package",
     href: "/services/small-business-it",
@@ -98,18 +110,6 @@ const services = [
     name: "Universal Plugin Solutions",
     href: "/services/universal-plugin-solutions",
     description: "Custom plugins and extensions that extend your platform's capabilities.",
-  },
-  {
-    icon: Globe,
-    name: "Website Development",
-    href: "/services/website-development",
-    description: "Fast, responsive, and beautiful websites built with the latest technologies.",
-  },
-  {
-    icon: TrendingUp,
-    name: "Website SEO",
-    href: "/services/website-seo",
-    description: "Data-driven SEO strategies that improve rankings and drive organic traffic.",
   },
 ];
 
@@ -133,8 +133,8 @@ export function Services() {
             <span className="text-neon-navy">Succeed Online</span>
           </h1>
           <p className="mt-6 text-lg text-wild-dove leading-relaxed">
-            From concept to launch and beyond, we offer a comprehensive suite of
-            digital services to power your business growth.
+            Start with a website or an advertising campaign. We can bring in SEO,
+            design, and automation where your project needs them.
           </p>
         </motion.div>
 

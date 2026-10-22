@@ -4,46 +4,53 @@ import { ArrowRight, ArrowUpRight } from "lucide-react";
 export function Hero() {
   return (
     <section className="bg-neon-navy px-6 pb-16 pt-24 text-sunset sm:pb-20 sm:pt-36 lg:px-8">
-      <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-20">
+      <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
         <div>
           <p className="hidden text-xs font-medium uppercase tracking-[0.18em] text-sunset/70 sm:block">
-            Design × Technology
+            Websites & Advertising
           </p>
-          <h1 className="max-w-2xl text-[clamp(2.5rem,10.7vw,4.5rem)] font-semibold leading-[1.07] tracking-tight sm:mt-6 sm:text-6xl xl:text-7xl">
-            Big ideas.{" "}
-            <span className="block text-[#c4cba7]">Built to work.</span>
+          <h1 className="max-w-2xl text-[clamp(2.125rem,8.5vw,3rem)] font-medium leading-[1.1] tracking-tight sm:mt-6 sm:text-5xl xl:text-[3.5rem]">
+            <span className="block">Websites that make an impression.</span>{" "}
+            <span className="mt-2 block text-[#c4cba7]">Campaigns that start conversations.</span>
           </h1>
-          <p className="mt-6 max-w-lg text-lg leading-relaxed text-sunset/80">
-            We design websites, create campaigns, and build automation around
-            your ideas and your business.
+          <p className="mt-6 max-w-lg text-base leading-relaxed text-sunset/80 sm:text-lg">
+            We design websites and create advertising that helps your business
+            get noticed and generate enquiries.
           </p>
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <Link
+              href="/services/website-development"
+              data-track="service_click"
+              data-service="website-development"
+              data-placement="hero"
+              className="group inline-flex items-center justify-center gap-3 rounded-full bg-sunset px-5 py-4 text-sm font-semibold text-neon-navy transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sunset sm:px-6"
+            >
+              Websites
+              <ArrowRight aria-hidden="true" className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+            <Link
+              href="/services/advertisement-creation"
+              data-track="service_click"
+              data-service="advertisement-creation"
+              data-placement="hero"
+              className="group inline-flex items-center justify-center gap-3 rounded-full border border-sunset/50 px-5 py-4 text-sm font-semibold text-sunset transition-colors hover:bg-sunset/10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sunset sm:px-6"
+            >
+              Advertising
+              <ArrowRight aria-hidden="true" className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </div>
           <Link
-            href="/contact?intent=review#inquiry-form"
-            data-track="service_click"
+            href="/contact?service=website-development&intent=review#inquiry-form"
             data-service="website-development"
-            data-placement="hero"
-            className="group mt-8 inline-flex items-center justify-center gap-3 rounded-full bg-sunset px-6 py-4 text-sm font-semibold text-neon-navy transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sunset"
-          >
-            Get my free website review
-            <ArrowRight
-              aria-hidden="true"
-              className="h-4 w-4 transition-transform group-hover:translate-x-1"
-            />
-          </Link>
-          <p className="mt-4 max-w-sm text-sm leading-relaxed text-sunset/70">
-            Three practical improvements within one business day.
-            <br />
-            No call required.
-          </p>
-          <Link
-            href="/services"
-            data-track="service_click"
             data-placement="hero"
             className="mt-7 inline-flex items-center gap-2 text-sm text-sunset/80 underline underline-offset-4 transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sunset"
           >
-            Explore what we can create
+            Get a free website review
             <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
           </Link>
+          <p className="mt-2 max-w-sm text-xs leading-relaxed text-sunset/65">
+            Three practical improvements within one business day. No call required.
+          </p>
         </div>
 
         <div className="overflow-hidden rounded-2xl border border-white/15 bg-white/[0.04]">

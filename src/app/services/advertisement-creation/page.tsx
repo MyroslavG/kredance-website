@@ -1,87 +1,78 @@
 import { createPageMetadata } from "@/lib/metadata";
 import { ServiceDetail } from "@/components/service-detail";
-import { AdCreativeDemo } from "@/components/demos/ad-creative-demo";
 
 export const metadata = createPageMetadata({
   path: "/services/advertisement-creation",
-  title: "Advertisement Creation | Kredance",
+  title: "Advertising — Facebook, Google Ads & Creative | Kredance",
   description:
-    "Eye-catching ad campaigns across all platforms. Kredance creates data-driven advertisements that convert viewers into loyal customers.",
+    "Facebook lead campaigns, Google Ads, and ad creative built around your offer. Explore our work and discuss your campaign with Kredance.",
 });
 
 export default function AdvertisementCreationPage() {
   return (
     <div className="flex-1 bg-white">
       <ServiceDetail
-        title="Advertisement Creation"
-        subtitle="Campaigns That Convert"
-        description="At Kredance, we craft high-impact advertising campaigns that cut through the noise and drive measurable results. From social media ads to display networks and video content, our team blends creative storytelling with data-driven targeting to maximize your return on every dollar spent."
+        title="Advertising"
+        subtitle="The right message. A clear next step."
+        description="Facebook lead campaigns, Google Ads, and creative made around your offer. We connect the ad to a clear next step, whether that’s an enquiry form or your website."
+        primaryCtaLabel="Discuss my campaign"
+        secondaryCta={{
+          label: "See a campaign we built",
+          href: "/portfolio/prime-metal-roofing#the-ad",
+        }}
         features={[
           {
-            title: "Social Media Advertising",
+            title: "Facebook Lead Campaigns",
             description:
-              "Targeted campaigns across Facebook, Instagram, LinkedIn, and TikTok designed to reach your ideal audience with precision and drive meaningful engagement.",
+              "A campaign built around your offer, with video creative, an enquiry form, and a tested handoff to your team.",
           },
           {
-            title: "Display & Programmatic Ads",
+            title: "Google Search Ads",
             description:
-              "Visually striking banner and display ads distributed through programmatic networks to maximize reach and retarget visitors across the web.",
+              "Keyword research, ad copy, campaign setup, and conversion tracking for people searching for your services.",
           },
           {
-            title: "Video Ad Production",
+            title: "Ad Creative",
             description:
-              "Scroll-stopping video content optimized for every platform, from 6-second bumper ads to long-form brand storytelling that builds lasting connections.",
+              "Copy, static designs, and video edits using your brand and project assets, prepared for the placements agreed in your brief.",
           },
           {
-            title: "A/B Testing & Optimization",
+            title: "Tracking & Review",
             description:
-              "Continuous creative testing across headlines, visuals, and calls-to-action to identify top-performing variations and improve conversion rates over time.",
-          },
-          {
-            title: "Audience Research & Targeting",
-            description:
-              "Deep-dive audience analysis using demographic, behavioral, and psychographic data to build laser-focused targeting profiles for every campaign.",
-          },
-          {
-            title: "Performance Analytics",
-            description:
-              "Comprehensive reporting dashboards that track impressions, clicks, conversions, and ROI so you always know exactly how your ad spend is performing.",
+              "We agree what counts as a useful enquiry, check tracking and lead delivery, and use the available campaign data to guide the next changes.",
           },
         ]}
         process={[
           {
             step: "1",
-            title: "Discovery & Strategy",
+            title: "Agree on the Plan",
             description:
-              "We learn your brand, goals, and audience to develop a tailored advertising strategy aligned with your business objectives.",
+              "We define your offer, audience, channel, scope, and budget. Advertising spend is separate from our work and paid through your ad account.",
           },
           {
             step: "2",
-            title: "Creative Development",
+            title: "Review the Creative",
             description:
-              "Our designers and copywriters produce compelling ad creatives, from static visuals to animated and video formats.",
+              "You review the message, visuals, and call to action before launch. We confirm what assets and account access are needed.",
           },
           {
             step: "3",
-            title: "Launch & Targeting",
+            title: "Build & Test",
             description:
-              "Campaigns go live with precise audience targeting, bid strategies, and placement optimization across chosen platforms.",
+              "We set up the agreed campaign and check its destination, tracking, and enquiry flow with test submissions where relevant.",
           },
           {
             step: "4",
-            title: "Optimize & Scale",
+            title: "Launch & Review",
             description:
-              "We monitor performance daily, refine targeting, test new creatives, and scale winning campaigns to maximize your results.",
+              "We launch with the approved budget and review the available results. Ongoing management, reporting, and creative updates are agreed in the scope.",
           },
         ]}
         relatedProjects={[
           { title: "Prime Metal Roofing — Facebook Lead Generation", href: "/portfolio/prime-metal-roofing", image: "/images/prime-metal-roofing-poster.jpg" },
-          { title: "BRP Truck Advertising", href: "/portfolio/brp-truck-advertising", image: "https://www.kredance.com/wp-content/uploads/2024/10/pexels-amar-12983282-495x400.jpg" },
-          { title: "ShopKlub Lead Generation", href: "/portfolio/shopklub", image: "https://www.kredance.com/wp-content/uploads/2014/12/logo-e1729615458837.png" },
-          { title: "Green-Agro", href: "/portfolio/green-agro", image: "https://www.kredance.com/wp-content/uploads/2024/10/greenagr-e1729533961289-495x400.png" },
-          { title: "AI Video Ad Generation", href: "/portfolio/ai-video-ad-generation", image: "https://www.kredance.com/wp-content/uploads/2024/10/pexels-asphotograpy-887751-495x400.jpg" },
+          { title: "Fidan Construction — Website & Google Ads", href: "/portfolio/fidan-construction" },
+          { title: "Skyline Flow Website & Ads", href: "/portfolio/skyline-flow" },
         ]}
-        demo={<AdCreativeDemo />}
       />
     </div>
   );

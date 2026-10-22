@@ -19,7 +19,7 @@ const robotoMono = Roboto_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
-  title: "Kredance | AI Automation, Web Development & Digital Marketing",
+  title: "Kredance | Creative Websites & Advertising",
   description: siteConfig.description,
   applicationName: siteConfig.name,
   verification: { google: "eo3RBBhOHP8vcbvrcHRRKLRCJbrVY-lQEd2eTp3hLdI" },
