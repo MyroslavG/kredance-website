@@ -30,18 +30,17 @@ export function CampaignVideo() {
 }
 
 const steps = [
-  { number: "01", icon: Film, title: "An ad that shows your work", text: "Project footage, a clear offer, and a reason to get in touch. Formatted for the placements your customers use.", label: "VIDEO CREATIVE" },
-  { number: "02", icon: ClipboardList, title: "An enquiry that has context", text: "A native Facebook form collects contact and project details, with a review step before the customer submits.", label: "INSTANT FORM" },
-  { number: "03", icon: Send, title: "A lead your team can act on", text: "The submitted details arrive through the notification workflow agreed for your campaign, ready for your team to follow up.", label: "AUTOMATED HANDOFF" },
+  { number: "01", icon: Film, title: "An ad that shows your work", text: "Project footage, a clear offer, and a reason to get in touch. Formatted for the placements your customers use." },
+  { number: "02", icon: ClipboardList, title: "An enquiry that has context", text: "A native Facebook form collects contact and project details, with a review step before the customer submits." },
+  { number: "03", icon: Send, title: "A lead your team can act on", text: "The submitted details arrive through the notification workflow agreed for your campaign, ready for your team to follow up." },
 ];
 
 export function LeadFlow() {
   return (
     <ol className={styles.flow} aria-label="From Facebook advertisement to team follow-up">
-      {steps.map(({ number, icon: Icon, title, text, label }) => (
+      {steps.map(({ number, icon: Icon, title, text }) => (
         <li key={number} className={styles.flowStep}>
           <div className={styles.flowStepTop}><Icon size={25} strokeWidth={1.5} aria-hidden="true" /><span>{number}</span></div>
-          <p className={styles.miniLabel}>{label}</p>
           <h3>{title}</h3>
           <p>{text}</p>
         </li>
@@ -54,7 +53,6 @@ export function LeadGenerationCta() {
   return (
     <section className={styles.cta}>
       <div className={styles.container}>
-        <p className={styles.eyebrow}>LET’S BUILD YOUR NEXT CAMPAIGN</p>
         <div className={styles.ctaRow}>
           <div><h2>You do the work.<br />Let’s get it seen.</h2><p>Tell us what you offer, who you want to reach, and how you handle enquiries. We’ll help define the scope and next step.</p></div>
           <Link href={leadGenerationContact} className={styles.primaryButton}>Discuss my campaign <ArrowRight size={18} aria-hidden="true" /></Link>

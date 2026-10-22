@@ -8,10 +8,7 @@ export function HomeCampaignFeature() {
       <div className="mx-auto max-w-7xl">
         <div className="grid items-center gap-8 sm:grid-cols-[1fr_170px] lg:gap-20">
           <div>
-            <p className="text-xs font-medium uppercase tracking-[0.15em] text-neon-navy/65">
-              Advertising / In practice
-            </p>
-            <h2 className="mt-4 max-w-2xl text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
+            <h2 className="max-w-2xl text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
               Advertising with a clear next step.
             </h2>
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-neon-navy/75">

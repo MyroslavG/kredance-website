@@ -6,10 +6,7 @@ export function Hero() {
     <section className="bg-neon-navy px-6 pb-16 pt-24 text-sunset sm:pb-20 sm:pt-36 lg:px-8">
       <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
         <div>
-          <p className="hidden text-xs font-medium uppercase tracking-[0.18em] text-sunset/70 sm:block">
-            Websites & Advertising
-          </p>
-          <h1 className="max-w-2xl text-[clamp(2.125rem,8.5vw,3rem)] font-medium leading-[1.1] tracking-tight sm:mt-6 sm:text-5xl xl:text-[3.5rem]">
+          <h1 className="max-w-2xl text-[clamp(2.125rem,8.5vw,3rem)] font-medium leading-[1.1] tracking-tight sm:text-5xl xl:text-[3.5rem]">
             <span className="block">Websites that make an impression.</span>{" "}
             <span className="mt-2 block text-[#c4cba7]">Campaigns that start conversations.</span>
           </h1>
@@ -59,12 +56,7 @@ export function Hero() {
             className="group block focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-sunset"
           >
             <div className="flex items-center justify-between gap-4 px-6 pt-7 sm:px-8 sm:pt-8">
-              <div>
-                <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-sunset/60">
-                  Website project · Ottawa
-                </p>
-                <h2 className="mt-2 text-xl font-semibold">Fidan Construction</h2>
-              </div>
+              <h2 className="text-xl font-semibold">Fidan Construction</h2>
               <ArrowUpRight
                 aria-hidden="true"
                 className="h-5 w-5 shrink-0 text-sunset/70 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"

@@ -60,10 +60,7 @@ export function AIAutomation() {
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="text-center max-w-3xl mx-auto"
         >
-          <span className="text-xs font-medium tracking-widest uppercase text-astro-grey">
-            AI Automation
-          </span>
-          <h1 className="mt-4 text-4xl lg:text-5xl font-bold tracking-tight text-sunset leading-[1.15]">
+          <h1 className="text-4xl lg:text-5xl font-bold tracking-tight text-sunset leading-[1.15]">
             Supercharge Your Business
             <br />
             with <span className="text-astro-grey">AI</span>

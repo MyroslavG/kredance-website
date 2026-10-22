@@ -124,10 +124,7 @@ export function Services() {
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="text-center max-w-3xl mx-auto"
         >
-          <span className="text-xs font-medium tracking-widest uppercase text-astro-grey">
-            Our Services
-          </span>
-          <h1 className="mt-4 text-4xl lg:text-5xl font-bold tracking-tight text-nebulosity leading-[1.15]">
+          <h1 className="text-4xl lg:text-5xl font-bold tracking-tight text-nebulosity leading-[1.15]">
             Everything You Need to
             <br />
             <span className="text-neon-navy">Succeed Online</span>

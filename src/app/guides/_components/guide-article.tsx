@@ -68,7 +68,6 @@ export function GuideArticle({ guide, intro, takeaway, contents, children, cta }
       <header className={styles.articleHero}>
         <div className={styles.container}>
           <Link href="/guides" className={styles.backLink}><ArrowLeft size={15} aria-hidden="true" /> All guides</Link>
-          <p className={styles.eyebrow}>{guide.category} / A practical guide</p>
           <h1>{guide.title}</h1>
           <p className={styles.articleIntro}>{intro}</p>
           <div className={styles.byline}><span>By Kredance</span><span aria-hidden="true">·</span><time dateTime={guide.published}>21 October 2026</time></div>
@@ -86,7 +85,6 @@ export function GuideArticle({ guide, intro, takeaway, contents, children, cta }
           <div className={styles.takeaway}><p className={styles.eyebrow}>The starting point</p><p>{takeaway}</p></div>
           {children}
           <div className={styles.articleCta}>
-            <p className={styles.eyebrow}>Put the plan to work</p>
             <h2>{cta.title}</h2>
             <p>{cta.description}</p>
             <div className={styles.actions}><Link className={styles.primaryButton} href={cta.href}>{cta.label}<ArrowRight size={17} aria-hidden="true" /></Link><Link className={styles.textLink} href={cta.serviceHref}>{cta.serviceLabel}<ArrowRight size={15} aria-hidden="true" /></Link></div>
