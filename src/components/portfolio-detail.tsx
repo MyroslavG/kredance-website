@@ -203,9 +203,6 @@ export function PortfolioDetail({
               transition={{ duration: 0.6 }}
               className="text-center mb-12"
             >
-              <p className="text-sm font-medium tracking-widest uppercase text-astro-grey mb-4">
-                Services Used
-              </p>
               <h2 className="text-3xl sm:text-4xl font-bold text-neon-navy">
                 Related Services
               </h2>

@@ -40,7 +40,6 @@ interface ServiceDetailProps {
 
 export function ServiceDetail({
   title,
-  subtitle,
   description,
   features,
   process,
@@ -90,14 +89,6 @@ export function ServiceDetail({
               <ArrowRight className="h-3.5 w-3.5 rotate-180" />
               All Services
             </Link>
-            <motion.p
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-sm font-medium tracking-widest uppercase text-sunset/50 mb-4"
-            >
-              {subtitle}
-            </motion.p>
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -167,9 +158,6 @@ export function ServiceDetail({
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <p className="text-sm font-medium tracking-widest uppercase text-astro-grey mb-4">
-              How It Works
-            </p>
             <h2 className="text-3xl sm:text-4xl font-bold text-neon-navy">
               Our Process
             </h2>
@@ -259,9 +247,6 @@ export function ServiceDetail({
               transition={{ duration: 0.6 }}
               className="text-center mb-12"
             >
-              <p className="text-sm font-medium tracking-widest uppercase text-astro-grey mb-4">
-                Our Work
-              </p>
               <h2 className="text-3xl sm:text-4xl font-bold text-neon-navy">
                 Related Projects
               </h2>
@@ -379,9 +364,6 @@ function FeaturesSection({
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <p className="text-sm font-medium tracking-widest uppercase text-astro-grey mb-4">
-            Capabilities
-          </p>
           <h2 className="text-3xl sm:text-4xl font-bold text-neon-navy">
             What We Offer
           </h2>

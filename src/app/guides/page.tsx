@@ -25,7 +25,6 @@ export default function GuidesPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />
       <header className={styles.hubHero}>
         <div className={styles.container}>
-          <p className={styles.eyebrow}>Kredance / Guides</p>
           <div className={styles.hubHeading}><h1>A clearer plan.<br />A better project.</h1><p>Practical ways to shape your website, campaign, and the work behind it. Start with the decisions that matter before you build.</p></div>
           <div className={styles.heroFoot}><span>For people with something to build.</span><span>Websites · Advertising</span></div>
         </div>
@@ -45,7 +44,7 @@ export default function GuidesPage() {
       </section>
       <section className={styles.hubCta}>
         <div className={`${styles.container} ${styles.hubCtaGrid}`}>
-          <div><p className={styles.eyebrow}>From an idea to something real</p><h2>Bring your idea.<br />Let’s shape the next step.</h2></div>
+          <div><h2>Bring your idea.<br />Let’s shape the next step.</h2></div>
           <div><p>We design websites, create campaigns, and connect the tools that help your team do its work. Tell us what you have in mind, even if the brief is still taking shape.</p><div className={styles.actions}><Link href="/contact#inquiry-form" className={styles.primaryButton}>Discuss a project<ArrowRight size={17} aria-hidden="true" /></Link><Link href="/contact?intent=review#inquiry-form" className={styles.textLink}>Get a free website review<ArrowRight size={15} aria-hidden="true" /></Link></div></div>
         </div>
       </section>

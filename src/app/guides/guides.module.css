@@ -3,7 +3,7 @@
 .page a:focus-visible { outline: 3px solid #718248; outline-offset: 6px; }
 .eyebrow { font-size: 11px; line-height: 1.5; font-weight: 500; letter-spacing: .15em; text-transform: uppercase; }
 .hubHero, .articleHero { background: var(--paper); padding: 132px 0 40px; }
-.hubHeading { display: grid; grid-template-columns: 1.3fr 1fr; gap: 72px; align-items: end; margin: 26px 0 72px; }
+.hubHeading { display: grid; grid-template-columns: 1.3fr 1fr; gap: 72px; align-items: end; margin: 0 0 72px; }
 .hubHeading h1 { font-size: clamp(48px, 6vw, 76px); line-height: 1.03; font-weight: 500; letter-spacing: -.055em; }
 .hubHeading > p { font-size: 19px; line-height: 1.65; color: var(--muted); max-width: 390px; padding-bottom: 4px; }
 .heroFoot { border-top: 1px solid #cfd1c8; padding-top: 20px; display: flex; justify-content: space-between; gap: 16px; font-size: 12px; color: var(--muted); }
@@ -22,7 +22,7 @@
 .cardBottom svg { flex-shrink: 0; }
 .hubCta { padding: 72px 0; background: var(--ink); color: #fff; }
 .hubCtaGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
-.hubCta h2, .articleCta h2 { margin-top: 18px; font-size: clamp(30px, 3.7vw, 44px); line-height: 1.13; font-weight: 500; letter-spacing: -.04em; }
+.hubCta h2, .articleCta h2 { margin-top: 0; font-size: clamp(30px, 3.7vw, 44px); line-height: 1.13; font-weight: 500; letter-spacing: -.04em; }
 .hubCtaGrid > div > p:not(.eyebrow) { color: #d3d6de; line-height: 1.8; font-size: 16px; }
 .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 22px; margin-top: 28px; }
 .primaryButton, .textLink { display: inline-flex; align-items: center; gap: 12px; font-size: 13px; line-height: 1.5; font-weight: 500; }
@@ -34,7 +34,7 @@
 .backLink { display: inline-flex; align-items: center; gap: 9px; font-size: 13px; color: var(--muted); margin-bottom: 36px; }
 .backLink:hover { color: var(--ink); }
 .articleHero { padding-top: 108px; padding-bottom: 44px; }
-.articleHero h1 { max-width: 950px; font-size: clamp(40px, 5.3vw, 64px); font-weight: 500; line-height: 1.08; letter-spacing: -.05em; margin: 22px 0; text-wrap: balance; }
+.articleHero h1 { max-width: 950px; font-size: clamp(40px, 5.3vw, 64px); font-weight: 500; line-height: 1.08; letter-spacing: -.05em; margin: 0 0 22px; text-wrap: balance; }
 .articleIntro { max-width: 780px; font-size: 19px; line-height: 1.7; color: var(--muted); }
 .byline { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; font-size: 12px; margin-top: 28px; color: var(--muted); }
 .articleLayout { display: grid; grid-template-columns: 220px minmax(0, 740px); justify-content: space-between; gap: 64px; padding-top: 56px; padding-bottom: 72px; }

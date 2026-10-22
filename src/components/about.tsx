@@ -42,10 +42,7 @@ export function About() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
-            <span className="text-xs font-medium tracking-widest uppercase text-astro-grey">
-              About Us
-            </span>
-            <h1 className="mt-4 text-4xl lg:text-5xl font-bold tracking-tight text-nebulosity leading-[1.15]">
+            <h1 className="text-4xl lg:text-5xl font-bold tracking-tight text-nebulosity leading-[1.15]">
               Your Digital Growth
               <br />
               <span className="text-neon-navy">Partner</span>

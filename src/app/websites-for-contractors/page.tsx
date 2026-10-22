@@ -3,7 +3,6 @@ import {
   ArrowUpRight,
   Check,
   Hammer,
-  MapPin,
   MousePointer2,
   Smartphone,
 } from "lucide-react";
@@ -37,19 +36,15 @@ export default function ContractorsPage() {
       <section className="overflow-hidden bg-nebulosity px-6 pb-20 pt-32 text-sunset sm:pb-28 sm:pt-40 lg:px-8">
         <div className="mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-[1.15fr_1fr] lg:gap-20">
           <div>
-            <p className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] text-sunset/75">
-              <MapPin className="h-4 w-4" aria-hidden="true" />
-              Ottawa contractors &amp; home services
-            </p>
-            <h1 className="mt-7 max-w-3xl text-[clamp(2.6rem,5.2vw,4.8rem)] font-semibold leading-[1.05] tracking-tight">
+            <h1 className="max-w-3xl text-[clamp(2.6rem,5.2vw,4.8rem)] font-semibold leading-[1.05] tracking-tight">
               Your work speaks for itself.
               <br />
               <span className="text-sunset/60">Your website should, too.</span>
             </h1>
             <p className="mt-7 max-w-xl text-lg leading-relaxed text-sunset/80">
-              Make it easier for homeowners to see what you do, trust your
-              business, and request a quote. We build websites around that next
-              step.
+              We build websites for Ottawa contractors and home service
+              businesses, making it easier for homeowners to see what you do,
+              trust your business, and request a quote.
             </p>
             <div className="mt-9 flex flex-wrap items-center gap-6">
               <ReviewCTA
@@ -176,10 +171,7 @@ export default function ContractorsPage() {
             </dl>
           </div>
           <div>
-            <p className="text-xs font-medium uppercase tracking-[0.18em] text-nebulosity/70">
-              Relevant work · Ottawa, Ontario
-            </p>
-            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-neon-navy sm:text-4xl">
+            <h2 className="text-3xl font-semibold tracking-tight text-neon-navy sm:text-4xl">
               Fidan Construction
             </h2>
             <p className="mt-5 leading-relaxed text-nebulosity/75">
@@ -205,10 +197,7 @@ export default function ContractorsPage() {
       <section className="bg-[#f5f5f1] px-6 py-20 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-2 lg:gap-20">
           <div>
-            <p className="text-xs font-medium uppercase tracking-[0.18em] text-nebulosity/70">
-              Contractor Website Launch
-            </p>
-            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-neon-navy sm:text-4xl">
+            <h2 className="text-3xl font-semibold tracking-tight text-neon-navy sm:text-4xl">
               A focused website.
               <br />A clear scope.
             </h2>
@@ -280,10 +269,7 @@ export default function ContractorsPage() {
       >
         <div className="mx-auto grid max-w-7xl items-start gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
           <div className="lg:sticky lg:top-28">
-            <p className="text-xs font-medium uppercase tracking-[0.18em] text-nebulosity/70">
-              Your next step
-            </p>
-            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-neon-navy sm:text-4xl">
+            <h2 className="text-3xl font-semibold tracking-tight text-neon-navy sm:text-4xl">
               Let&apos;s find the friction
               <br />
               in your website.

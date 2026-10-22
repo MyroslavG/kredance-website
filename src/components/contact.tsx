@@ -103,10 +103,7 @@ function ContactForm({
       >
         <div className="mx-auto grid max-w-6xl gap-8 lg:gap-x-16 lg:grid-cols-2">
           <div className="text-sunset">
-            <p className="text-sm uppercase tracking-widest text-sunset/60">
-              Let’s talk
-            </p>
-            <h1 className="mt-4 text-4xl sm:text-5xl font-bold leading-tight">
+            <h1 className="text-4xl sm:text-5xl font-bold leading-tight">
               {review
                 ? "Get three ideas for a better website."
                 : "What would you like to build?"}

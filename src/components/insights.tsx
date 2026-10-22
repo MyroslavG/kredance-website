@@ -7,8 +7,6 @@ import Link from "next/link";
 import {
   AlertCircle,
   ArrowRight,
-  BookOpen,
-  Calendar,
   CheckCircle,
   GraduationCap,
   Lightbulb,
@@ -114,10 +112,7 @@ export function Insights() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
-              <span className="text-xs font-medium uppercase tracking-widest text-astro-grey">
-                Insights
-              </span>
-              <h1 className="mt-4 max-w-4xl text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-6xl">
+              <h1 className="max-w-4xl text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-6xl">
                 AI insights, workshops, and automation know-how
               </h1>
               <p className="mt-6 max-w-2xl text-lg leading-relaxed text-sunset/55">
@@ -161,11 +156,7 @@ export function Insights() {
               </video>
               <div className="absolute inset-0 bg-nebulosity/45" />
               <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
-                <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 text-xs font-medium uppercase tracking-widest text-sunset/80 backdrop-blur-md">
-                  <Calendar className="h-3.5 w-3.5" />
-                  Workshops and updates
-                </div>
-                <p className="mt-4 max-w-sm text-xl font-semibold leading-snug text-white">
+                <p className="max-w-sm text-xl font-semibold leading-snug text-white">
                   Learn what to automate first, what to ignore, and how to turn
                   AI into daily leverage.
                 </p>
@@ -184,10 +175,7 @@ export function Insights() {
             transition={{ duration: 0.6 }}
             className="max-w-2xl"
           >
-            <span className="text-xs font-medium uppercase tracking-widest text-astro-grey">
-              What We Share
-            </span>
-            <h2 className="mt-4 text-3xl font-bold tracking-tight text-neon-navy sm:text-4xl">
+            <h2 className="text-3xl font-bold tracking-tight text-neon-navy sm:text-4xl">
               Useful signal for teams exploring AI
             </h2>
             <p className="mt-5 text-base leading-relaxed text-wild-dove">
@@ -235,10 +223,7 @@ export function Insights() {
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
-              <span className="text-xs font-medium uppercase tracking-widest text-astro-grey">
-                Workshops
-              </span>
-              <h2 className="mt-4 text-3xl font-bold tracking-tight text-neon-navy sm:text-4xl">
+              <h2 className="text-3xl font-bold tracking-tight text-neon-navy sm:text-4xl">
                 Built for people who want to use AI at work
               </h2>
               <p className="mt-5 text-base leading-relaxed text-wild-dove">
@@ -297,9 +282,6 @@ export function Insights() {
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/10">
                 <Mail className="h-6 w-6 text-sunset" />
               </div>
-              <span className="mt-7 block text-xs font-medium uppercase tracking-widest text-astro-grey">
-                Stay in the loop
-              </span>
               <h2 className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl">
                 Get workshop invites and AI automation notes
               </h2>
@@ -437,11 +419,7 @@ export function Insights() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="flex flex-col items-start justify-between gap-6 rounded-2xl bg-neon-navy p-8 sm:p-10 lg:flex-row lg:items-center">
             <div>
-              <div className="flex items-center gap-2 text-sm font-medium text-sunset/60">
-                <BookOpen className="h-4 w-4" />
-                AI and automation knowledge sharing
-              </div>
-              <h2 className="mt-3 text-2xl font-bold tracking-tight text-white sm:text-3xl">
+              <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
                 Want a private workshop for your team?
               </h2>
             </div>
