@@ -142,7 +142,7 @@ export function createGoogleAnalytics(environment: Environment) {
         review_cta_clicked: ["hero", "offer"],
         review_form_started: ["review"],
         booking_confirmed: ["review", "contact"],
-        lead_submitted: ["review", "contact"],
+        lead_submitted: ["review", "contact", "campaign"],
       };
       if (!allowedEvents[event]?.includes(location)) return false;
       if (event === "lead_submitted" && lead) {
@@ -154,7 +154,7 @@ export function createGoogleAnalytics(environment: Environment) {
       environment.emit("event", event === "lead_submitted" ? "generate_lead" : event, {
         ...page,
         location,
-        ...(event === "lead_submitted" ? { lead_source: location === "review" ? "website_review" : "contact_form", service: cleanService(lead?.service) } : {}),
+        ...(event === "lead_submitted" ? { lead_source: location === "review" ? "website_review" : location === "campaign" ? "campaign_review" : "contact_form", service: cleanService(lead?.service) } : {}),
         send_to: GOOGLE_ANALYTICS_ID,
       });
       return true;

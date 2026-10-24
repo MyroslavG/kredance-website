@@ -226,13 +226,13 @@ const featuredLinks = new Set(linkedinOrder.map((slug) => `/portfolio/${slug}`))
 
 export const portfolioProjects: PortfolioProject[] = [
   {
-    title: "Prime Metal Roofing",
+    title: "Roofing lead generation",
     category: "Advertising",
     description: "A Facebook video ad, a higher-intent instant form, and a tested Make-to-Telegram handoff for an Ontario roofing business.",
-    link: "/portfolio/prime-metal-roofing",
+    link: "/portfolio/roofing-lead-generation",
     image: {
-      src: "/images/prime-metal-roofing-poster.jpg",
-      alt: "A frame from the Prime Metal Roofing Facebook video ad",
+      src: "/images/lead-generation-flow.svg",
+      alt: "Facebook enquiry flow for a roofing business",
     },
   },
   ...linkedinOrder.map((slug) => {

@@ -12,7 +12,7 @@ const routes = [
   "/guides",
   "/websites-for-contractors",
   "/portfolio",
-  "/portfolio/prime-metal-roofing",
+  "/portfolio/roofing-lead-generation",
   "/portfolio/ai-content-publisher",
   "/portfolio/ai-user-activity-plugin",
   "/portfolio/ai-video-ad-generation",

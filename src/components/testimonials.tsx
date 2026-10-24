@@ -15,13 +15,6 @@ interface Testimonial {
 // Sources and attribution for recent entries: docs/testimonial-sources.md.
 export const testimonials: Testimonial[] = [
   {
-    name: "Alex Fedoriuk",
-    role: "Prime Metal Roofing",
-    projectHref: "/portfolio/prime-metal-roofing",
-    content:
-      "Myroslav had our Facebook ad campaign set up in just a few hours, and leads started coming in right away.",
-  },
-  {
     name: "Volodymyr",
     role: "Skyline Flow",
     projectHref: "/portfolio/skyline-flow",

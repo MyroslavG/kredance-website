@@ -30,7 +30,7 @@ describe("campaign links", () => {
   it("keeps service and case-study anchors without requiring form context", () => {
     for (const destination of [
       "https://www.kredance.com/services/facebook-lead-generation#the-ad",
-      "https://www.kredance.com/portfolio/prime-metal-roofing#the-ad",
+      "https://www.kredance.com/portfolio/roofing-lead-generation#the-ad",
       "https://www.kredance.com/contact?service=facebook-lead-generation#inquiry-form",
     ]) {
       const original = new URL(destination);

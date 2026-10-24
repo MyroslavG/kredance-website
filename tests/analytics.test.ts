@@ -138,6 +138,26 @@ describe("consent-aware Google Analytics", () => {
     assert.equal(JSON.stringify(f.commands).includes("website_review"), true);
   });
 
+  it("counts a saved campaign review once after consent and keeps form details private", () => {
+    const f = fixture();
+    f.context.url = "https://www.kredance.com/services/facebook-lead-generation?email=private@example.com#campaign-review";
+    const lead = { submissionId: randomUUID(), service: "facebook-lead-generation" };
+    assert.equal(f.client.event("lead_submitted", "campaign", lead), false);
+    assert.equal(f.loads(), 0);
+    f.context.consent = true;
+    assert.equal(f.client.event("lead_submitted", "campaign", lead), true);
+    assert.equal(f.client.event("lead_submitted", "campaign", lead), false);
+    assert.equal(createGoogleAnalytics(f.environment).event("lead_submitted", "campaign", lead), false);
+    const events = f.commands.filter(([command, event]) => command === "event" && event === "generate_lead");
+    assert.equal(events.length, 1);
+    const payload = events[0][2] as Record<string, unknown>;
+    assert.equal(payload.lead_source, "campaign_review");
+    assert.equal(payload.service, "facebook-lead-generation");
+    assert.equal(payload.page_location, "https://www.kredance.com/services/facebook-lead-generation");
+    assert.equal(JSON.stringify(f.commands).includes(lead.submissionId), false);
+    assert.equal(JSON.stringify(f.commands).includes("private@example.com"), false);
+  });
+
   it("does not turn a form start or booking into a generated lead", () => {
     const f = fixture();
     f.context.consent = true;

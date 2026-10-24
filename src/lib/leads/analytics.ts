@@ -15,10 +15,11 @@ export type FunnelLocation =
   | "offer"
   | "review"
   | "contractor"
-  | "contact";
+  | "contact"
+  | "campaign";
 
 export function trackFunnel(event: Exclude<FunnelEvent, "lead_submitted">, location: FunnelLocation): boolean;
-export function trackFunnel(event: "lead_submitted", location: "review" | "contact", lead: SavedLeadEvent): boolean;
+export function trackFunnel(event: "lead_submitted", location: "review" | "contact" | "campaign", lead: SavedLeadEvent): boolean;
 export function trackFunnel(event: FunnelEvent, location: FunnelLocation, lead?: SavedLeadEvent) {
   if (!analyticsAllowed()) return false;
   try {
