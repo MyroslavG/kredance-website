@@ -6,6 +6,8 @@
       "url": [
         "http://localhost:4173/",
         "http://localhost:4173/services/website-development",
+        "http://localhost:4173/services/facebook-lead-generation",
+        "http://localhost:4173/portfolio/roofing-lead-generation",
         "http://localhost:4173/portfolio",
         "http://localhost:4173/websites-for-contractors",
         "http://localhost:4173/guides",
@@ -32,7 +34,7 @@
           }
         },
         {
-          "matchingUrlPattern": "(services/website-development|portfolio|websites-for-contractors|guides|guides/website-enquiry-checklist)$",
+          "matchingUrlPattern": "(services/website-development|services/facebook-lead-generation|portfolio/roofing-lead-generation|portfolio|websites-for-contractors|guides|guides/website-enquiry-checklist)$",
           "assertions": {
             "categories:performance": ["error", { "minScore": 0.6 }]
           }

@@ -22,17 +22,6 @@ and attribution without stars.
 Frequo is excluded at the site owner's request. Existing testimonials are
 retained. These are client testimonials, not LinkedIn colleague recommendations.
 
-## Prime Metal Roofing — 21 October 2026
+## Roofing case study — 24 October 2026
 
-The site owner requested a testimonial for Alex at Prime Metal Roofing and
-supplied the feedback summary: the work was done in a few hours and leads
-started coming right away. The card's wording is an editorial rendering of
-that summary, not a verbatim transcript from a client message.
-
-The full display name, Alex Fedoriuk, was verified from the "Meet Alex
-Fedoriuk" section of https://primemetalroofing.ca/, captured during the
-campaign setup on 20 October 2026.
-
-Only the company name is used beneath the author name. No job title or
-numerical star rating was supplied, so neither is added. The testimonial does
-not assert lead counts, acquisition costs, revenue, or guaranteed results.
+The site owner confirmed publication permission is not established and requested an anonymous case study. The named roofing testimonial and branded media have been removed from the current site. The earlier testimonial was an editorial rendering of owner-supplied feedback, not a client transcript or publication approval. No quantitative campaign results are published. Reinstating client identity, attributed feedback, or performance figures requires the corresponding approval. Earlier Git history and third-party caches may still contain previously published material.

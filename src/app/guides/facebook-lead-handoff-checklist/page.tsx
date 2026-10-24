@@ -36,14 +36,14 @@ export default function FacebookLeadHandoffGuidePage() {
         <h2>1. Define the conversation the ad is starting.</h2>
         <p>Start with the offer and the response your team can provide. An estimate request, a consultation, and a product enquiry all create different expectations. The words in the ad should describe the next step accurately, and the form should carry that promise through.</p>
         <p>Write down the service, intended customer, relevant location or eligibility, and the reason to get in touch. Then decide what makes an enquiry useful. For some businesses, that is a project in a serviceable area. For others, it is a team with a particular need or a launch within an agreed timeframe.</p>
-        <div className={styles.example}><p className={styles.eyebrow}>The project behind this guide</p><p>For <Link href="/portfolio/prime-metal-roofing">Prime Metal Roofing</Link>, Kredance connected a video made from real project footage to a Facebook enquiry form and Telegram notifications through Make. The form collected contact and property details, and the handoff was checked with sample submissions before delivery.</p></div>
+        <div className={styles.example}><p className={styles.eyebrow}>The project behind this guide</p><p>For <Link href="/portfolio/roofing-lead-generation">a roofing business</Link>, Kredance connected a video made from real project footage to a Facebook enquiry form and Telegram notifications through Make. The form collected contact and property details, and the handoff was checked with sample submissions before delivery.</p></div>
         <p>That project is one implementation. The same planning questions apply to other businesses selling through a conversation. Choose the questions and destination around the team’s actual work.</p>
       </section>
 
       <section id="connect-the-creative" className={styles.section}>
         <h2>2. Make the creative and the form tell the same story.</h2>
         <p>Review the ad and form side by side. Someone who responds to a specific offer should recognise it immediately after clicking. Keep the service name, invitation, and any important conditions consistent through the journey.</p>
-        <p>Choose footage or imagery that helps explain the work. In the Prime Metal Roofing creative, completed roofing work gave the offer a concrete visual basis. A studio, consultancy, or product business will need different proof: finished projects, a demonstration, or a clear explanation of the service.</p>
+        <p>Choose footage or imagery that helps explain the work. In the roofing campaign creative, completed roofing work gave the offer a concrete visual basis. A studio, consultancy, or product business will need different proof: finished projects, a demonstration, or a clear explanation of the service.</p>
         <ul>
           <li><strong>Check the opening.</strong> Can a viewer understand the subject without waiting for the end?</li>
           <li><strong>Check the framing.</strong> Review the actual versions used for the agreed placements so important text and details remain visible.</li>
@@ -56,7 +56,7 @@ export default function FacebookLeadHandoffGuidePage() {
       <section id="design-the-form" className={styles.section}>
         <h2>3. Collect the details that change the response.</h2>
         <p>Give each question a purpose. Contact information enables a reply. A location may determine whether you can serve the customer. A service choice can route the enquiry to the right person. A detailed technical specification often belongs in the follow-up conversation.</p>
-        <p>The Prime Metal Roofing form used contact and property information to support an estimate conversation. For a different business, a project type or intended start date may be more useful. Do not copy another company’s fields without asking what your team will do with the answers.</p>
+        <p>The roofing campaign form used contact and property information to support an estimate conversation. For a different business, a project type or intended start date may be more useful. Do not copy another company’s fields without asking what your team will do with the answers.</p>
         <div className={styles.brief}><dl>
           <dt>Question</dt><dd>What is the minimum information needed to give a useful first response?</dd>
           <dt>Reason</dt><dd>Does this answer affect fit, routing, or the next conversation?</dd>
@@ -69,7 +69,7 @@ export default function FacebookLeadHandoffGuidePage() {
       <section id="own-the-follow-up" className={styles.section}>
         <h2>4. Give the handoff an owner.</h2>
         <p>“The team gets a notification” leaves a critical decision open: who acts on it? Name the person or role responsible for first contact, the person who covers absence, and where the outcome is recorded. Agree what happens outside normal working hours.</p>
-        <p>Choose a destination people already check and can manage appropriately. Telegram suited the Prime Metal Roofing workflow. An inbox or CRM may suit another business. Before promising an integration, confirm the available access, required fields, and what the receiving system supports.</p>
+        <p>Choose a destination people already check and can manage appropriately. Telegram suited the roofing workflow. An inbox or CRM may suit another business. Before promising an integration, confirm the available access, required fields, and what the receiving system supports.</p>
         <ul>
           <li><strong>Keep the message useful.</strong> Include the service or offer, contact details, relevant answers, and source context needed for the reply.</li>
           <li><strong>Limit access.</strong> Only people handling the enquiry should receive the personal details.</li>
@@ -112,7 +112,7 @@ export default function FacebookLeadHandoffGuidePage() {
         <h2>7. Review the conversation, as well as the campaign.</h2>
         <p>Record actual enquiries and their outcomes: new, contacted, relevant, next step agreed, or not a fit. Use a short reason when an enquiry is unsuitable. Those reasons can reveal whether the offer, audience, questions, or follow-up needs attention.</p>
         <p>Keep different measures distinct. A form submission is not automatically a qualified opportunity, and an opportunity is not a sale. Compare campaign reporting with the records your team receives, investigate gaps, and avoid counting tests or duplicates as new enquiries.</p>
-        <p>The Prime Metal Roofing case shows the creative, form, and tested delivery we built. It does not establish a lead volume or cost benchmark for another business. Set expectations around your offer, audience, budget, and capacity to follow up, then review the evidence from your own campaign.</p>
+        <p>The roofing case describes the creative, form, and tested delivery we built. It does not establish a lead volume or cost benchmark for another business. Set expectations around your offer, audience, budget, and capacity to follow up, then review the evidence from your own campaign.</p>
         <p>If a website is part of the journey, use our <Link href="/guides/website-enquiry-checklist">website enquiry checklist</Link> to check the message, proof, and contact step alongside the campaign.</p>
       </section>
     </GuideArticle>

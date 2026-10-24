@@ -4,6 +4,7 @@ import { legacyRedirects } from "./src/lib/legacy-redirects";
 const nextConfig: NextConfig = {
   async redirects() {
     return [
+      { source: "/portfolio/prime-metal-roofing", destination: "/portfolio/roofing-lead-generation", permanent: true },
       { source: "/services/news", destination: "/guides", permanent: true },
       ...legacyRedirects.map(([source, destination]) => ({
         source,

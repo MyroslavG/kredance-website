@@ -18,7 +18,7 @@ export default function AdvertisementCreationPage() {
         primaryCtaLabel="Discuss my campaign"
         secondaryCta={{
           label: "See a campaign we built",
-          href: "/portfolio/prime-metal-roofing#the-ad",
+          href: "/portfolio/roofing-lead-generation#the-ad",
         }}
         features={[
           {
@@ -69,7 +69,7 @@ export default function AdvertisementCreationPage() {
           },
         ]}
         relatedProjects={[
-          { title: "Prime Metal Roofing — Facebook Lead Generation", href: "/portfolio/prime-metal-roofing", image: "/images/prime-metal-roofing-poster.jpg" },
+          { title: "Roofing Lead Generation", href: "/portfolio/roofing-lead-generation", image: "/images/lead-generation-flow.svg" },
           { title: "Fidan Construction — Website & Google Ads", href: "/portfolio/fidan-construction" },
           { title: "Skyline Flow Website & Ads", href: "/portfolio/skyline-flow" },
         ]}

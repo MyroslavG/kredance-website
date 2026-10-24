@@ -76,8 +76,45 @@
 .projectNext h2 { margin-top: 0; font-size: clamp(30px, 3vw, 40px); }
 .projectButton { display: inline-flex; align-items: center; justify-content: center; gap: 12px; flex-shrink: 0; border-radius: 100px; background: var(--ink); color: #fff; padding: 15px 23px; font-size: 14px; font-weight: 500; }
 .projectButton:hover { background: #262e50; }
+.conversionHero { padding-top: 132px; padding-bottom: 70px; }
+.conversionGrid { display: grid; grid-template-columns: 1.12fr 1fr; gap: 64px; align-items: center; }
+.heroBenefits { margin-top: 25px; display: grid; gap: 12px; font-size: 14px; color: #e0e2db; }
+.heroBenefits li { display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
+.heroBenefits svg { color: #c4cba7; flex-shrink: 0; margin-top: 2px; }
+.reviewCard { border-radius: 18px; padding: 30px; background: #f3f3ec; color: #131936; scroll-margin-top: 100px; }
+.reviewCard h2 { font-size: 25px; font-weight: 500; line-height: 1.2; letter-spacing: -.025em; }
+.reviewIntro { margin: 12px 0 22px; color: #555d6a; font-size: 14px; line-height: 1.6; }
+.reviewCard fieldset { display: grid; gap: 17px; min-width: 0; }
+.reviewCard label { display: block; font-size: 13px; font-weight: 500; }
+.reviewCard label span { color: #616675; font-weight: 400; }
+.reviewCard input, .reviewCard textarea { display: block; width: 100%; min-width: 0; margin-top: 7px; padding: 11px 12px; border: 1px solid #bfc3b8; border-radius: 8px; background: #fff; color: #131936; font-size: 16px; line-height: 1.4; }
+.reviewCard textarea { resize: vertical; }
+.reviewCard input:focus-visible, .reviewCard textarea:focus-visible { outline: 2px solid #607343; outline-offset: 3px; }
+.formPair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.reviewSubmit { background: #131936; border-radius: 100px; padding: 14px 18px; color: #fff; font-size: 14px; font-weight: 500; cursor: pointer; }
+.reviewSubmit:hover { background: #2b355c; }
+.reviewCard fieldset:disabled { opacity: .65; }
+.formNote { margin-top: 15px; font-size: 11px; line-height: 1.7; color: #555d6a; }
+.formNote a, .formError a { text-decoration: underline; text-underline-offset: 3px; }
+.formError { color: #9f1c22; background: #fff1f1; padding: 12px; border-radius: 8px; font-size: 13px; line-height: 1.6; }
+.reviewSuccess { padding-block: 35px; }
+.reviewSuccess p { margin: 18px 0 25px; line-height: 1.7; }
+.handoff { padding: 30px; border-radius: 16px; background: #fafaf6; border: 1px solid #cdd0c4; color: #131936; }
+.handoff ol { list-style: none; padding: 0; margin: 0; }
+.handoff li { display: flex; gap: 18px; position: relative; padding: 0 0 26px; }
+.handoff li:not(:last-child)::before { content: ""; position: absolute; left: 8px; top: 20px; bottom: 0; border-left: 1px solid #c4cba7; }
+.handoff li:last-child { padding-bottom: 0; }
+.handoffDot { flex: 0 0 17px; height: 17px; margin-top: 4px; border-radius: 50%; background: #c4cba7; border: 5px solid #e6e9dc; }
+.handoff strong { display: block; font-size: 17px; line-height: 1.5; font-weight: 500; }
+.handoff p { margin-top: 4px; font-size: 13px; line-height: 1.6; color: #555d6a; }
+.handoff figcaption { border-top: 1px solid #dde0d6; margin-top: 24px; padding-top: 16px; font-size: 11px; color: #616675; line-height: 1.5; }
+.resultHeading { font-size: 21px; font-weight: 500; }
+.faqIntro { margin-top: 22px; }
 @media (min-width: 1400px) { .heroGrid { gap: 95px; } }
 @media (max-width: 900px) {
+  .conversionGrid { grid-template-columns: 1fr 1fr; gap: 30px; }
+  .conversionHero h1 { font-size: clamp(38px, 5.2vw, 53px); }
+  .reviewCard { padding: 24px; }
   .heroGrid { gap: 36px; grid-template-columns: 1fr .8fr; }
   .hero h1 { font-size: 53px; }
   .intro { font-size: 16px; }
@@ -87,6 +124,11 @@
   .projectNext { align-items: flex-start; flex-direction: column; gap: 28px; }
 }
 @media (max-width: 680px) {
+  .conversionGrid { grid-template-columns: 1fr; gap: 36px; }
+  .conversionHero { padding-top: 104px; }
+  .conversionHero h1 { font-size: clamp(38px, 11vw, 61px); }
+  .formPair { grid-template-columns: 1fr; gap: 17px; }
+  .handoff { padding: 24px; }
   .container { padding-inline: 24px; }
   .hero { padding-top: 96px; padding-bottom: 28px; }
   .breadcrumbs { margin-bottom: 30px; font-size: 11px; }
