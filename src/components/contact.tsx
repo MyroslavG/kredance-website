@@ -14,7 +14,15 @@ const inputClass =
 
 export function Contact() {
   return (
-    <Suspense fallback={<ContactForm review={false} initialService="" />}>
+    <Suspense fallback={
+      <section id="inquiry-form" className="bg-nebulosity px-6 pt-32 pb-24 text-sunset scroll-mt-24">
+        <div className="mx-auto max-w-6xl">
+          <h1 className="text-4xl font-bold">Get in touch</h1>
+          <p role="status" className="mt-6">Loading the enquiry form…</p>
+          <a href="mailto:myroslav@kredance.com" className="mt-4 inline-block underline">myroslav@kredance.com</a>
+        </div>
+      </section>
+    }>
       <ContactWithParams />
     </Suspense>
   );

@@ -109,6 +109,20 @@ export function cleanAttribution(value: unknown): Attribution {
   return { landingPath, referrerHost, utm };
 }
 
+export function normalizeWebsite(value: string) {
+  if (!value) return "";
+  try {
+    const url = new URL(/^https?:\/\//i.test(value) ? value : `https://${value}`);
+    if (!["http:", "https:"].includes(url.protocol) || !url.hostname.includes(".") || url.username || url.password)
+      throw new Error();
+    url.search = "";
+    url.hash = "";
+    return url.toString();
+  } catch {
+    throw new InputError("Enter a valid business website, such as example.com.");
+  }
+}
+
 export function parseLead(value: unknown): LeadInput {
   const raw = record(value);
   if (raw.companyFax)
@@ -144,30 +158,11 @@ export function parseLead(value: unknown): LeadInput {
       : "Website review";
   if (/[\r\n\x00-\x1f]/.test(subject))
     throw new InputError("Enter a valid subject.");
-  let website =
+  const website = normalizeWebsite(
     kind === "contact" && !raw.website
       ? ""
-      : field(raw.website, "Website", 4, 500);
-  if (website) {
-    try {
-      if (!/^https?:\/\//i.test(website)) website = `https://${website}`;
-      const url = new URL(website);
-      if (
-        !["http:", "https:"].includes(url.protocol) ||
-        !url.hostname.includes(".") ||
-        url.username ||
-        url.password
-      )
-        throw new Error();
-      url.search = "";
-      url.hash = "";
-      website = url.toString();
-    } catch {
-      throw new InputError(
-        "Enter a valid business website, such as example.com.",
-      );
-    }
-  }
+      : field(raw.website, "Website", 4, 500),
+  );
   const noReviewDetails =
     kind !== "contact" &&
     (raw.problem == null ||

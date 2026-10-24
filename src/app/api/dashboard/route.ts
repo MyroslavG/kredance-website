@@ -1,4 +1,5 @@
-import { databaseRpc, leadConfig } from "@/lib/leads/server";
+import { databaseRpc, hashValue, leadConfig, StorageError, type SavedLead } from "@/lib/leads/server";
+import { parseManualLead } from "@/lib/engagement/manual-lead";
 import {
   InputError,
   readJson,
@@ -59,6 +60,25 @@ export async function PATCH(request: Request) {
       );
     return Response.json({ ok: true }, { headers: privateHeaders });
   } catch (error) {
+    return failure(error);
+  }
+}
+
+export async function POST(request: Request) {
+  try {
+    requireSameOrigin(request);
+    const session = await requireOwner(request);
+    const lead = parseManualLead(await readJson(request));
+    const config = leadConfig();
+    const saved = await databaseRpc<SavedLead>(config, "dashboard_create_lead", {
+      p_session_hash: session, p_submission_id: lead.submissionId,
+      p_payload_hash: hashValue(`manual:${JSON.stringify(lead)}`, config.hashSecret),
+      p_lead: lead,
+    });
+    return Response.json(saved, { status: saved.created ? 201 : 200, headers: privateHeaders });
+  } catch (error) {
+    if (error instanceof StorageError && error.code === "submission_conflict")
+      return failure(new InputError("This request was already saved with different details. Check the lead list before adding another enquiry.", 409));
     return failure(error);
   }
 }
