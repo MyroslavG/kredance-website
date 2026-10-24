@@ -82,10 +82,15 @@ For local verification, run `npm run preview:leads`. This uses an ephemeral PGli
 captures EmailJS messages locally, including sign-in codes; it never sends those emails. Run
 `npm test`, `npm run build`, and `npm run check:seo` before deployment.
 
-Migration `20261024183603_dashboard_manual_leads.sql` adds the manual-entry fields,
+Migration `20261024185056_dashboard_manual_leads.sql` adds the manual-entry fields,
 contact-method constraint, weekday default, and owner-protected create/export RPCs.
 It does not rewrite existing leads or queue notifications. All new functions are invokers
 with an empty search path; browser database roles cannot execute them.
+The file version matches the migration recorded by Supabase on October 24. Production
+transaction checks passed for manual entry, idempotent retries, filtered export, outcome
+separation, and Toronto weekend/DST dates; the synthetic transaction was rolled back.
+Security advisors reported no warnings/errors (the six intentional RLS-without-policy
+informational notices continue to deny direct browser access).
 
 For automated desktop/mobile checks, install Chromium with `npx playwright install chromium`
 and run `npm run test:browser`. The suite starts the isolated preview itself; stop any
