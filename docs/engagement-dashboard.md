@@ -15,6 +15,26 @@ The dashboard is excluded from search, visitor analytics, and Clarity.
    The existing manual email recovery process remains in `docs/lead-funnel.md`;
    no new retry schedule or booking verification was enabled.
 
+Use **Add enquiry** for a referral, email, social message, phone call, or conversation
+that expressed interest. Enter an email address or another contact method; no placeholder
+email is needed. Choose when the enquiry arrived and the next action. Manual entries
+appear in the same follow-up queue and outcome reports, labelled with their source.
+Saving one does not send a message or create a website visit/conversion.
+
+New enquiries receive a follow-up on the next Monday–Friday at the same Toronto local
+time, including across daylight-saving changes. Holidays are not skipped automatically;
+adjust the due date in the lead editor. Existing dates are preserved. The form and editor
+display times in your browser's time zone.
+
+**Export CSV** uses the selected report period, status, and search. Overdue exports use
+all dates. It includes matching records beyond the 500-row screen limit, up to 10,000;
+larger results ask you to narrow the filters instead of silently dropping records.
+Dates in the file are UTC and deal values are estimates, not received payments. UTF-8
+and quoted cells preserve names, commas, and multiline notes. Formula-like text gains
+a leading apostrophe for spreadsheet viewing, so the export is not a raw database backup.
+Treat downloaded files as private contact data. Spreadsheet applications can change
+escaping when re-saving; import contact/detail columns as text when editing the CSV.
+
 ## Weekly review
 
 - Compare campaign results by qualified inquiries and won value, not just page views.
@@ -61,3 +81,20 @@ No customer records were deleted. The paused database was restored before deploy
 For local verification, run `npm run preview:leads`. This uses an ephemeral PGlite database and
 captures EmailJS messages locally, including sign-in codes; it never sends those emails. Run
 `npm test`, `npm run build`, and `npm run check:seo` before deployment.
+
+Migration `20261024185056_dashboard_manual_leads.sql` adds the manual-entry fields,
+contact-method constraint, weekday default, and owner-protected create/export RPCs.
+It does not rewrite existing leads or queue notifications. All new functions are invokers
+with an empty search path; browser database roles cannot execute them.
+The file version matches the migration recorded by Supabase on October 24. Production
+transaction checks passed for manual entry, idempotent retries, filtered export, outcome
+separation, and Toronto weekend/DST dates; the synthetic transaction was rolled back.
+Security advisors reported no warnings/errors (the six intentional RLS-without-policy
+informational notices continue to deny direct browser access).
+
+For automated desktop/mobile checks, install Chromium with `npx playwright install chromium`
+and run `npm run test:browser`. The suite starts the isolated preview itself; stop any
+preview already using ports 3000/4317 first. Its fixed reset endpoint exists only in the
+ephemeral fixture, never in the production app. CI runs the browser suite and retains
+failure screenshots/traces for seven days. Tests use synthetic contacts and capture mail
+locally; they cover all four public forms, retries, manual entry, editing, and CSV download.

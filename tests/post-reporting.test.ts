@@ -15,11 +15,13 @@ type Post = {
 };
 type Report = {
   leadTotal: number;
+  websiteLeadTotal: number;
+  leads: Record<string, unknown>[];
+  followups: Record<string, unknown>[];
   posts: Post[];
   campaigns: Omit<Post, "content">[];
   outcomes: { qualified: number; won: number; value: number };
 };
-const migration = new URL("../supabase/migrations/20261021225927_dashboard_post_outcomes.sql", import.meta.url);
 
 describe("private post outcome reporting", () => {
   let fixture: Awaited<ReturnType<typeof createLeadDatabase>>;
@@ -113,21 +115,31 @@ describe("private post outcome reporting", () => {
     for (const p of data.posts) assert.deepEqual(Object.keys(p).sort(), ["campaign", "content", "leads", "qualified", "source", "value", "won"]);
   });
 
-  it("adds only posts to the previous report contract", async () => {
+  it("preserves legacy report fields while adding posts and manual-entry metadata", async () => {
     await lead({ content: "post-a", qualified: true, status: "won", value: 2500 });
     await lead({ content: "post-b" });
     const current = await report();
+    const definition = (await fixture.db.query<{ definition: string }>(
+      "select pg_get_functiondef('public.dashboard_report(text,integer)'::regprocedure) as definition",
+    )).rows[0].definition;
     const historical = await readFile(new URL("../supabase/migrations/20261017172347_engagement_dashboard.sql", import.meta.url), "utf8");
     const original = historical.slice(historical.indexOf("create function public.dashboard_report("), historical.indexOf("create function public.dashboard_update_lead("))
       .replace("create function public.dashboard_report(", "create or replace function public.dashboard_report(");
     try {
       await fixture.db.exec(original);
       const previous = await report();
-      const { posts, ...unchanged } = current;
+      const { posts, websiteLeadTotal, leads, followups, ...unchanged } = current;
       assert.equal(posts.length, 2);
-      assert.deepEqual(unchanged, previous);
+      assert.equal(websiteLeadTotal, current.leadTotal);
+      const legacyLead = ({ entry_channel, business_name, contact_detail, ...lead }: Record<string, unknown>) => {
+        assert.equal(entry_channel, "website");
+        assert.equal(business_name, "");
+        assert.equal(contact_detail, "");
+        return lead;
+      };
+      assert.deepEqual({ ...unchanged, leads: leads.map(legacyLead), followups: followups.map(legacyLead) }, previous);
     } finally {
-      await fixture.db.exec(await readFile(migration, "utf8"));
+      await fixture.db.exec(definition);
     }
   });
 

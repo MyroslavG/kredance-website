@@ -8,35 +8,16 @@ import {
   type FormEvent,
 } from "react";
 import { leadStatuses, serviceLabel } from "@/lib/engagement/shared";
+import { ManualLeadForm } from "@/components/manual-lead-form";
+import { entryLabel, matchesLeadSearch, type LeadRecord } from "@/lib/engagement/lead-record";
 import { buildCampaignLink } from "@/lib/engagement/campaign";
 
-type Lead = {
-  id: string;
-  name: string;
-  email: string;
-  website: string;
-  problem: string;
-  offer: string;
-  service: string;
-  subject: string;
-  status: string;
-  qualified: boolean;
-  deal_value: number | null;
-  notes: string;
-  next_action: string;
-  next_action_at: string;
-  created_at: string;
-  updated_at: string;
-  attribution: {
-    landingPath?: string;
-    referrerHost?: string;
-    utm?: Record<string, string>;
-  };
-};
+type Lead = LeadRecord;
 type Report = {
   leads: Lead[];
   followups: Lead[];
   leadTotal: number;
+  websiteLeadTotal?: number;
   overdue: number;
   emailAttention: number;
   outcomes: { qualified: number; won: number; value: number };
@@ -106,6 +87,10 @@ export function LeadDashboard() {
   const [error, setError] = useState("");
   const [view, setView] = useState("all");
   const [search, setSearch] = useState("");
+  const [adding, setAdding] = useState(false);
+  const [notice, setNotice] = useState("");
+  const [exporting, setExporting] = useState(false);
+  const [exportError, setExportError] = useState("");
   const [selected, setSelected] = useState<Lead | null>(null);
   const refresh = useCallback(async () => {
     try {
@@ -118,6 +103,7 @@ export function LeadDashboard() {
         setAuth("email");
         setReport(null);
         setSelected(null);
+        setAdding(false); setNotice(""); setExportError("");
       } else {
         setError((cause as Error).message);
       }
@@ -139,6 +125,7 @@ export function LeadDashboard() {
           setAuth("email");
           setReport(null);
           setSelected(null);
+          setAdding(false); setNotice(""); setExportError("");
         } else setError(cause.message);
       });
     return () => {
@@ -173,6 +160,7 @@ export function LeadDashboard() {
       await api("/api/dashboard/auth", post({ action: "logout" }));
       setReport(null);
       setSelected(null);
+      setAdding(false); setNotice(""); setExportError("");
       setAuth("email");
     } catch (cause) {
       setError((cause as Error).message);
@@ -180,15 +168,31 @@ export function LeadDashboard() {
       setBusy(false);
     }
   }
+  async function exportLeads() {
+    setExporting(true); setExportError("");
+    try {
+      const params = new URLSearchParams({ days: String(days), view, q: search.trim() });
+      const response = await fetch(`/api/dashboard/export?${params}`, { cache: "no-store" });
+      if (!response.ok) {
+        const result = await response.json().catch(() => ({}));
+        throw new Error(result.error || "The export could not load. Please try again.");
+      }
+      const url = URL.createObjectURL(await response.blob());
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = response.headers.get("Content-Disposition")?.match(/filename="([^"]+)"/)?.[1] || "kredance-leads.csv";
+      document.body.appendChild(link); link.click(); link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } catch (cause) { setExportError((cause as Error).message); }
+    finally { setExporting(false); }
+  }
   const metric = (event: string, key: "count" | "sessions" = "count") =>
     report?.events.find((item) => item.event_name === event)?.[key] || 0;
   const leads =
     (view === "overdue" ? report?.followups : report?.leads)?.filter(
       (lead) =>
         (view === "all" || view === "overdue" || lead.status === view) &&
-        `${lead.name} ${lead.email} ${lead.subject} ${lead.service}`
-          .toLowerCase()
-          .includes(search.toLowerCase()),
+        matchesLeadSearch(lead, search),
     ) || [];
   return (
     <section
@@ -322,7 +326,7 @@ export function LeadDashboard() {
               Leads include all saved inquiries. Qualified/won figures describe
               inquiries created in the selected period; value is your entered
               estimate. Setup tests are excluded. Historical visits are
-              unavailable.
+              unavailable. {report.websiteLeadTotal != null && `${report.websiteLeadTotal} website enquiries and ${report.leadTotal - report.websiteLeadTotal} manually recorded enquiries in this period.`}
             </p>
             <div className="mt-5 flex flex-wrap gap-4 text-sm">
               <button
@@ -436,11 +440,18 @@ export function LeadDashboard() {
               </Panel>
             </div>
             <section className="mt-10">
-              <h2 className="text-2xl font-semibold">Follow up with leads</h2>
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <h2 className="text-2xl font-semibold">Follow up with leads</h2>
+                <div className="flex gap-3"><button className={button} onClick={() => setAdding(true)}>Add enquiry</button>
+                  <button className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm disabled:opacity-50" onClick={() => void exportLeads()} disabled={exporting}>{exporting ? "Exporting…" : "Export CSV"}</button></div>
+              </div>
+              {notice && <p role="status" className="mt-3 rounded-lg bg-green-50 p-3 text-sm text-green-900">{notice}</p>}
+              {exportError && <p role="alert" className="mt-3 text-sm text-red-700">{exportError}</p>}
               <div className="mt-4 flex flex-wrap gap-3">
                 <input
                   aria-label="Search leads"
-                  placeholder="Search name, email, or service"
+                  placeholder="Search contact, business, or service"
+                  maxLength={200}
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   className={`${field} max-w-sm`}
@@ -465,7 +476,7 @@ export function LeadDashboard() {
                 {view === "overdue"
                   ? "oldest overdue inquiries across all dates"
                   : "most recent inquiries in this period"}
-                . Follow-up times use your browser’s time zone.
+                . Follow-up times use your browser’s time zone. CSV export includes all matching enquiries, up to 10,000. Deal values are estimates, not payment receipts.
               </p>
               <div className="mt-4 space-y-3">
                 {leads.map((lead) => (
@@ -484,7 +495,7 @@ export function LeadDashboard() {
                       </span>
                     </div>
                     <p className="mt-1 text-sm text-slate-600">
-                      {lead.subject} · {lead.email}
+                      {entryLabel(lead.entry_channel)}{lead.business_name && ` · ${lead.business_name}`} · {lead.email || lead.contact_detail}
                     </p>
                     <p className="mt-2 text-xs text-slate-500">
                       Received {date(lead.created_at)} · Next:{" "}
@@ -499,6 +510,9 @@ export function LeadDashboard() {
                 )}
               </div>
             </section>
+            {adding && <ManualLeadForm close={() => setAdding(false)} saved={async (name) => {
+              setAdding(false); setNotice(`Enquiry for ${name} saved. No message was sent.`); await refresh();
+            }} />}
             {selected && (
               <LeadEditor
                 key={selected.id + selected.updated_at}
@@ -662,9 +676,10 @@ function LeadEditor({
             Close
           </button>
         </div>
-        <a className="mt-3 block underline" href={`mailto:${lead.email}`}>
-          {lead.email}
-        </a>
+        {lead.business_name && <p className="mt-3 font-medium">{lead.business_name}</p>}
+        <p className="mt-2 text-sm text-slate-500">{entryLabel(lead.entry_channel)}</p>
+        {lead.email && <a className="mt-3 block break-all underline" href={`mailto:${lead.email}`}>{lead.email}</a>}
+        {lead.contact_detail && <p className="mt-2 break-words text-sm">{lead.contact_detail}</p>}
         {lead.website && (
           <a
             href={lead.website}
@@ -743,6 +758,7 @@ function LeadEditor({
               className={field}
             />
           </label>
+          <p className="text-xs text-slate-500">Automatic dates use weekdays in Toronto. Adjust for holidays or time off.</p>
           <label className="block text-sm">
             Private notes
             <textarea

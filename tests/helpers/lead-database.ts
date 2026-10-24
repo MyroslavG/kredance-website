@@ -51,6 +51,14 @@ export async function createLeadDatabase() {
           "select public.dashboard_update_lead($1,$2::uuid,$3::jsonb) as result",
           [body.p_session_hash, body.p_id, JSON.stringify(body.p_changes)],
         ],
+        dashboard_create_lead: [
+          "select public.dashboard_create_lead($1,$2::uuid,$3,$4::jsonb) as result",
+          [body.p_session_hash, body.p_submission_id, body.p_payload_hash, JSON.stringify(body.p_lead)],
+        ],
+        dashboard_export_leads: [
+          "select public.dashboard_export_leads($1,$2::integer,$3,$4) as result",
+          [body.p_session_hash, body.p_days, body.p_view, body.p_query],
+        ],
       };
       if (Object.hasOwn(statements, name)) {
         const [sql, values] = statements[name];

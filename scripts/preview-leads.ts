@@ -11,6 +11,13 @@ async function main() {
   const server = createServer(async (request, response) => {
     response.setHeader("Content-Type", "application/json");
     try {
+      if (request.url === "/__test/reset" && request.method === "POST") {
+        // Fixed cleanup in this local ephemeral fixture only; never mounted in Next.js.
+        await fixture.db.exec("truncate public.lead_email_jobs,public.lead_funnel_events,public.site_events,public.website_leads,public.dashboard_challenges,public.dashboard_sessions cascade");
+        emails.clear();
+        response.end(JSON.stringify({ ok: true }));
+        return;
+      }
       if (request.url === "/__test/state" && request.method === "GET") {
         response.end(
           JSON.stringify({
@@ -28,6 +35,7 @@ async function main() {
                 "select event_name, location from public.lead_funnel_events order by created_at",
               )
             ).rows,
+            siteEvents: (await fixture.db.query("select event_name from public.site_events order by created_at")).rows,
           }),
         );
         return;
@@ -111,6 +119,7 @@ async function main() {
     process.exit(code ?? 0);
   });
   process.on("SIGINT", () => child.kill("SIGINT"));
+  process.on("SIGTERM", () => child.kill("SIGTERM"));
 }
 
 void main();

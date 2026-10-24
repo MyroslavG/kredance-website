@@ -9,6 +9,7 @@
     "check:lighthouse": "lhci autorun --config=./lighthouserc.json",
     "ci:seo": "npm run build && npm run check:seo",
     "test": "tsx --test tests/*.test.ts",
+    "test:browser": "playwright test",
     "preview:leads": "tsx scripts/preview-leads.ts",
     "start": "next start",
     "lint": "eslint"
@@ -32,6 +33,7 @@
   "devDependencies": {
     "@electric-sql/pglite": "0.5.8",
     "@lhci/cli": "^0.15.1",
+    "@playwright/test": "1.64.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
