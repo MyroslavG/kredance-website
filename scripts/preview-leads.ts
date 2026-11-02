@@ -35,7 +35,7 @@ async function main() {
                 "select event_name, location from public.lead_funnel_events order by created_at",
               )
             ).rows,
-            siteEvents: (await fixture.db.query("select event_name from public.site_events order by created_at")).rows,
+            siteEvents: (await fixture.db.query("select event_name,error_code,error_field,http_status from public.site_events order by created_at")).rows,
           }),
         );
         return;

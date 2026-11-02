@@ -1,6 +1,7 @@
 import { InputError, cleanAttribution } from "@/lib/leads/validation";
 import { cleanService, publicEvents, UUID } from "./shared";
 import { publicAnalyticsPages as pages } from "./pages";
+import { cleanLeadDiagnostic } from "../leads/errors";
 
 export function parseSiteEvent(value: unknown) {
   if (!value || typeof value !== "object" || Array.isArray(value))
@@ -36,5 +37,6 @@ export function parseSiteEvent(value: unknown) {
       : "page",
     device: raw.device === "mobile" ? "mobile" : "desktop",
     attribution,
+    diagnostic: raw.event === "form_error" ? cleanLeadDiagnostic(raw.diagnostic) : undefined,
   };
 }

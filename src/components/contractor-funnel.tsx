@@ -4,14 +4,14 @@ import {
   useEffect,
   useRef,
   useState,
-  type FormEvent,
   type ReactNode,
 } from "react";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
 import { captureAttribution } from "@/lib/leads/attribution";
 import { trackFunnel } from "@/lib/leads/analytics";
-import { engagementSession, trackSite } from "@/lib/engagement/client";
+import { trackSite } from "@/lib/engagement/client";
+import { useLeadForm } from "@/lib/leads/use-lead-form";
 import { CalendlyEmbed } from "@/components/calendly-embed";
 
 export function ContractorPageTracking() {
@@ -56,11 +56,11 @@ export function ReviewCTA({
 
 export function WebsiteReviewForm() {
   const started = useRef(false);
-  const submissionId = useRef<string | undefined>(undefined);
-  const inFlight = useRef(false);
   const successHeading = useRef<HTMLHeadingElement>(null);
-  const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
-  const [error, setError] = useState("");
+  const { submit, onInput, status, error } = useLeadForm({
+    kind: "contractor_review", service: "website-development",
+    placement: "review", location: "review",
+  });
   const [showBooking, setShowBooking] = useState(false);
 
   useEffect(() => {
@@ -71,58 +71,6 @@ export function WebsiteReviewForm() {
     if (!started.current) {
       started.current = trackFunnel("review_form_started", "review");
       trackSite("form_start", "website-development", "review");
-    }
-  }
-
-  async function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (inFlight.current) return;
-    inFlight.current = true;
-    setError("");
-    setStatus("sending");
-    const form = new FormData(event.currentTarget);
-    submissionId.current ??= crypto.randomUUID();
-    try {
-      const response = await fetch("/api/leads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          submissionId: submissionId.current,
-          sessionId: engagementSession(),
-          service: "website-development",
-          name: form.get("name"),
-          email: form.get("email"),
-          website: form.get("website"),
-          problem: form.get("problem"),
-          companyFax: form.get("companyFax"),
-          attribution: captureAttribution(),
-        }),
-        signal: AbortSignal.timeout(20_000),
-      });
-      const result = await response.json().catch(() => ({}));
-      if (!response.ok || !result.accepted) {
-        // Validation/conflict responses confirm that this attempt was not accepted.
-        if ([400, 409, 422].includes(response.status))
-          submissionId.current = undefined;
-        throw new Error(
-          result.error || "We couldn't save your request. Please try again.",
-        );
-      }
-      trackFunnel("lead_submitted", "review", {
-        submissionId: submissionId.current,
-        service: "website-development",
-      });
-      setStatus("sent");
-    } catch (cause) {
-      trackSite("form_error", "website-development", "review");
-      setError(
-        cause instanceof Error && cause.name !== "TimeoutError"
-          ? cause.message
-          : "We couldn't confirm your request. Please try again; duplicate requests are safely handled.",
-      );
-      setStatus("idle");
-    } finally {
-      inFlight.current = false;
     }
   }
 
@@ -169,6 +117,7 @@ export function WebsiteReviewForm() {
     <form
       data-clarity-mask="true"
       onSubmit={submit}
+      onInput={onInput}
       onChange={start}
       className="rounded-3xl border border-neon-navy/10 bg-white p-6 shadow-sm sm:p-9"
       aria-label="Request a free website review"

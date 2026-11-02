@@ -1,51 +1,16 @@
 "use client";
 import Link from "next/link";
-import { useRef, useState, type FormEvent } from "react";
-import { captureAttribution } from "@/lib/leads/attribution";
-import { engagementSession, trackSite } from "@/lib/engagement/client";
-import { trackFunnel } from "@/lib/leads/analytics";
+import { useRef } from "react";
+import { trackSite } from "@/lib/engagement/client";
+import { useLeadForm } from "@/lib/leads/use-lead-form";
 import styles from "./lead-generation.module.css";
 const service = "facebook-lead-generation";
 export function CampaignReviewForm() {
-  const submissionId = useRef<string | undefined>(undefined);
   const started = useRef(false);
-  const inFlight = useRef(false);
-  const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
-  const [error, setError] = useState("");
-  async function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (inFlight.current) return;
-    inFlight.current = true;
-    setStatus("sending");
-    setError("");
-    const form = new FormData(event.currentTarget);
-    submissionId.current ??= crypto.randomUUID();
-    try {
-      const response = await fetch("/api/leads", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        signal: AbortSignal.timeout(20_000),
-        body: JSON.stringify({
-          submissionId: submissionId.current, sessionId: engagementSession(),
-          kind: "contact", service, subject: "Free Facebook campaign review",
-          name: form.get("name"), email: form.get("email"), website: form.get("website"),
-          problem: form.get("message"), companyFax: form.get("companyFax"),
-          attribution: captureAttribution(),
-        }),
-      });
-      const result = await response.json().catch(() => ({}));
-      if (!response.ok || !result.accepted) {
-        if ([400, 409, 422].includes(response.status)) submissionId.current = undefined;
-        throw new Error(result.error || "We couldn’t save your request. Please try again.");
-      }
-      setStatus("sent");
-      trackFunnel("lead_submitted", "campaign", { submissionId: submissionId.current, service });
-    } catch (cause) {
-      trackSite("form_error", service, "hero");
-      setError(cause instanceof Error && cause.name !== "TimeoutError" ? cause.message
-        : "We couldn’t confirm your request. Please try again in a moment.");
-      setStatus("idle");
-    } finally { inFlight.current = false; }
-  }
+  const { submit, onInput, status, error } = useLeadForm({
+    kind: "contact", service, subject: "Free Facebook campaign review",
+    placement: "hero", location: "campaign",
+  });
   return (
     <div id="campaign-review" className={styles.reviewCard}>
       {status === "sent" ? (
@@ -55,7 +20,7 @@ export function CampaignReviewForm() {
           <Link href="/contact#book-a-call" className={styles.textLink}>Prefer to talk? Book a free consultation.</Link>
         </div>
       ) : (
-        <form onSubmit={submit} onChange={() => {
+        <form onSubmit={submit} onInput={onInput} onChange={() => {
           if (!started.current) { started.current = true; trackSite("form_start", service, "hero"); }
         }} aria-label="Request a free campaign review" data-clarity-mask="true">
           <h2>Let’s look at your next campaign.</h2>

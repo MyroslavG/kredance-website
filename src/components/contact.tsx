@@ -1,13 +1,12 @@
 "use client";
 
-import { Suspense, useRef, useState, type FormEvent } from "react";
+import { Suspense, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { CalendlyEmbed } from "@/components/calendly-embed";
-import { captureAttribution } from "@/lib/leads/attribution";
-import { engagementSession, trackSite } from "@/lib/engagement/client";
+import { trackSite } from "@/lib/engagement/client";
 import { cleanService, serviceOptions } from "@/lib/engagement/shared";
-import { trackFunnel } from "@/lib/leads/analytics";
+import { useLeadForm } from "@/lib/leads/use-lead-form";
 
 const inputClass =
   "mt-2 w-full rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-base text-white placeholder:text-white/40 focus:outline-2 focus:outline-sunset";
@@ -47,62 +46,11 @@ function ContactForm({
   review: boolean;
   initialService: string;
 }) {
-  const submissionId = useRef<string | undefined>(undefined);
   const started = useRef(false);
-  const inFlight = useRef(false);
-  const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
-  const [error, setError] = useState("");
-  async function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (inFlight.current) return;
-    inFlight.current = true;
-    setStatus("sending");
-    setError("");
-    const form = new FormData(event.currentTarget);
-    submissionId.current ??= crypto.randomUUID();
-    try {
-      const response = await fetch("/api/leads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        signal: AbortSignal.timeout(20_000),
-        body: JSON.stringify({
-          submissionId: submissionId.current,
-          sessionId: engagementSession(),
-          kind: review ? "website_review" : "contact",
-          service: form.get("service"),
-          name: form.get("name"),
-          email: form.get("email"),
-          website: form.get("website"),
-          problem: form.get("message"),
-          companyFax: form.get("companyFax"),
-          attribution: captureAttribution(),
-        }),
-      });
-      const result = await response.json().catch(() => ({}));
-      if (!response.ok || !result.accepted) {
-        if ([400, 409, 422].includes(response.status))
-          submissionId.current = undefined;
-        throw new Error(
-          result.error || "We couldn’t save your request. Please try again.",
-        );
-      }
-      setStatus("sent");
-      trackFunnel("lead_submitted", "contact", {
-        submissionId: submissionId.current,
-        service: String(form.get("service") || ""),
-      });
-    } catch (cause) {
-      trackSite("form_error", String(form.get("service") || ""), "contact");
-      setError(
-        cause instanceof Error && cause.name !== "TimeoutError"
-          ? cause.message
-          : "We couldn’t confirm your request. Please retry; duplicate requests are safely handled.",
-      );
-      setStatus("idle");
-    } finally {
-      inFlight.current = false;
-    }
-  }
+  const { submit, onInput, status, error } = useLeadForm({
+    kind: review ? "website_review" : "contact", service: initialService,
+    placement: "contact", location: "contact",
+  });
   return (
     <>
       <section
@@ -141,6 +89,7 @@ function ContactForm({
           ) : (
             <form
               onSubmit={submit}
+              onInput={onInput}
               onChange={() => {
                 if (!started.current) {
                   started.current = true;
@@ -197,7 +146,7 @@ function ContactForm({
                   </select>
                 </label>}
                 <label className="block text-sm">
-                  Website {review ? "" : "(optional)"}
+                  Website {review ? "" : "(optional — leave blank if you don’t have one)"}
                   <input
                     className={inputClass}
                     name="website"
@@ -249,7 +198,7 @@ function ContactForm({
               </fieldset>
               {error && (
                 <p role="alert" className="mt-4 text-red-200">
-                  {error} You can also email us directly.
+                  {error} You can also <a href="mailto:myroslav@kredance.com" className="underline">email us directly</a>.
                 </p>
               )}
               <p className="mt-4 text-xs text-sunset/60">

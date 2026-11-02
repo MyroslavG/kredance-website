@@ -2,6 +2,7 @@
 
 import { captureAttribution } from "@/lib/leads/attribution";
 import { analyticsAllowed, cleanService, UUID, type SiteEvent } from "./shared";
+import { cleanLeadDiagnostic, type LeadDiagnostic } from "../leads/errors";
 
 let session: { id: string; last: number } | undefined;
 export function engagementSession(): string | undefined {
@@ -43,7 +44,7 @@ export function clearEngagementSession() {
   }
 }
 
-export function trackSite(event: SiteEvent, service = "", placement = "page") {
+export function trackSite(event: SiteEvent, service = "", placement = "page", diagnostic?: LeadDiagnostic) {
   try {
     const sessionId = engagementSession();
     if (!sessionId) return;
@@ -60,6 +61,7 @@ export function trackSite(event: SiteEvent, service = "", placement = "page") {
         placement,
         device: window.innerWidth < 768 ? "mobile" : "desktop",
         attribution: captureAttribution(),
+        diagnostic: event === "form_error" ? cleanLeadDiagnostic(diagnostic) : undefined,
       }),
     }).catch(() => {});
   } catch {
