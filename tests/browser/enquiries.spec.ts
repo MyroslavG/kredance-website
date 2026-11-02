@@ -80,6 +80,84 @@ async function signIn(page: Page, request: APIRequestContext) {
   await expect(page.getByRole("heading", { name: "Follow up with leads" })).toBeVisible();
 }
 
+test("contact form points to invalid input, preserves the message, and accepts an empty optional website", async ({ page, request }) => {
+  await page.addInitScript(() => localStorage.setItem("kredance:analytics-consent:v1", "granted"));
+  await page.goto("/contact?service=design");
+  const form = page.getByRole("form", { name: "Project inquiry", exact: true });
+  await form.getByLabel("Name", { exact: true }).fill("Synthetic Validation Enquiry");
+  await form.getByLabel("Email", { exact: true }).fill("validation@example.com");
+  const website = form.locator('[name="website"]');
+  const details = form.locator('[name="message"]');
+  await website.fill("not a website");
+  await details.fill("Please help with a website and advertising project.");
+  let submissions = 0;
+  page.on("request", request => { if (new URL(request.url()).pathname === "/api/leads") submissions++; });
+  await form.getByRole("button", { name: "Send message" }).click();
+  await expect(form.getByRole("alert")).toContainText("valid business website");
+  await expect(website).toBeFocused();
+  await expect(details).toHaveValue("Please help with a website and advertising project.");
+  expect(submissions).toBe(0);
+  await expect.poll(async () => (await state(request)).siteEvents.filter((event: { error_code: string }) => event.error_code === "validation").length).toBe(1);
+  const diagnostic = (await state(request)).siteEvents.find((event: { event_name: string }) => event.event_name === "form_error");
+  expect(diagnostic).toMatchObject({ error_code: "validation", error_field: "website", http_status: null });
+  await website.fill("     ");
+  await form.getByRole("button", { name: "Send message" }).click();
+  await expect(page.getByRole("heading", { name: "Your message is in.", exact: true })).toBeVisible();
+  await expect.poll(async () => (await state(request)).emails.length).toBe(1);
+  expect(submissions).toBe(1);
+  expect((await state(request)).leads[0].website).toBe("");
+});
+
+test("contact form recovers from a server field error and records only safe diagnostics", async ({ page, request }) => {
+  await page.addInitScript(() => localStorage.setItem("kredance:analytics-consent:v1", "granted"));
+  await page.goto("/contact");
+  const form = page.getByRole("form", { name: "Project inquiry", exact: true });
+  await form.getByLabel("Name", { exact: true }).fill("Synthetic Server Validation");
+  await form.getByLabel("Email", { exact: true }).fill("server-validation@example.com");
+  const details = form.locator('[name="message"]');
+  await details.fill("Synthetic project details for a form test.");
+  const ids: string[] = [];
+  await page.route("**/api/leads", async route => {
+    ids.push(route.request().postDataJSON().submissionId);
+    if (ids.length === 1) return route.fulfill({ status: 422, json: { error: "Please check your project details.", code: "validation", field: "problem" } });
+    return route.continue();
+  });
+  await form.getByRole("button", { name: "Send message" }).click();
+  await expect(details).toBeFocused();
+  await expect(form.getByRole("alert")).toContainText("check your project details");
+  await expect.poll(async () => (await state(request)).siteEvents.filter((event: { http_status: number }) => event.http_status === 422).length).toBe(1);
+  await details.fill("Corrected synthetic project details for a form test.");
+  await form.getByRole("button", { name: "Send message" }).click();
+  await expect(page.getByRole("heading", { name: "Your message is in.", exact: true })).toBeVisible();
+  expect(ids).toHaveLength(2);
+  expect(ids[0]).not.toBe(ids[1]);
+  expect((await state(request)).leads).toHaveLength(1);
+});
+
+test("contact form works without AbortSignal.timeout and preserves identity after a lost response", async ({ page, request }) => {
+  await page.addInitScript(() => Object.defineProperty(AbortSignal, "timeout", { value: undefined, configurable: true }));
+  await page.goto("/contact");
+  const form = page.getByRole("form", { name: "Project inquiry", exact: true });
+  await form.getByLabel("Name", { exact: true }).fill("Synthetic Contact Retry");
+  await form.getByLabel("Email", { exact: true }).fill("contact-retry@example.com");
+  await form.locator('[name="message"]').fill("A synthetic enquiry to verify a lost response.");
+  const ids: string[] = [];
+  await page.route("**/api/leads", async route => {
+    ids.push(route.request().postDataJSON().submissionId);
+    const response = await route.fetch();
+    if (ids.length === 1) return route.abort("connectionreset");
+    return route.fulfill({ response });
+  });
+  await form.getByRole("button", { name: "Send message" }).click();
+  await expect(form.getByRole("alert")).toContainText("Check your connection");
+  await expect(form.getByLabel("Name", { exact: true })).toHaveValue("Synthetic Contact Retry");
+  await form.getByRole("button", { name: "Send message" }).click();
+  await expect(page.getByRole("heading", { name: "Your message is in.", exact: true })).toBeVisible();
+  expect(ids).toHaveLength(2); expect(ids[0]).toBe(ids[1]);
+  await expect.poll(async () => (await state(request)).emails.length).toBe(1);
+  expect((await state(request)).leads).toHaveLength(1);
+});
+
 test("owner can record a referral, update it, and download a filtered CSV without sending mail", async ({ page, request }) => {
   await signIn(page, request);
   await page.getByRole("button", { name: "Add enquiry", exact: true }).click();

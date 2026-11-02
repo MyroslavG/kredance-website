@@ -261,16 +261,19 @@ export async function handleLeadRequest(
       { status: saved.created ? 201 : 200, headers },
     );
   } catch (error) {
-    if (error instanceof InputError)
+    if (error instanceof InputError) {
+      console.warn("lead_intake_rejected", { code: error.code, field: error.field, httpStatus: error.status });
       return Response.json(
-        { error: error.message },
+        { error: error.message, code: error.code, field: error.field },
         { status: error.status, headers },
       );
+    }
     if (error instanceof StorageError && error.code === "rate_limited") {
       return Response.json(
         {
           error:
             "Too many requests. Please try again in an hour or email us directly.",
+          code: "rate_limited",
         },
         { status: 429, headers: { ...headers, "Retry-After": "3600" } },
       );
@@ -280,6 +283,7 @@ export async function handleLeadRequest(
         {
           error:
             "This request was already received with different details. Submit again to send an updated request.",
+          code: "submission_conflict",
         },
         { status: 409, headers },
       );
@@ -290,6 +294,7 @@ export async function handleLeadRequest(
       {
         error:
           "We couldn't save your request right now. Please try again or email us directly.",
+        code: "service_unavailable",
       },
       { status: 503, headers },
     );

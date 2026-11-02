@@ -8,6 +8,14 @@ The form sends to `POST /api/leads`. A single database transaction saves the inq
 
 General Contact inquiries, contractor reviews, and Insights website-review requests use the same durable intake and EmailJS queue. The Contact calendar uses the same tracked Calendly component as the review confirmation screen.
 
+## Form validation and diagnostics — November 2, 2026
+
+The public enquiry forms share client/server validation. Invalid fields receive focus and a specific correction message before an intake request is sent. Optional website fields containing only whitespace are treated as blank. Failed requests preserve entered details, and an uncertain response retains its submission ID so retrying cannot create a second lead or notification.
+
+Consent-based `form_error` events now include optional `error_code`, `error_field`, and `http_status` columns in the private `site_events` table. These accept fixed categories only, never submitted values, raw exception text, or response bodies. `validation` indicates an input correction; `request_blocked`, `rate_limited`, `submission_conflict`, `service_unavailable`, `network`, `timeout`, `unexpected_response`, and `client_error` distinguish other failures. Historical events remain null/unknown. The API also logs fixed rejection codes and field names for short-term investigation.
+
+The November 2 incident consisted of eight 4xx responses and no database intake calls. Vercel's retained aggregate statistics confirmed the rejection class, but the detailed request logs had expired, so the original rejected field is unknown. Do not describe those events as eight acquired leads or claim a particular input caused them.
+
 ## Kredance setup status — September 25, 2026
 
 The dedicated `kredance-website` Supabase project (`jsticdyoptfqtysklclr`) is active. All three committed migrations have been applied; filenames match the versions in its migration history.

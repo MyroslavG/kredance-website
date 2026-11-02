@@ -1,4 +1,5 @@
 import { cleanService, serviceLabel, UUID } from "../engagement/shared";
+import type { LeadErrorCode, LeadErrorField } from "./errors";
 
 export const CONTRACTOR_PATH = "/websites-for-contractors";
 export const BOOKING_URL = "https://calendly.com/kredance/30min";
@@ -57,6 +58,8 @@ export class InputError extends Error {
   constructor(
     message: string,
     public status = 400,
+    public field?: LeadErrorField,
+    public code: LeadErrorCode = "validation",
   ) {
     super(message);
   }
@@ -73,13 +76,14 @@ function field(
   label: string,
   min: number,
   max: number,
+  inputField?: LeadErrorField,
 ): string {
   if (
     typeof value !== "string" ||
     value.trim().length < min ||
     value.trim().length > max
   ) {
-    throw new InputError(`${label} must contain ${min}–${max} characters.`);
+    throw new InputError(`${label} must contain ${min}–${max} characters.`, 400, inputField);
   }
   return value.trim();
 }
@@ -119,7 +123,7 @@ export function normalizeWebsite(value: string) {
     url.hash = "";
     return url.toString();
   } catch {
-    throw new InputError("Enter a valid business website, such as example.com.");
+    throw new InputError("Enter a valid business website, such as example.com.", 400, "website");
   }
 }
 
@@ -128,6 +132,7 @@ export function parseLead(value: unknown): LeadInput {
   if (raw.companyFax)
     throw new InputError(
       "Please email myroslav@kredance.com to request your review.",
+      400, undefined, "request_blocked",
     );
   const submissionId = field(raw.submissionId, "Submission ID", 36, 36);
   if (
@@ -137,14 +142,12 @@ export function parseLead(value: unknown): LeadInput {
   ) {
     throw new InputError("Please refresh the page and try again.");
   }
-  const name = field(raw.name, "Name", 2, 100);
-  const email = field(raw.email, "Email", 3, 254).toLowerCase();
-  if (
-    /[\r\n\x00-\x1f]/.test(name) ||
-    !/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(email)
-  ) {
-    throw new InputError("Please enter a valid name and email address.");
-  }
+  const name = field(raw.name, "Name", 2, 100, "name");
+  const email = field(raw.email, "Email", 3, 254, "email").toLowerCase();
+  if (/[\r\n\x00-\x1f]/.test(name))
+    throw new InputError("Please enter a valid name.", 400, "name");
+  if (!/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(email))
+    throw new InputError("Please enter a valid email address.", 400, "email");
   const kind =
     raw.kind === "contact" || raw.kind === "website_review"
       ? raw.kind
@@ -154,14 +157,14 @@ export function parseLead(value: unknown): LeadInput {
     kind === "contact"
       ? raw.subject == null || raw.subject === ""
         ? service ? `${serviceLabel(service)} inquiry` : "Project inquiry"
-        : field(raw.subject, "Subject", 2, 150)
+        : field(raw.subject, "Subject", 2, 150, "subject")
       : "Website review";
   if (/[\r\n\x00-\x1f]/.test(subject))
-    throw new InputError("Enter a valid subject.");
+    throw new InputError("Enter a valid subject.", 400, "subject");
   const website = normalizeWebsite(
-    kind === "contact" && !raw.website
+    kind === "contact" && (raw.website == null || (typeof raw.website === "string" && !raw.website.trim()))
       ? ""
-      : field(raw.website, "Website", 4, 500),
+      : field(raw.website, "Website", 4, 500, "website"),
   );
   const noReviewDetails =
     kind !== "contact" &&
@@ -169,7 +172,7 @@ export function parseLead(value: unknown): LeadInput {
       (typeof raw.problem === "string" && !raw.problem.trim()));
   const problem = noReviewDetails
     ? "General website review requested; no additional details provided."
-    : field(raw.problem, kind === "contact" ? "Project details" : "Review notes", 10, 2000);
+    : field(raw.problem, kind === "contact" ? "Project details" : "Review notes", 10, 2000, "problem");
   return {
     submissionId,
     name,
@@ -232,6 +235,6 @@ export function requireSameOrigin(request: Request) {
   // authority used by the browser, including the development port.
   const expectedOrigin = `${url.protocol}//${request.headers.get("host") || url.host}`;
   if (request.headers.get("origin") !== expectedOrigin) {
-    throw new InputError("Submit the form from the Kredance website.", 403);
+    throw new InputError("Submit the form from the Kredance website.", 403, undefined, "request_blocked");
   }
 }
